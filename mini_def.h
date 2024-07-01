@@ -57,12 +57,4 @@ typedef struct s_significant_argument
 	void		*next;
 }	t_sig_arg;
 
-typedef struct s_parse
-{
-	char		*content;
-	void		**childlist;
-	void		**parentlist;
-	void		*next;
-}	t_parse_list;
-
 #endif
