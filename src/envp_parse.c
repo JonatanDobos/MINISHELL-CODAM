@@ -5,7 +5,7 @@ static void	add_to_arglist(t_shell *shell, char *str, size_t len)
 {
 	char		*var;
 	t_list		*new_list;
-	t_sig_arg	*new_sig;
+	t_token		*new_sig;
 
 	var = ft_substr(str, len, ft_strlen(str) - len);
 	if (!var)

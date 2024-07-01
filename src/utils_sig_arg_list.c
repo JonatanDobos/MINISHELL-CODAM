@@ -1,17 +1,17 @@
 #include "../minishell.h"
 
-void	sig_arg_delone(t_sig_arg *node)
+void	sig_arg_delone(t_token *node)
 {
 	if (node == NULL)
 		return ;
-	ft_lstclear(node->cmd_head, free);
+	ft_lstclear(node->element_head, free);
 	ft_free_array(node->cmd_array);
 	free(node);
 }
 
-void	sig_arg_clear(t_sig_arg **node)
+void	sig_arg_clear(t_token **node)
 {
-	t_sig_arg	*temp;
+	t_token	*temp;
 
 	if (node == NULL)
 		return ;
@@ -23,22 +23,22 @@ void	sig_arg_clear(t_sig_arg **node)
 	}
 }
 
-t_sig_arg	*sig_arg_new(
-		t_list **cmd_head, char **cmd_array, short token)
+t_token	*sig_arg_new(
+		t_list **element_head, char **cmd_array, short type)
 {
-	t_sig_arg	*new;
+	t_token	*new;
 
-	new = (t_sig_arg *)malloc(sizeof(t_sig_arg));
+	new = (t_token *)malloc(sizeof(t_token));
 	if (new == NULL)
 		return (NULL);
-	new->cmd_head = cmd_head;
+	new->element_head = element_head;
 	new->cmd_array = cmd_array;
-	new->token = token;
+	new->type = type;
 	new->next = NULL;
 	return (new);
 }
 
-t_sig_arg	*sig_arg_last(t_sig_arg *node)
+t_token	*sig_arg_last(t_token *node)
 {
 	if (node != NULL)
 		while (node->next != NULL)
@@ -46,7 +46,7 @@ t_sig_arg	*sig_arg_last(t_sig_arg *node)
 	return (node);
 }
 
-void	sig_arg_add_back(t_sig_arg **node, t_sig_arg *new)
+void	sig_arg_add_back(t_token **node, t_token *new)
 {
 	if (node == NULL)
 		return ;

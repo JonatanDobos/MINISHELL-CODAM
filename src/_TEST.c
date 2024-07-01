@@ -3,12 +3,12 @@
 // LIST PRINTER!
 // FOR TESTING!
 
-static char	*token_to_char(short token)
+static char	*type_to_char(short type)
 {
 	static char	arr[6][10] = {
 		"NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0", (char *)NULL};
 
-	return (arr[token]);
+	return (arr[type]);
 }
 
 void	TEST_print_pointer_arr(char **arr)
@@ -42,9 +42,9 @@ void	TEST_print_string_lst(t_list **head)
 	}
 }
 
-void	TEST_print_sig_arg_lst(t_sig_arg **head)
+void	TEST_print_token_lst(t_token **head)
 {
-	t_sig_arg	*tmp;
+	t_token	*tmp;
 	int				i;
 
 	if (!head || !(*head))
@@ -54,8 +54,8 @@ void	TEST_print_sig_arg_lst(t_sig_arg **head)
 	while (tmp != NULL)
 	{
 		printf("\n%ssig_arg Node [%2i]%s\n",C_TEAL, i, C_RESET);
-		printf("-> token: %s\n", token_to_char(tmp->token));
-		printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->cmd_head))->content, ft_lstsize(*(tmp->cmd_head)));
+		printf("-> token: %s\n", token_to_char(tmp->type));
+		printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->element_head))->content, ft_lstsize(*(tmp->element_head)));
 		printf("-> cmd arr:\n");
 		TEST_print_pointer_arr(tmp->cmd_array);
 		tmp=tmp->next;
