@@ -25,5 +25,3 @@ t_list	**va_list_cmd_node(
 	va_end(cmds);
 	return (element_head);
 }
-
-t_list	**//LEFTOFF

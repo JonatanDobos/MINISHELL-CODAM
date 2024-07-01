@@ -42,12 +42,13 @@ void	TEST_print_string_lst(t_list **head)
 	}
 }
 
-void	TEST_print_token_lst(t_token **head)
+void	TEST_print_token_lst(t_shell *shell)
 {
-	t_token	*tmp;
+	const t_token	**head = &shell->token_head;
+	t_token			*tmp;
 	int				i;
 
-	if (!head || !(*head))
+	if (!(*head))
 		return ;
 	tmp = *head;
 	i = 0;
@@ -55,7 +56,10 @@ void	TEST_print_token_lst(t_token **head)
 	{
 		printf("\n%ssig_arg Node [%2i]%s\n",C_TEAL, i, C_RESET);
 		printf("-> token: %s\n", token_to_char(tmp->type));
-		printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->element_head))->content, ft_lstsize(*(tmp->element_head)));
+		if (tmp->element_head)
+			printf("-> cmd head: %s, cmd lstsize: %i\n", tmp->element_head->content, ft_lstsize(tmp->element_head));
+		else
+			printf("-> token = NULL");
 		printf("-> cmd arr:\n");
 		TEST_print_pointer_arr(tmp->cmd_array);
 		tmp=tmp->next;

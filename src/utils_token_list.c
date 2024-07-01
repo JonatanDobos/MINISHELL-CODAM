@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	sig_arg_delone(t_token *node)
+void	token_delone(t_token *node)
 {
 	if (node == NULL)
 		return ;
@@ -9,7 +9,7 @@ void	sig_arg_delone(t_token *node)
 	free(node);
 }
 
-void	sig_arg_clear(t_token **node)
+void	token_clear(t_token **node)
 {
 	t_token	*temp;
 
@@ -23,7 +23,7 @@ void	sig_arg_clear(t_token **node)
 	}
 }
 
-t_token	*sig_arg_new(
+t_token	*token_new(
 		t_list **element_head, char **cmd_array, short type)
 {
 	t_token	*new;
@@ -38,7 +38,7 @@ t_token	*sig_arg_new(
 	return (new);
 }
 
-t_token	*sig_arg_last(t_token *node)
+t_token	*token_last(t_token *node)
 {
 	if (node != NULL)
 		while (node->next != NULL)
@@ -46,12 +46,12 @@ t_token	*sig_arg_last(t_token *node)
 	return (node);
 }
 
-void	sig_arg_add_back(t_token **node, t_token *new)
+void	token_add_back(t_token **node, t_token *new)
 {
 	if (node == NULL)
 		return ;
 	else if (*node != NULL)
-		sig_arg_last(*node)->next = new;
+		token_last(*node)->next = new;
 	else
 		*node = new;
 }

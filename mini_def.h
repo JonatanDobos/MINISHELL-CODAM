@@ -40,8 +40,8 @@ enum	e_tokens
 
 typedef struct s_shell
 {
-	t_token		**sig_arg_head;
-	t_list		**line_element_head;
+	t_token		*token_head;
+	t_list		*line_element_head;
 	char		*history;
 	char		*line;
 	char		**envp;
@@ -52,7 +52,7 @@ typedef struct s_shell
 
 typedef struct s_token
 {
-	t_list		**element_head;
+	t_list		*element_head;
 	char		**cmd_array;
 	short		type;
 	void		*next;

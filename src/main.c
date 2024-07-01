@@ -19,7 +19,8 @@ void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 {
 	(void)argc;
 	(void)argv;
-	shell->sig_arg_head = NULL;
+	shell->token_head = NULL;
+	shell->line_element_head = NULL;
 	shell->history = NULL;
 	shell->line = NULL;
 	shell->envp = create_envp(envp);
@@ -46,6 +47,26 @@ void	line_history_management(t_shell *shell)
 	}
 }
 
+void	read_loop(t_shell *shell)
+{
+	while (true)
+	{
+		rl_on_new_line();
+		shell->line = readline(C_YELLOW "mini" C_RED " > " C_RESET);
+		if (shell->line == NULL)
+			exit_clean(&shell, errno, NULL);
+		if (syntax_check(shell->line) == FAILURE)
+			printf("syntax error\n");
+		TEST_printline(&shell);// TEST
+		line_history_management(&shell);
+		parsing_distributor(&shell);
+		free(shell->line);
+		// Function to cleanup t_shell shell
+	}
+	free(shell->history);
+	rl_clear_history();
+}
+
 // Contains the readline() loop.
 // FOR TESTING: to print the input of readline() input:
 // "print [this will be printed]"
@@ -54,21 +75,7 @@ int	main(int argc, char **argv, char **envp)
 	t_shell	shell;
 
 	init_shell(&shell, argc, argv, envp);
-	while (true)
-	{
-		rl_on_new_line();
-		shell.line = readline(C_YELLOW "mini" C_RED " > " C_RESET);
-		if (shell.line == NULL)
-			exit_clean(&shell, errno, NULL);
-		if (syntax_check(shell.line) == FAILURE)
-			printf("syntax error\n");
-		TEST_printline(&shell);// TEST
-		line_history_management(&shell);
-		parsing_distributor(&shell);
-		free(shell.line);
-	}
-	free(shell.history);
-	rl_clear_history();
+	read_loop(&shell);
 	return (SUCCESS);
 }
 

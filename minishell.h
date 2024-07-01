@@ -35,17 +35,17 @@ void		exit_clean(t_shell *shell, int num, char *message);
 void		free_setnull(void **ptr);
 void		free_va(int amount, ...);
 
-// utils_sig_arg_list.c
+// utils_token_list.c
 
-void		sig_arg_add_back(t_token **node, t_token *new);
-t_token		*sig_arg_last(t_token *node);
-t_token		*sig_arg_new(t_list **element_head, char **cmd_array, short token);
-void		sig_arg_clear(t_token **node);
-void		sig_arg_delone(t_token *node);
+void		token_add_back(t_token **node, t_token *new);
+t_token		*token_last(t_token *node);
+t_token		*token_new(t_list **element_head, char **cmd_array, short token);
+void		token_clear(t_token **node);
+void		token_delone(t_token *node);
 
 // _TEST.c
 
-void		TEST_print_token_lst(t_token **head);
+void		TEST_print_token_lst(t_shell *shell);
 void		TEST_print_string_lst(t_list **head);
 void		TEST_print_pointer_arr(char **arr);
 

@@ -3,7 +3,7 @@
 // attempts to free everything known to shell, then exits
 void	exit_clean(t_shell *shell, int num, char *message)
 {
-	free_arglist(shell->sig_arg_head);
+	token_clear(&shell->token_head);
 	ft_free_null(&shell->line);
 	ft_free_array(shell->history);
 	ft_free_array(shell->envp);
