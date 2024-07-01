@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   list_general.c                                     :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/06/26 21:57:05 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/06/28 16:16:37 by joni          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   list_general.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/26 21:57:05 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/07/01 19:21:45 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,14 +78,14 @@ static void	string_lstfree(
 static void	sig_arg_lstfree(
 	void **head)
 {
-	t_sig_arg_node	*tmp;
-	t_sig_arg_node	*tmp_tmp;
+	t_token_node	*tmp;
+	t_token_node	*tmp_tmp;
 
-	tmp = (t_sig_arg_node *)(*head);
+	tmp = (t_token_node *)(*head);
 	while (tmp != NULL)
 	{
 		ft_free_array(tmp->cmd_array);
-		string_lstfree((void **)tmp->cmd_head);
+		string_lstfree((void **)tmp->element_head);
 		tmp_tmp = tmp->next;
 		free(tmp);
 		tmp = tmp_tmp;
@@ -101,6 +101,6 @@ void
 		return ;
 	if (getnext == getnext_string)
 		string_lstfree(head);
-	else if (getnext == getnext_sig_arg)
+	else if (getnext == getnext_token)
 		sig_arg_lstfree(head);
 }

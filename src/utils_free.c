@@ -3,11 +3,8 @@
 // Frees *ptr if != NULL, then sets it to NULL
 void	free_setnull(void **ptr)
 {
-	if (ptr && *ptr)
-	{
-		free(*ptr);
-		*ptr = NULL;
-	}
+	free(*ptr);
+	*ptr = NULL;
 }
 
 // Frees variable amount of pointers (if != NULL)

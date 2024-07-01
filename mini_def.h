@@ -40,7 +40,8 @@ enum	e_tokens
 
 typedef struct s_shell
 {
-	t_sig_arg	**sig_arg_head;
+	t_token		*token_head;
+	t_list		*line_element_head;
 	char		*history;
 	char		*line;
 	char		**envp;
@@ -49,12 +50,12 @@ typedef struct s_shell
 
 // LISTS
 
-typedef struct s_significant_argument
+typedef struct s_token
 {
-	t_list		**cmd_head; // can be used as single pointer, head stored in sig_argument node only
+	t_list		*element_head;
 	char		**cmd_array;
-	short		token;
+	short		type;
 	void		*next;
-}	t_sig_arg;
+}	t_token;
 
 #endif

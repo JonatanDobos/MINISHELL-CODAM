@@ -5,7 +5,7 @@ t_list	**va_list_cmd_node(size_t amount, ...)
 {
 	va_list		cmds;
 	size_t		i;
-	t_list		**cmd_head;
+	t_list		**element_head;
 	t_list		*cmd_node;
 
 	va_start(cmds, amount);
@@ -14,12 +14,12 @@ t_list	**va_list_cmd_node(size_t amount, ...)
 	{
 		cmd_node = ft_lstnew(va_arg(cmds, char *));
 		if (i == 0)
-			cmd_head = &cmd_node;
+			element_head = &cmd_node;
 		if (!cmd_node)
-			return (ft_lstclear(cmd_head, free), NULL);
+			return (ft_lstclear(element_head, free), NULL);
 		if (i > 0)
-			ft_lstadd_back(cmd_head, cmd_node);
+			ft_lstadd_back(element_head, cmd_node);
 	}
 	va_end(cmds);
-	return (cmd_head);
+	return (element_head);
 }

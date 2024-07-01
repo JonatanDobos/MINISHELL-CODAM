@@ -26,9 +26,9 @@ static void	print_string_lst(t_list **head)
 	}
 }
 
-static void	print_sig_arg_lst(t_sig_arg_node **head)
+static void	print_token_lst(t_token_node **head)
 {
-	t_sig_arg_node	*tmp;
+	t_token_node	*tmp;
 	int				i;
 
 	tmp = *head;
@@ -37,7 +37,7 @@ static void	print_sig_arg_lst(t_sig_arg_node **head)
 	{
 		printf("\nNode %i\n", i);
 		printf("-> token: %s\n", token_to_char(tmp->token));
-		printf("-> cmd: %s\n", (*(tmp->cmd_head))->data);
+		printf("-> cmd: %s\n", (*(tmp->element_head))->data);
 		tmp=tmp->next;
 		++i;
 	}
@@ -49,7 +49,7 @@ bool	TEST_print_lst(void **head, t_getnext_func getnext)
 		return (printf("No list\n"), false);
 	if (getnext == getnext_string)
 		print_string_lst(head);
-	else if (getnext == getnext_sig_arg)
-		print_sig_arg_lst(head);
+	else if (getnext == getnext_token)
+		print_token_lst(head);
 	return (true);
 }
