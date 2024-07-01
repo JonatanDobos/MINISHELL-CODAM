@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   envp_export_unset.c                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/06/27 21:58:41 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   envp_export_unset.c                                :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/06/27 21:02:04 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/07/01 17:07:18 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 static void	export_new_key(
 	t_shell *shell, char *envar)
 {
-	char	**new_envp;
+	char	**new_envp; 
 	int		i;
 
 	i = 0;
