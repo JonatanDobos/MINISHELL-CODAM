@@ -21,7 +21,8 @@ LIBFT	=	$(LFTDIR)/libft.a
 # SRC	=	$(SRCDIR)/main.c
 
 SRCDIR	=	./src
-SRC		=	$(SRCDIR)/main.c \
+SRC		=	$(SRCDIR)/_TEST.c\
+			$(SRCDIR)/main.c \
 			$(SRCDIR)/envp_export_unset.c \
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/parsing_distributor.c \
@@ -31,7 +32,7 @@ SRC		=	$(SRCDIR)/main.c \
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_sig_arg_list.c \
 			$(SRCDIR)/utils_string.c \
-			$(SRCDIR)/utils_syntax.c \
+			$(SRCDIR)/utils_syntax.c
 
 OBJ	=	$(SRC:.c=.o)
 

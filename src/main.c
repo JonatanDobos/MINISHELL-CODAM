@@ -10,11 +10,11 @@ MINISHELL:
 
 #include "../minishell.h"
 
-void	TEST_printline(char *line);
+void	TEST_printline(t_shell *shell);// TEST
 
 short	sig = 0;
 
-// Initializes struct of all structs: t_dad.
+// Initializes struct of all structs: t_shell.
 void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 {
 	(void)argc;
@@ -31,20 +31,20 @@ void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 // Adds current line to history if:
 // line_len > 0 && line != previous line.
 // Lastly: strdups line to history.
-// void	line_history_management(t_shell *shell)
-// {
-// 	const size_t	len = ft_strlen(shell->line);
+void	line_history_management(t_shell *shell)
+{
+	const size_t	len = ft_strlen(shell->line);
 
-// 	if (len && \
-// 	(!shell->history || ft_strncmp(shell->line, shell->history, len + 1)))
-// 	{
-// 		add_history(shell->line);
-// 		free(shell->history);
-// 		shell->history = ft_strdup(shell->line);
-// 		if (!shell->history)
-// 			exit_clean(shell, errno, NULL);
-// 	}
-// }
+	if (len && \
+	(!shell->history || ft_strncmp(shell->line, shell->history, len + 1)))
+	{
+		add_history(shell->line);
+		free(shell->history);
+		shell->history = ft_strdup(shell->line);
+		if (!shell->history)
+			exit_clean(shell, errno, NULL);
+	}
+}
 
 // Contains the readline() loop.
 // FOR TESTING: to print the input of readline() input:
@@ -62,8 +62,8 @@ int	main(int argc, char **argv, char **envp)
 			exit_clean(&shell, errno, NULL);
 		if (syntax_check(shell.line) == FAILURE)
 			printf("syntax error\n");
-		TEST_printline(shell.line);
-		// line_history_management(&shell);
+		TEST_printline(&shell);// TEST
+		line_history_management(&shell);
 		parsing_distributor(&shell);
 		free(shell.line);
 	}
@@ -73,8 +73,23 @@ int	main(int argc, char **argv, char **envp)
 }
 
 // TEST FUNCTIONS:
-void	TEST_printline(char *line)
+// INP: "print [gets printed on stdout]"
+// INP: "info [gets run with additional info]"
+void	TEST_printline(t_shell *shell)
 {
-	if (ft_strlen(line) >= 7 && !ft_strncmp(line, "print ", 6))
-		printf("*\n%s\n*\n", line + 6);
+	char	*tmp_line;
+
+	if (ft_strlen(shell->line) >= 7 && !ft_strncmp(shell->line, "print ", 6))
+		printf("*\n%s\n*\n", shell->line + 6);
+	if (ft_strlen(shell->line) >= 6 && !ft_strncmp(shell->line, "info ", 5))
+	{
+		shell->print_info = true;
+		tmp_line = ft_strdup(shell->line + 5);
+		if (!tmp_line)
+			exit_clean(shell, errno, NULL);
+		free(shell->line);
+		shell->line = tmp_line;
+	}
+	else
+		shell->print_info = false;
 }

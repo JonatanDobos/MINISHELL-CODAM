@@ -1,5 +1,18 @@
 #ifndef MINI_DEF_H
 # define MINI_DEF_H
+# include <stdio.h>
+# include <unistd.h>
+# include <string.h>
+# include <stdlib.h>
+# include <stdarg.h>
+# include <readline/readline.h>
+# include <readline/history.h>
+# include <limits.h>
+# include <sys/wait.h>
+# include <errno.h>
+# include <fcntl.h>
+# include <stdbool.h>
+# include <termios.h>
 
 // Colors
 
@@ -25,16 +38,16 @@ enum	e_tokens
 
 // STRUCTS
 
-// LISTS
-
-typedef struct s_generic_string_node
+typedef struct s_shell
 {
-	char	*data;
-	void	*next;
-}	t_string_node;
+	t_sig_arg	**sig_arg_head;
+	char		**history;
+	char		*line;
+	char		**envp;
+	bool		print_info;// TEST
+}	t_shell;
 
-// generic node types
-typedef t_string_node	t_list;
+// LISTS
 
 typedef struct s_significant_argument
 {
@@ -44,12 +57,12 @@ typedef struct s_significant_argument
 	void		*next;
 }	t_sig_arg;
 
-typedef struct s_shell
+typedef struct s_parse
 {
-	t_sig_arg	**sig_arg_head;
-	char		**history;
-	char		*line;
-	char		**envp;
-}	t_shell;
+	char		*content;
+	void		**childlist;
+	void		**parentlist;
+	void		*next;
+}	t_parse_list;
 
 #endif

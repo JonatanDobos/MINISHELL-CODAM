@@ -2,19 +2,6 @@
 # define MINISHELL_H
 # include "libft/libft.h"
 # include "mini_def.h"
-# include <stdio.h>
-# include <unistd.h>
-# include <string.h>
-# include <stdlib.h>
-# include <stdarg.h>
-# include <readline/readline.h>
-# include <readline/history.h>
-# include <limits.h>
-# include <sys/wait.h>
-# include <errno.h>
-# include <fcntl.h>
-# include <stdbool.h>
-# include <termios.h>
 
 // Function parameters
 
@@ -46,7 +33,6 @@ void		exit_clean(t_shell *shell, int num, char *message);
 // utils_freeing.c
 
 void		free_setnull(void **ptr);
-void		free_if(void *ptr);
 void		free_va(int amount, ...);
 
 // utils_sig_arg_list.c
@@ -56,5 +42,20 @@ t_sig_arg	*sig_arg_last(t_sig_arg *node);
 t_sig_arg	*sig_arg_new(t_list **cmd_head, char **cmd_array, short token);
 void		sig_arg_clear(t_sig_arg **node);
 void		sig_arg_delone(t_sig_arg *node);
+
+// utils_parse_list.c
+
+void			parse_list_add_back(t_parse_list **node, t_parse_list *new);
+t_parse_list	*parse_list_last(t_parse_list *node);
+t_parse_list	*parse_list_new(
+		t_parse_list **parentlist, t_parse_list **childlist, char *content);
+void			parse_list_clear(t_parse_list **node);
+void			parse_list_delone(t_parse_list *node);
+
+// _TEST.c
+
+void		TEST_print_sig_arg_lst(t_sig_arg **head);
+void		TEST_print_string_lst(t_list **head);
+void		TEST_print_pointer_arr(char **arr);
 
 #endif

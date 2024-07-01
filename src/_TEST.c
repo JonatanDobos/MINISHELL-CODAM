@@ -36,7 +36,7 @@ void	TEST_print_string_lst(t_list **head)
 	while (tmp != NULL)
 	{
 		printf("\n%sstring Node [%2i]%s\n",C_TEAL, i, C_RESET);
-		printf("-> data: %s\n", tmp->data);
+		printf("-> data: %s\n", tmp->content);
 		tmp=tmp->next;
 		++i;
 	}
@@ -55,7 +55,7 @@ void	TEST_print_sig_arg_lst(t_sig_arg **head)
 	{
 		printf("\n%ssig_arg Node [%2i]%s\n",C_TEAL, i, C_RESET);
 		printf("-> token: %s\n", token_to_char(tmp->token));
-		printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->cmd_head))->data, ft_lstsize(*(tmp->cmd_head)));
+		printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->cmd_head))->content, ft_lstsize(*(tmp->cmd_head)));
 		printf("-> cmd arr:\n");
 		TEST_print_pointer_arr(tmp->cmd_array);
 		tmp=tmp->next;

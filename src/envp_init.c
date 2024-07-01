@@ -1,8 +1,5 @@
 #include "../minishell.h"
 
-// Creates linked list of env:
-// ->key = "$PATH"
-// ->value = "/home/lib:/etc"
 char	**create_envp(char **envp)
 {
 	char	**array;
