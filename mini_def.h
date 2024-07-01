@@ -29,11 +29,11 @@ typedef unsigned char	t_uchar;
 // ? env_var niet als token gebruiken, maar de literal string in een node achter cmd head "export" of "unset"
 enum	e_tokens
 {
-	T_NO_ACTION,
-	T_BUILTIN,
-	T_PIPE,
-	T_REDIRECT,
-	T_FILE
+	T_NO_ACTION = 1,
+	T_BUILTIN = 2,
+	T_PIPE = 3,
+	T_REDIRECT = 4,
+	T_FILE = 5
 };
 
 // STRUCTS
@@ -41,7 +41,7 @@ enum	e_tokens
 typedef struct s_shell
 {
 	t_sig_arg	**sig_arg_head;
-	char		**history;
+	char		*history;
 	char		*line;
 	char		**envp;
 	bool		print_info;// TEST

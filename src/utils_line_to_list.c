@@ -1,9 +1,7 @@
 #include "../minishell.h"
 
 // RETURN: head of the new cmd_list, NULL if failure
-t_list	**va_list_cmd_node(
-	size_t amount,
-	...)
+t_list	**va_list_cmd_node(size_t amount, ...)
 {
 	va_list		cmds;
 	size_t		i;
@@ -25,5 +23,3 @@ t_list	**va_list_cmd_node(
 	va_end(cmds);
 	return (cmd_head);
 }
-
-t_list	**//LEFTOFF

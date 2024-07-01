@@ -19,7 +19,7 @@ char		**create_envp(char **envp);
 
 // utils_syntax.c
 
-bool		syntax_check(const char *line);
+bool		syntax_check_line(const char *line);
 
 // utils_string.c
 
@@ -42,15 +42,6 @@ t_sig_arg	*sig_arg_last(t_sig_arg *node);
 t_sig_arg	*sig_arg_new(t_list **cmd_head, char **cmd_array, short token);
 void		sig_arg_clear(t_sig_arg **node);
 void		sig_arg_delone(t_sig_arg *node);
-
-// utils_parse_list.c
-
-void			parse_list_add_back(t_parse_list **node, t_parse_list *new);
-t_parse_list	*parse_list_last(t_parse_list *node);
-t_parse_list	*parse_list_new(
-		t_parse_list **parentlist, t_parse_list **childlist, char *content);
-void			parse_list_clear(t_parse_list **node);
-void			parse_list_delone(t_parse_list *node);
 
 // _TEST.c
 

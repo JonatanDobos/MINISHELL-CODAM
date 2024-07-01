@@ -5,10 +5,14 @@
 
 static char	*token_to_char(short token)
 {
-	static char	arr[6][10] = {
-		"NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0", (char *)NULL};
+	const int	token_amount = 5;
 
-	return (arr[token]);
+	static char	arr[token_amount + 1][10] = {
+		"NULL", "NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0"};
+
+	if (token <= token_amount && token >= 0)
+		return (arr[token]);
+	return (arr[0]);
 }
 
 void	TEST_print_pointer_arr(char **arr)
@@ -55,7 +59,10 @@ void	TEST_print_sig_arg_lst(t_sig_arg **head)
 	{
 		printf("\n%ssig_arg Node [%2i]%s\n",C_TEAL, i, C_RESET);
 		printf("-> token: %s\n", token_to_char(tmp->token));
-		printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->cmd_head))->content, ft_lstsize(*(tmp->cmd_head)));
+		if (tmp->cmd_head)
+			printf("-> cmd head: %s, cmd lstsize: %i\n", (*(tmp->cmd_head))->content, ft_lstsize(*(tmp->cmd_head)));
+		else
+			printf("-> cmd_head = NULL");
 		printf("-> cmd arr:\n");
 		TEST_print_pointer_arr(tmp->cmd_array);
 		tmp=tmp->next;

@@ -17,9 +17,11 @@ short	sig = 0;
 // Initializes struct of all structs: t_shell.
 void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 {
+	const t_sig_arg	*placeholder = NULL;
+
 	(void)argc;
 	(void)argv;
-	shell->sig_arg_head = NULL;
+	shell->sig_arg_head = &placeholder;
 	shell->history = NULL;
 	shell->line = NULL;
 	shell->envp = create_envp(envp);
@@ -60,7 +62,7 @@ int	main(int argc, char **argv, char **envp)
 		shell.line = readline(C_YELLOW "mini" C_RED " > " C_RESET);
 		if (shell.line == NULL)
 			exit_clean(&shell, errno, NULL);
-		if (syntax_check(shell.line) == FAILURE)
+		if (syntax_check_line(shell.line) == FAILURE)
 			printf("syntax error\n");
 		TEST_printline(&shell);// TEST
 		line_history_management(&shell);

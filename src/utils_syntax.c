@@ -1,6 +1,11 @@
 #include "../minishell.h"
 
-bool	syntax_check(const char *line)
+bool	syntax_check_line(const char *line)
+{
+	return (SUCCESS);
+}
+
+bool	syntax_check_parse(const char *line)
 {
 	size_t	i;
 	t_uint	s_quote_count;
