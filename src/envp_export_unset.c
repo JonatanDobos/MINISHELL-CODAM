@@ -6,13 +6,24 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/06/27 21:02:04 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/07/01 17:06:25 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/07/01 17:11:48 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+static void	export_new_key(
+	t_shell *shell, char *envar)
+{
+	char	**new_envp;
+	int		i;
 
+	i = 0;
+	while (shell->envp[i] != NULL)
+		i++;
+	new_envp = ft_realloc_array(shell->envp, i + 1);
+	if (new_envp == NULL)
+		exit_clean(shell, errno, NULL);
 	new_envp[i] = ft_strdup(envar);
 	if (new_envp[i] == NULL)
 		exit_clean(shell, errno, NULL);
