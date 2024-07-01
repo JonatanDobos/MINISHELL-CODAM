@@ -17,8 +17,6 @@ short	sig = 0;
 // Initializes struct of all structs: t_shell.
 void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 {
-	const t_sig_arg	*placeholder = NULL;
-
 	(void)argc;
 	(void)argv;
 	shell->token_head = NULL;
