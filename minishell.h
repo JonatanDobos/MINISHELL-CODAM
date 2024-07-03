@@ -43,6 +43,10 @@ t_token		*token_new(t_list **element_head, char **cmd_array, short token);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 
+// utils_parsing.c
+
+bool		ft_iswhitespace(char c);
+
 // _TEST.c
 
 void		TEST_print_token_lst(t_shell *shell);
