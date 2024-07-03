@@ -4,8 +4,9 @@
 void	exit_clean(t_shell *shell, int num, char *message)
 {
 	token_clear(&shell->token_head);
+	ft_lstclear(&shell->line_element_head, free);
 	ft_free_null(&shell->line);
-	ft_free_array(shell->history);
+	ft_free_null(&shell->history);
 	ft_free_array(shell->envp);
 	rl_clear_history();
 	errno = num;
