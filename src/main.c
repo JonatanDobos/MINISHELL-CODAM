@@ -60,11 +60,10 @@ void	read_loop(t_shell *shell)
 		TEST_printline(shell);// TEST
 		line_history_management(shell);
 		parsing_distributor(shell);
-		tokenize(shell);
 		if (shell->print_info)// TEST
 		{
 			TEST_print_token_lst(shell, "Token");
-			TEST_print_string_lst(&shell->line_element_head, "Line Element");
+			TEST_print_elem_list(shell);
 		}
 		clean_lists(shell);
 	}
