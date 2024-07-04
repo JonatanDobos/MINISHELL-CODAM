@@ -24,7 +24,7 @@ void	token_clear(t_token **node)
 }
 
 t_token	*token_new(
-		t_list **element_head, char **cmd_array, short type)
+		t_list *element_head, char **cmd_array, short type)
 {
 	t_token	*new;
 

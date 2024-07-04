@@ -31,10 +31,7 @@ int	tokenize(t_shell *shell, t_list	**line_element_head)
 		type = token_type(current->content);
 		if (type == T_BUILTIN || type == T_PIPE || type == T_REDIRECT)
 		{
-			token_add_back(shell->token_head, token_new(&current, NULL, type));
-		}
-		else if (previous != NULL)
-		{
+			token_add_back(shell->token_head, token_new(current, NULL, type));
 			previous->next = NULL;
 		}
 		previous = current;
