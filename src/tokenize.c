@@ -18,14 +18,14 @@ short	token_type(char *element)
 		return (T_NO_ACTION);
 }
 
-int	tokenize(t_shell *shell, t_list	**line_element_head)
+int	tokenize(t_shell *shell)
 {
 	t_list	*current;
 	t_list	*previous;
 	t_token	*new_token;
 	short	type;
 
-	current = *line_element_head;
+	current = shell->line_element_head;
 	previous = NULL;
 	while (current)
 	{

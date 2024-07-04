@@ -57,6 +57,7 @@ void	read_loop(t_shell *shell)
 			exit_clean(shell, errno, NULL);
 		if (syntax_check_line(shell->line) == FAILURE)
 			printf("syntax error\n");
+		tokenize(shell);
 		TEST_printline(shell);// TEST
 		line_history_management(shell);
 		parsing_distributor(shell);

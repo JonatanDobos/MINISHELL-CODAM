@@ -5,6 +5,9 @@
 
 // Function parameters
 
+//tokenize.c
+int			tokenize(t_shell *shell);
+
 // parsing_distributor.c
 void		parsing_distributor(t_shell *d);
 
@@ -17,6 +20,7 @@ size_t		parse_envp(t_shell *shell, size_t i);
 // envp_init.c
 char		**create_envp(char **envp);
 
+// UTILS
 // utils_syntax.c
 bool		syntax_check_line(const char *line);
 
