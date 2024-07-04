@@ -22,6 +22,7 @@ int	tokenize(t_shell *shell, t_list	**line_element_head)
 {
 	t_list	*current;
 	t_list	*previous;
+	t_token	*new_token;
 	short	type;
 
 	current = *line_element_head;
@@ -31,10 +32,14 @@ int	tokenize(t_shell *shell, t_list	**line_element_head)
 		type = token_type(current->content);
 		if (type == T_BUILTIN || type == T_PIPE || type == T_REDIRECT)
 		{
-			token_add_back(shell->token_head, token_new(current, NULL, type));
+			new_token = token_new(current, NULL, type);
+			if (new_token == NULL)
+				return (EXIT_FAILURE);
+			token_add_back(&shell->token_head, new_token);
 			previous->next = NULL;
 		}
 		previous = current;
 		current = current->next;
 	}
+	return (SUCCESS);
 }
