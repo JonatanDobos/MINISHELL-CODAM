@@ -68,7 +68,7 @@ static void	ft_quote(t_shell *shell, size_t *i, size_t *start)
 		ft_elem(shell, ft_substr(shell->line, *start, len));
 	else if (quote == '\"')
 		ft_elem(shell, ft_onlyspace(ft_substr(shell->line, *start, len)));
-	*start = *i;
+	*start = ++(*i);
 }
 
 // Needs:
