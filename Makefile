@@ -27,13 +27,13 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parsing.c \
-			$(SRCDIR)/tokenizer.c \
+			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_exit.c \
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_parsing.c \
-			$(SRCDIR)/utils_token_list.c \
 			$(SRCDIR)/utils_string.c \
-			$(SRCDIR)/utils_syntax.c
+			$(SRCDIR)/utils_syntax.c \
+			$(SRCDIR)/utils_token_list.c
 
 OBJ	=	$(SRC:.c=.o)
 

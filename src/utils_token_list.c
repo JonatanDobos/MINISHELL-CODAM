@@ -31,7 +31,7 @@ t_token	*token_new(
 	new = (t_token *)malloc(sizeof(t_token));
 	if (new == NULL)
 		return (NULL);
-	new->element_head = *element_head;
+	new->element_head = element_head;
 	new->cmd_array = cmd_array;
 	new->type = type;
 	new->next = NULL;
