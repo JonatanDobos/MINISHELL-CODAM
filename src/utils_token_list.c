@@ -4,7 +4,7 @@ void	token_delone(t_token *node)
 {
 	if (node == NULL)
 		return ;
-	ft_lstclear(node->element_head, free);
+	ft_lstclear(&node->element_head, free);
 	ft_free_array(node->cmd_array);
 	free(node);
 }
@@ -18,7 +18,7 @@ void	token_clear(t_token **node)
 	while (*node != NULL)
 	{
 		temp = (*node)->next;
-		ft_nodedelone(*node);
+		token_delone(*node);
 		*node = temp;
 	}
 }
@@ -31,7 +31,7 @@ t_token	*token_new(
 	new = (t_token *)malloc(sizeof(t_token));
 	if (new == NULL)
 		return (NULL);
-	new->element_head = element_head;
+	new->element_head = *element_head;
 	new->cmd_array = cmd_array;
 	new->type = type;
 	new->next = NULL;

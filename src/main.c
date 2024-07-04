@@ -54,14 +54,18 @@ void	read_loop(t_shell *shell)
 		rl_on_new_line();
 		shell->line = readline(C_YELLOW "mini" C_RED " > " C_RESET);
 		if (shell->line == NULL)
-			exit_clean(&shell, errno, NULL);
-		if (syntax_check(shell->line) == FAILURE)
+			exit_clean(shell, errno, NULL);
+		if (syntax_check_line(shell->line) == FAILURE)
 			printf("syntax error\n");
-		TEST_printline(&shell);// TEST
-		line_history_management(&shell);
-		parsing_distributor(&shell);
-		free(shell->line);
-		// Function to cleanup t_shell shell
+		TEST_printline(shell);// TEST
+		line_history_management(shell);
+		parsing_distributor(shell);
+		if (shell->print_info)// TEST
+		{
+			TEST_print_token_lst(shell, "TOKEN");
+			TEST_print_string_lst(&shell->line_element_head, "Line Element");
+		}
+		clean_lists(shell);
 	}
 	free(shell->history);
 	rl_clear_history();

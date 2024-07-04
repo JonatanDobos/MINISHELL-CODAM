@@ -16,10 +16,24 @@
 
 // Colors
 
-# define C_RESET "\033[0m"
-# define C_TEAL "\033[0;36m"
-# define C_YELLOW "\033[0;33m"
-# define C_RED "\033[31;1m"
+# define C_RESET	"\033[0m"
+# define C_YELLOW	"\033[0;33m"
+# define C_RED		"\033[0;31m"
+
+// TESTING Colors (_TEST.c)
+
+# define C_DIM		"\033[2m"
+# define C_ITALIC	"\033[3m"
+
+# define C_DIM_RED	"\033[1;31m"
+
+# define C_TEAL		"\033[0;36m"
+# define C_BLACK	"\033[0;30m"
+# define C_GREEN	"\033[0;32m"
+# define C_BLUE		"\033[0;34m"
+# define C_PURPLE	"\033[0;35m"
+# define C_WHITE	"\033[0;37m"
+
 
 // Typedefs
 
@@ -36,6 +50,16 @@ enum	e_tokens
 	T_FILE = 5
 };
 
+// LIST
+
+typedef struct s_token
+{
+	t_list		*element_head;
+	char		**cmd_array;
+	short		type;
+	void		*next;
+}	t_token;
+
 // STRUCTS
 
 typedef struct s_shell
@@ -47,15 +71,5 @@ typedef struct s_shell
 	char		**envp;
 	bool		print_info;// TEST
 }	t_shell;
-
-// LISTS
-
-typedef struct s_token
-{
-	t_list		*element_head;
-	char		**cmd_array;
-	short		type;
-	void		*next;
-}	t_token;
 
 #endif

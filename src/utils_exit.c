@@ -3,11 +3,9 @@
 // attempts to free everything known to shell, then exits
 void	exit_clean(t_shell *shell, int num, char *message)
 {
-	token_clear(&shell->token_head);
-	ft_lstclear(&shell->line_element_head, free);
-	ft_free_null(&shell->line);
-	ft_free_null(&shell->history);
+	clean_lists(shell);
 	ft_free_array(shell->envp);
+	ft_free_null(&shell->history);
 	rl_clear_history();
 	errno = num;
 	if (num != SUCCESS)

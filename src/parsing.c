@@ -5,9 +5,10 @@
 // ! Void return ! On failure: exit_clean
 static void	ft_elem(t_shell *shell, char *sub_line)
 {
-	const t_list	**head_elem = &shell->line_element_head;
-	t_list			*new_node;
+	t_list	**head_elem;
+	t_list	*new_node;
 
+	head_elem = &shell->line_element_head;
 	if (!sub_line)
 		exit_clean(shell, errno, NULL);
 	new_node = ft_lstnew(sub_line);
@@ -27,7 +28,7 @@ static void	ft_whitespace(t_shell *shell, size_t *i, size_t *start)
 }
 
 // No malloc/ realloc
-char	*ft_onlyspace(char *str)
+static char	*ft_onlyspace(char *str)
 {
 	size_t	i;
 	size_t	new;

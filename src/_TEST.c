@@ -5,12 +5,12 @@
 
 static char	*type_to_char(short type)
 {
-	const int	token_amount = 5;
+	static char	arr[6][10] = {
+		"NULL\0", "NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0"};
 
-	static char	arr[token_amount + 1][10] = {
-		"NULL", "NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0"};
-
-	return (arr[type]);
+	if (type <= 5 && type >=0)
+		return (arr[type]);
+	return (arr[0]);
 }
 
 void	TEST_print_pointer_arr(char **arr)
@@ -21,12 +21,12 @@ void	TEST_print_pointer_arr(char **arr)
 		return ;
 	while (arr[i] != NULL)
 	{
-		printf("[%2i] %s\n", i, arr[i]);
+		printf("[%2zu] %s\n", i, arr[i]);
 		++i;
 	}
 }
 
-void	TEST_print_string_lst(t_list **head)
+void	TEST_print_string_lst(t_list **head, char *list_name)
 {
 	t_list	*tmp;
 	int		i;
@@ -37,18 +37,18 @@ void	TEST_print_string_lst(t_list **head)
 	i = 0;
 	while (tmp != NULL)
 	{
-		printf("\n%sstring Node [%2i]%s\n",C_TEAL, i, C_RESET);
-		printf("-> data: %s\n", tmp->content);
+		printf("\n%s%s (%st_list%s) Node [%2i]%s\n", C_TEAL, list_name, C_DIM_RED, C_TEAL, i, C_RESET);
+		printf("%s-> content:%s %s\n",C_DIM, C_RESET , (char *)tmp->content);
 		tmp=tmp->next;
 		++i;
 	}
 }
 
-void	TEST_print_token_lst(t_shell *shell)
+void	TEST_print_token_lst(t_shell *shell, char *list_name)
 {
-	const t_token	**head = &shell->token_head;
-	t_token			*tmp;
-	int				i;
+	t_token	**head = &shell->token_head;
+	t_token	*tmp;
+	int		i;
 
 	if (!(*head))
 		return ;
@@ -56,13 +56,16 @@ void	TEST_print_token_lst(t_shell *shell)
 	i = 0;
 	while (tmp != NULL)
 	{
-		printf("\n%ssig_arg Node [%2i]%s\n",C_TEAL, i, C_RESET);
-		printf("-> token: %s\n", token_to_char(tmp->type));
+		printf("\n%s%s Node [%2i]%s\n", C_BLUE, list_name, i, C_RESET);
+		printf("%s~> type:%s %s\n", C_DIM, C_RESET, type_to_char(tmp->type));
 		if (tmp->element_head)
-			printf("-> cmd head: %s, cmd lstsize: %i\n", tmp->element_head->content, ft_lstsize(tmp->element_head));
+		{
+			printf("%s~> element head:%s %s, %scmd lstsize:%s %i\n", C_DIM, C_RESET, (char *)tmp->element_head->content, C_DIM, C_RESET, ft_lstsize(tmp->element_head));
+			TEST_print_string_lst(&tmp->element_head, list_name);
+		}
 		else
-			printf("-> token = NULL");
-		printf("-> cmd arr:\n");
+			printf("%s~> element head:%s NULL\n", C_DIM, C_RESET);
+		printf("%s~> cmd arr:%s\n", C_DIM, C_RESET);
 		TEST_print_pointer_arr(tmp->cmd_array);
 		tmp=tmp->next;
 		++i;

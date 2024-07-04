@@ -11,4 +11,5 @@ void	check_for_exit(t_shell *shell)
 void	parsing_distributor(t_shell *shell)
 {
 	check_for_exit(shell);
+	parse_line_to_elem(shell);
 }
