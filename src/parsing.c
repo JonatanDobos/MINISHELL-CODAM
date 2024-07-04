@@ -62,13 +62,13 @@ static void	ft_quote(t_shell *shell, size_t *i, size_t *start)
 	while (shell->line[*i] != quote && shell->line[*i])
 		++(*i);
 	if (shell->line[*i] == '\0')
-		exit_clean(shell, errno, "syntax error");
+		exit_clean(shell, E_INVAL, "syntax error");
 	len = *i - *start;
 	if (quote == '\'')
 		ft_elem(shell, ft_substr(shell->line, *start, len));
 	else if (quote == '\"')
 		ft_elem(shell, ft_onlyspace(ft_substr(shell->line, *start, len)));
-	*start = *i;
+	*start = ++(*i);
 }
 
 // Needs:

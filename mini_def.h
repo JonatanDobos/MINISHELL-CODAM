@@ -50,6 +50,11 @@ enum	e_tokens
 	T_FILE,
 };
 
+enum	e_errno
+{
+	E_INVAL = 22
+};
+
 // LIST
 
 typedef struct s_token
