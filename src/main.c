@@ -57,14 +57,14 @@ void	read_loop(t_shell *shell)
 			exit_clean(shell, errno, NULL);
 		if (syntax_check_line(shell->line) == FAILURE)
 			printf("syntax error\n");
-		tokenize(shell);
 		TEST_printline(shell);// TEST
 		line_history_management(shell);
 		parsing_distributor(shell);
+		tokenize(shell);
 		if (shell->print_info)// TEST
 		{
 			TEST_print_token_lst(shell, "TOKEN");
-			TEST_print_string_lst(&shell->line_element_head, "Line Element");
+			// TEST_print_string_lst(&shell->line_element_head, "Line Element");
 		}
 		clean_lists(shell);
 	}

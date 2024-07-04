@@ -6,28 +6,28 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/26 21:57:05 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/07/01 19:21:45 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/07/04 18:29:54 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "list_types.h"
 
-void	ft_free_array(char **arr)
-{
-	int	i;
+// void	ft_free_array(char **arr)
+// {
+// 	int	i;
 
-	if (!arr)
-		return ;
-	i = 0;
-	while (arr[i] != NULL)
-	{
-		free(arr[i]);
-		arr[i] = NULL;
-		++i;
-	}
-	free(arr);
-	arr = NULL;
-}
+// 	if (!arr)
+// 		return ;
+// 	i = 0;
+// 	while (arr[i] != NULL)
+// 	{
+// 		free(arr[i]);
+// 		arr[i] = NULL;
+// 		++i;
+// 	}
+// 	free(arr);
+// 	arr = NULL;
+// }
 
 void	*
 	lstlast(

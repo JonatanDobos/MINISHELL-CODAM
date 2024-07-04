@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-short	token_type(char *element)
+static short	token_type(const char *element)
 {
 	if (ft_strncmp(element, "echo", 5) == 0
 		|| ft_strncmp(element, "cd", 7) == 0
@@ -36,7 +36,8 @@ int	tokenize(t_shell *shell)
 			if (new_token == NULL)
 				return (EXIT_FAILURE);
 			token_add_back(&shell->token_head, new_token);
-			previous->next = NULL;
+			if (previous)
+				previous->next = NULL;
 		}
 		previous = current;
 		current = current->next;

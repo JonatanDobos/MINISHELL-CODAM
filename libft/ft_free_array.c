@@ -20,7 +20,8 @@ void
 	int	i;
 
 	i = 0;
-	while (array[i] != NULL)
-		free(array[i++]);
+	if (array)
+		while (array[i] != NULL)
+			free(array[i++]);
 	free(array);
 }

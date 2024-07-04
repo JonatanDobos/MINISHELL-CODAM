@@ -5,8 +5,8 @@
 
 static char	*type_to_char(short type)
 {
-	static char	arr[6][10] = {
-		"NULL\0", "NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0"};
+	static char	arr[5][10] = {
+		"NO_ACTION\0", "BUILTIN\0", "PIPE\0", "REDIRECT\0", "FILE\0"};
 
 	if (type <= 5 && type >=0)
 		return (arr[type]);
@@ -17,13 +17,14 @@ void	TEST_print_pointer_arr(char **arr)
 {
 	size_t	i = 0;
 
-	if (!arr || !(*arr))
+	if (!arr)
 		return ;
 	while (arr[i] != NULL)
 	{
 		printf("[%2zu] %s\n", i, arr[i]);
 		++i;
 	}
+	printf("[%2zu] %s\n", i, arr[i]);
 }
 
 void	TEST_print_string_lst(t_list **head, char *list_name)
@@ -46,13 +47,10 @@ void	TEST_print_string_lst(t_list **head, char *list_name)
 
 void	TEST_print_token_lst(t_shell *shell, char *list_name)
 {
-	t_token	**head = &shell->token_head;
 	t_token	*tmp;
 	int		i;
 
-	if (!(*head))
-		return ;
-	tmp = *head;
+	tmp = shell->token_head;
 	i = 0;
 	while (tmp != NULL)
 	{
