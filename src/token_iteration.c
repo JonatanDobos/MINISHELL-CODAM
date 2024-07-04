@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int	syntax_token_check(t_shell *shell)
+int	token_iteration(t_shell *shell)
 {
 	t_token	*current;
 
