@@ -47,17 +47,19 @@ bool		ft_iswhitespace(char c);
 
 // _TEST.c
 void		TEST_print_token_lst(t_shell *shell, char *list_name);
-void		TEST_print_elem_list(t_shell *shell);
+void		TEST_print_elem_list(t_shell *shell, char *accent_col, char *name);
 void		TEST_print_t_list(
 	t_list **head,
-	char *precursor,
+	t_uchar *precursor,
 	char *pre_col,
+	bool background,
 	char *accent_col,
 	char *list_name);
 void		TEST_print_pointer_arr(
 	char **arr,
-	char *precursor,
+	t_uchar *precursor,
 	char *pre_col,
+	bool background,
 	char *accent_col,
 	char *name);
 

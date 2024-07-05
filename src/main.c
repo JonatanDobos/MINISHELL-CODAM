@@ -63,7 +63,7 @@ void	read_loop(t_shell *shell)
 		if (shell->print_info)// TEST
 		{
 			TEST_print_token_lst(shell, "Token");
-			TEST_print_elem_list(shell);
+			TEST_print_elem_list(shell, C_TEAL, "Line Element");
 		}
 		clean_lists(shell);
 	}
