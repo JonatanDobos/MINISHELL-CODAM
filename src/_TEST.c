@@ -91,10 +91,10 @@ void	TEST_print_pointer_arr(
 }
 
 // Prints out line_element list
-void	TEST_print_elem_list(t_shell *shell, char *accent_col, char *name)
+void	TEST_print_elem_list(t_shell *shell, char *accent_col, bool thick_line,  char *name)
 {
 	printf("\n");
-	TEST_print_t_list(&shell->line_element_head, NULL, NULL, true, accent_col, name);
+	TEST_print_t_list(&shell->line_element_head, NULL, NULL, thick_line, accent_col, name);
 	printf("\n");
 }
 
@@ -183,5 +183,5 @@ void	TEST_print_token_lst(
 		tmp=tmp->next;
 		++i;
 	}
-	printf("%s/\\%s", C_GREEN, C_RESET);
+	printf("%s/\\%s\n", C_GREEN, C_RESET);
 }

@@ -63,7 +63,7 @@ void	read_loop(t_shell *shell)
 		if (shell->print_info)// TEST
 		{
 			TEST_print_token_lst(shell, C_GREEN, true, "Token");
-			TEST_print_elem_list(shell, C_TEAL, "Line Element");
+			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
 		}
 		clean_lists(shell);
 	}
