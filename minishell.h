@@ -46,7 +46,7 @@ void		token_delone(t_token *node);
 bool		ft_iswhitespace(char c);
 
 // _TEST.c
-void		TEST_print_token_lst(t_shell *shell, char *list_name);
+void		TEST_print_token_lst(t_shell *shell, char *accent_col, bool thick_line, char *name);
 void		TEST_print_elem_list(t_shell *shell, char *accent_col, char *name);
 void		TEST_print_t_list(
 	t_list **head,

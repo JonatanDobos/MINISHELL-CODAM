@@ -3,7 +3,7 @@
 // LIST PRINTER!
 // FOR TESTING!
 
-// symbol color -> background color
+// symbol color -> thick_line color
 static char	*to_bg_color(const char *color)
 {
 	if (!ft_strncmp(color, C_TEAL, ft_strlen(color)) || !ft_strncmp(color, C_DIM_TEAL, ft_strlen(color)))
@@ -22,9 +22,9 @@ static char	*to_bg_color(const char *color)
 		return (C_BG_BLACK);
 }
 
-static void	print_precursor(t_uchar *set, char *color, bool background)
+static void	print_precursor(t_uchar *set, char *color, bool thick_line)
 {
-	if (!background)
+	if (!thick_line)
 		printf("%s%s", color, set);
 	else
 		printf("%s%c%s%c", to_bg_color(color), set[0], C_RESET, set[1]);
@@ -55,7 +55,7 @@ void	TEST_print_pointer_arr(
 	char **arr,
 	t_uchar *precursor,
 	char *pre_col,
-	bool background,
+	bool thick_line,
 	char *accent_col,
 	char *name)
 {
@@ -64,7 +64,7 @@ void	TEST_print_pointer_arr(
 
 	if (!arr || !(*arr))
 		return ;
-	if (background)
+	if (thick_line)
 		precursor_set(set, ' ', ' ');// inits precursor characters
 	else
 		precursor_set(set, '|', ' ');// inits precursor characters
@@ -76,14 +76,14 @@ void	TEST_print_pointer_arr(
 		precursor = (t_uchar *)"\0";
 	if (name)// print array name
 	{
-		print_precursor(precursor, pre_col, background);
+		print_precursor(precursor, pre_col, thick_line);
 		printf("%s> %s", accent_col, name);
 		printf("%s[]%s\n", C_YELLOW, C_RESET);
 	}
 	while (arr[i] != NULL)// print array
 	{
-		print_precursor(precursor, pre_col, background);
-		print_precursor(set, accent_col, background);
+		print_precursor(precursor, pre_col, thick_line);
+		print_precursor(set, accent_col, thick_line);
 		printf("%s[%s%i%s]: ", accent_col, C_DIM_TEAL, i, accent_col);
 		printf("%s%s\n", C_B_WHITE, arr[i]);
 		++i;
@@ -103,7 +103,7 @@ void	TEST_print_t_list(
 	t_list **head,
 	t_uchar *precursor,
 	char *pre_col,
-	bool background,
+	bool thick_line,
 	char *accent_col,
 	char *list_name)
 {
@@ -115,7 +115,7 @@ void	TEST_print_t_list(
 		return ;
 	tmp = *head;
 	i = 0;
-	if (background)
+	if (thick_line)
 		precursor_set(set, ' ', ' ');// inits precursor characters
 	else
 		precursor_set(set, '|', ' ');// inits precursor characters
@@ -127,15 +127,15 @@ void	TEST_print_t_list(
 		precursor = (t_uchar *)"\0";
 	if (list_name)// print list name
 	{
-		print_precursor(precursor, pre_col, background);
+		print_precursor(precursor, pre_col, thick_line);
 		printf("%s> %s ", accent_col, list_name);
 	}
 	printf("(%st_list%s) ", C_DIM_RED, accent_col);
 	printf(":: %s%i%s\n", C_PURPLE, ft_lstsize(*head), C_RESET);
 	while (tmp != NULL)// print list content
 	{
-		print_precursor(precursor, pre_col, background);
-		print_precursor(set, accent_col, background);
+		print_precursor(precursor, pre_col, thick_line);
+		print_precursor(set, accent_col, thick_line);
 		printf("%s[%s%i%s]: ", accent_col, C_DIM_TEAL, i, accent_col);
 		printf("%s%s\n", C_B_WHITE, (char *)tmp->content);
 		tmp=tmp->next;
@@ -145,38 +145,39 @@ void	TEST_print_t_list(
 }
 
 // Prints out token list
-void	TEST_print_token_lst(t_shell *shell, char *name)
+// thick_line: true = precursor bg is colored, false = prec symbol is colored
+void	TEST_print_token_lst(
+	t_shell *shell, char *accent_col, bool thick_line, char *name)
 {
 	t_token	*tmp;
 	int		i;
 	t_uchar	set[3];
-	bool	background_col = true;// true = precursor bg is colored, false = prec symbol is colored
 
 	tmp = shell->token_head;
 	i = 0;
-	if (background_col)
+	if (thick_line)
 		precursor_set(set, ' ', ' ');// inits precursor characters
 	else
 		precursor_set(set, '|', ' ');// inits precursor characters
 	printf("%s\\/%s", C_GREEN, C_RESET);
 	while (tmp != NULL)
 	{
-		printf("\n%s%s%s ", C_PURPLE, name, C_BLUE);// name
+		printf("\n%s%s%s ", accent_col, name, C_BLUE);// name
 		printf("{%s%i%s}%s\n",C_YELLOW, i, C_BLUE, C_RESET);// index
-		print_precursor(set, C_PURPLE, background_col);// precursor
+		print_precursor(set, accent_col, thick_line);// precursor
 		printf("%s> type:%s %s\n", C_DIM_GREEN, C_B_WHITE, type_to_char(tmp->type));// ->type
 		if (tmp->element_head)
-			TEST_print_t_list(&tmp->element_head, set, C_PURPLE, background_col, C_BLUE, "element_head");// ->elem_head
+			TEST_print_t_list(&tmp->element_head, set, accent_col, thick_line, C_BLUE, "element_head");// ->elem_head
 		else
 		{
-			print_precursor(set, C_PURPLE, background_col);
+			print_precursor(set, accent_col, thick_line);
 			printf("%s> element_head: NULL\n", C_DIM);
 		}
 		if (tmp->cmd_array && *tmp->cmd_array)
-			TEST_print_pointer_arr(tmp->cmd_array, set, C_PURPLE, background_col, C_DIM_TEAL, "cmd_array");// ->cmd_head
+			TEST_print_pointer_arr(tmp->cmd_array, set, accent_col, thick_line, C_DIM_TEAL, "cmd_array");// ->cmd_head
 		else
 		{
-			print_precursor(set, C_PURPLE, background_col);
+			print_precursor(set, accent_col, thick_line);
 			printf("%s> cmd_array: NULL\n", C_DIM);
 		}
 		tmp=tmp->next;
