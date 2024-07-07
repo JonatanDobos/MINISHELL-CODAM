@@ -1,17 +1,16 @@
 #include "../minishell.h"
 
-// Parses for envariable corresponding to envkey, if found:
-// Inputs envariable into node 0 of cmd_node
-// RETURN: incremented index on line
-size_t	parse_envp(
+// Parses for envariable corresponding to envkey.
+// RETURN: shell->envp[corresponding index] (non malloced char *)
+char	*parse_envp(
 	t_shell *shell, size_t i)
 {
-	size_t		start;
-	size_t		len;
-	size_t		j;
+	size_t	start;
+	size_t	len;
+	size_t	j;
 
 	if (shell->line[i] != '$' || !ft_isalnum(shell->line[i + 1]))
-		return (i);
+		return (NULL);
 	start = ++i;
 	while (shell->line[i] && (shell->line[i] == '_' || \
 	ft_isalnum(shell->line[i])))
@@ -25,7 +24,6 @@ size_t	parse_envp(
 		++j;
 	}
 	if (shell->envp[j] == NULL)
-		return (i); // not found ? what should it do
-	add_to_arglist(shell, shell->envp[j], len);
-	return (i);
+		return (NULL);
+	return (shell->envp[j]);
 }

@@ -14,8 +14,8 @@ void		parsing_distributor(t_shell *d);
 // parsing.c
 void		parse_line_to_elem(t_shell *shell);
 
-// envp_parse.c
-size_t		parse_envp(t_shell *shell, size_t i);
+// expand_parse.c
+char		*parse_envp(t_shell *shell, size_t i);
 
 // envp_init.c
 char		**create_envp(char **envp);
@@ -26,6 +26,7 @@ bool		syntax_check_line(const char *line);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
+char		*ft_onlyspace(char *str);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);

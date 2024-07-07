@@ -20,3 +20,29 @@ char	*strdup_index(char *str, size_t	start, size_t end)
 	ret[i] = '\0';
 	return (ret);
 }
+
+// Converts all whitespace in *str to single space
+// No malloc/ realloc
+char	*ft_onlyspace(char *str)
+{
+	size_t	i;
+	size_t	new;
+
+	if (!str)
+		return (NULL);
+	i = 0;
+	new = 0;
+	while (str[i])
+	{
+		if (str[i] != ' ' && ft_iswhitespace(str[i]))
+		{
+			while (str[i] != ' ' && ft_iswhitespace(str[i]))
+				++i;
+			str[new++] = ' ';
+		}
+		else
+			str[new++] = str[i++];
+	}
+	str[new] = '\0';
+	return (str);
+}

@@ -54,6 +54,7 @@ typedef struct s_shell
 	char		*history;
 	char		*line;
 	char		**envp;
+	short		last_errno;
 	bool		print_info;// TEST
 }	t_shell;
 

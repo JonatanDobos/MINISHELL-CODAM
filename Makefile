@@ -26,6 +26,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/builtin_export_unset.c \
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/parsing_distributor.c \
+			$(SRCDIR)/parse_expandable.c\
 			$(SRCDIR)/parsing.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_exit.c \
