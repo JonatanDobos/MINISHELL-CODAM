@@ -85,9 +85,12 @@ void	TEST_print_pointer_arr(
 		print_precursor(precursor, pre_col, thick_line);
 		print_precursor(set, accent_col, thick_line);
 		printf("%s[%s%i%s]: ", accent_col, C_DIM_TEAL, i, accent_col);
-		printf("%s%s\n", C_B_WHITE, arr[i]);
+		printf("%s|", C_DIM_TEAL);
+		printf("%s%s", C_B_WHITE, arr[i]);
+		printf("%s|\n", C_DIM_TEAL);
 		++i;
 	}
+	printf("%s", C_RESET);
 }
 
 // Prints out line_element list
@@ -137,7 +140,9 @@ void	TEST_print_t_list(
 		print_precursor(precursor, pre_col, thick_line);
 		print_precursor(set, accent_col, thick_line);
 		printf("%s[%s%i%s]: ", accent_col, C_DIM_TEAL, i, accent_col);
-		printf("%s%s\n", C_B_WHITE, (char *)tmp->content);
+		printf("%s|", C_DIM_TEAL);
+		printf("%s%s", C_B_WHITE, (char *)tmp->content);
+		printf("%s|\n", C_DIM_TEAL);
 		tmp=tmp->next;
 		++i;
 	}

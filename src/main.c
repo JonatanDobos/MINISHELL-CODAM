@@ -65,6 +65,7 @@ void	read_loop(t_shell *shell)
 			TEST_print_token_lst(shell, C_GREEN, true, "Token");
 			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
 		}
+		execution(shell);// experimental
 		clean_lists(shell);
 	}
 	free(shell->history);

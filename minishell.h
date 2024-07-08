@@ -20,6 +20,13 @@ char		*parse_envp(t_shell *shell, size_t i);
 // envp_init.c
 char		**create_envp(char **envp);
 
+// execition.c
+void		execution(t_shell *shell);
+
+// BUILTINS
+// builtin_echo.c
+void		builtin_echo(t_shell *shell, t_token *token, char *output_file);
+
 // UTILS
 // utils_syntax.c
 bool		syntax_check_line(const char *line);
@@ -45,6 +52,12 @@ void		token_delone(t_token *node);
 
 // utils_parsing.c
 bool		ft_iswhitespace(char c);
+
+// utils_fd_manipulate.c
+bool		set_input(int input_fd);
+bool		set_output(int output_fd);
+int			open_inputfile(const char *inputfile);
+int			open_outputfile(const char *outputfile);
 
 // _TEST.c
 void		TEST_print_token_lst(t_shell *shell, char *accent_col, bool thick_line, char *name);
