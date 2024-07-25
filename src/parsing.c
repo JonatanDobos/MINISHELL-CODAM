@@ -50,9 +50,11 @@ static void	ft_whitespace(t_shell *shell, size_t i, size_t start)
 	}
 }
 
-static void	ft_quote(t_shell *shell, size_t *i, size_t *start)
+// ADD: expanding when double quotes
+static bool	ft_quote(t_shell *shell, size_t *i, size_t *start)
 {
 	char	quote;
+	char	*sub_str;
 	size_t	len;
 
 	quote = shell->line[*i];
@@ -60,19 +62,25 @@ static void	ft_quote(t_shell *shell, size_t *i, size_t *start)
 	while (shell->line[*i] != quote && shell->line[*i])
 		++(*i);
 	if (shell->line[*i] == '\0')
-		exit_clean(shell, errno, "syntax error");
+		return (printf("syntax error\n"), false);
 	len = *i - *start;
 	if (quote == '\'')
 		new_element(shell, ft_substr(shell->line, *start, len));
 	else if (quote == '\"')
-		new_element(shell, ft_onlyspace(ft_substr(shell->line, *start, len)));
+	{
+		sub_str = ft_onlyspace(ft_substr(shell->line, *start, len));
+		if (!sub_str)
+			exit_clean(shell, errno, NULL);
+		new_element(shell, expand_env_in_str(shell, sub_str));
+	}
 	*start = ++(*i);
+	return (true);
 }
 
 // Needs:
 // - Testing of in quote formatting and syntax check ??
 // - Pre-check on quote syntax ??
-void	parse_line_to_elem(t_shell *shell)
+bool	parse_line_to_elem(t_shell *shell)
 {
 	size_t	i;
 	size_t	start;
@@ -89,11 +97,15 @@ void	parse_line_to_elem(t_shell *shell)
 		else
 		{
 			if (shell->line[i] == '\"' || shell->line[i] == '\'')
-				ft_quote(shell, &i, &start);
+			{
+				if (!ft_quote(shell, &i, &start))
+					return (false);
+			}
 			else
 				++i;
 		}
 	}
 	if (start != i)
-		new_element(shell, ft_substr(shell->line, start, i - start));
+		ft_whitespace(shell, i, start);
+	return (true);
 }

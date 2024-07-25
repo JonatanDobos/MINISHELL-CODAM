@@ -9,13 +9,14 @@
 int			tokenize(t_shell *shell);
 
 // parsing_distributor.c
-void		parsing_distributor(t_shell *d);
+bool		parsing_distributor(t_shell *d);
 
 // parsing.c
-void		parse_line_to_elem(t_shell *shell);
+bool		parse_line_to_elem(t_shell *shell);
 
 // expand_parse.c
 char		*parse_envp(t_shell *shell, size_t i);
+char		*expand_env_in_str(t_shell *shell, char *str);
 
 // envp_init.c
 char		**create_envp(char **envp);
