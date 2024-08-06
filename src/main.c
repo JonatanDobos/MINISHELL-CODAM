@@ -56,7 +56,7 @@ void	read_loop(t_shell *shell)
 		shell->line = readline(C_YELLOW "mini" C_RED " > " C_RESET);
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
-		if (syntax_check_line(shell->line) == FAILURE)
+		if (syntax_pre(shell->line) == FAILURE)
 			printf("syntax error\n");
 		TEST_printline(shell);// TEST
 		line_history_management(shell);
