@@ -27,10 +27,16 @@ void		execution(t_shell *shell);
 // BUILTINS
 // builtin_echo.c
 void		builtin_echo(t_shell *shell, t_token *token, char *output_file);
+// builtin_export_unset.c
+void		builtin_export(t_shell *shell, t_token *token);
+void		builtin_unset(t_shell *shell, t_token *token);
+
+// syntax_pre.c
+bool		syntax_pre(const char *line);
 
 // UTILS
 // utils_syntax.c
-bool		syntax_pre(const char *line);
+bool		syntax_envar(t_token *token);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);

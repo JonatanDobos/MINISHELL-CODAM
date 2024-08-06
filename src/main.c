@@ -53,10 +53,10 @@ void	read_loop(t_shell *shell)
 	while (true)
 	{
 		rl_on_new_line();
-		shell->line = readline(C_YELLOW "mini" C_RED " > " C_RESET);
+		shell->line = readline(C_YELLOW "minishell" C_RED " > " C_RESET);
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
-		if (syntax_pre(shell->line) == FAILURE)
+		if (syntax_pre(shell->line) == false)
 			printf("syntax error\n");
 		TEST_printline(shell);// TEST
 		line_history_management(shell);
@@ -97,7 +97,7 @@ void	TEST_printline(t_shell *shell)
 	if (ft_strlen(shell->line) >= 6 && !ft_strncmp(shell->line, "info ", 5))
 	{
 		shell->print_info = true;
-		tmp_line = ft_strdup(shell->line + 5);
+		tmp_line = ft_strdup(shell->line);
 		if (!tmp_line)
 			exit_clean(shell, errno, NULL);
 		free(shell->line);

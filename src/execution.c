@@ -6,6 +6,10 @@ static void	execute_builtin(t_shell *shell, t_token *token)
 		return ;
 	if (!ft_strncmp(token->element_head->content, "echo", 5))
 		builtin_echo(shell, token, NULL);
+	if (!ft_strncmp(token->element_head->content, "export", 7))
+		builtin_export(shell, token);
+	if (!ft_strncmp(token->element_head->content, "unset", 6))
+		builtin_unset(shell, token);
 }
 
 void	execution(t_shell *shell)

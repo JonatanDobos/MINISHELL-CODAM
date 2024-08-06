@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   builtin_export_unset.c                             :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/06/27 21:02:04 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/07/03 15:07:45 by joni          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   builtin_export_unset.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/08/06 20:35:57 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 static void	export_new_key(
-	t_shell *shell, char *envar)
+	t_shell *shell, const char *envar)
 {
 	char	**new_envp;
 	int		i;
@@ -24,15 +24,14 @@ static void	export_new_key(
 	new_envp = ft_realloc_array(shell->envp, i + 1);
 	if (new_envp == NULL)
 		exit_clean(shell, errno, NULL);
-	new_envp[i] = ft_strdup(envar);
+	shell->envp = new_envp;
+	shell->envp[i] = ft_strdup(envar);
 	if (new_envp[i] == NULL)
 		exit_clean(shell, errno, NULL);
-	free(shell->envp);
-	shell->envp = new_envp;
 }
 
 static void	export_update_key(
-	t_shell *shell, char *envar, int i)
+	t_shell *shell, const char *envar, int i)
 {
 	free(shell->envp[i]);
 	shell->envp[i] = ft_strdup(envar);
@@ -42,18 +41,22 @@ static void	export_update_key(
 
 // envar should be cmd_node->content, will not be free'd in this function
 void	builtin_export(
-	t_shell *shell, char *envar)
+	t_shell *shell, t_token *token)
 {
+	char	*envar;
 	char	*key;
 	int		keylen;
 	int		i;
 
+	if (syntax_envar(token) == false)
+		return ;
+	envar = token->element_head->next->content;
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
 	keylen = ft_str_toupper(key); // maybe swap with strlen, do syntax check elsewhere
 	i = 0;
-	while (shell->envp[i] && strncmp(shell->envp[i], key, keylen))
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
 		i++;
 	if (shell->envp[i] == NULL)
 		export_new_key(shell, envar);
@@ -62,18 +65,22 @@ void	builtin_export(
 }
 
 void	builtin_unset(
-	t_shell *shell, char *envar)
+	t_shell *shell, t_token *token)
 {
+	char	*envar;
 	char	*key;
 	int		keylen;
 	int		i;
 
+	if (syntax_envar(token) == false)
+		return ;
+	envar = token->element_head->next->content;
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
 	keylen = ft_str_toupper(key); // maybe swap with strlen, do syntax check elsewhere
 	i = 0;
-	while (shell->envp[i] && strncmp(shell->envp[i], key, keylen))
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
 		i++;
 	if (shell->envp[i] == NULL)
 		return ;

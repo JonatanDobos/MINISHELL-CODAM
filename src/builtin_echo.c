@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+// ik denk dat infile en outfile handling kan gebeuren voor alle builtins
 // INPUT: output_file = NULL -> prints to STDOUT
 // EXITS on failure
 void	builtin_echo(t_shell *shell, t_token *token, char *output_file)

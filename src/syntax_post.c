@@ -1,6 +1,7 @@
 #include "../minishell.h"
 
 // don't know what to check before testing execution; some things are better unchecked to be handled later
+// rn I call builtin syntax from inside the builtin_ functions
 
 // enter specific syntax check function based on token type (utils_syntax.c)
 static bool syntax_token(t_token *token)
