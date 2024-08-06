@@ -23,6 +23,7 @@ void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 	shell->line_element_head = NULL;
 	shell->history = NULL;
 	shell->line = NULL;
+	shell->last_errno = 0;
 	shell->envp = create_envp(envp);
 	if (shell->envp == NULL)
 		exit_clean(shell, errno, NULL);
@@ -59,12 +60,12 @@ void	read_loop(t_shell *shell)
 			printf("syntax error\n");
 		TEST_printline(shell);// TEST
 		line_history_management(shell);
-		parsing_distributor(shell);
-		tokenize(shell);
+		if (parsing_distributor(shell))// if return = false: reprompt
+			execution(shell);// experimental
 		if (shell->print_info)// TEST
 		{
-			TEST_print_token_lst(shell, "TOKEN");
-			// TEST_print_string_lst(&shell->line_element_head, "Line Element");
+			TEST_print_token_lst(shell, C_GREEN, true, "Token");
+			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
 		}
 		clean_lists(shell);
 	}

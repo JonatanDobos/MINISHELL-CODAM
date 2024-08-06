@@ -9,16 +9,24 @@
 int			tokenize(t_shell *shell);
 
 // parsing_distributor.c
-void		parsing_distributor(t_shell *d);
+bool		parsing_distributor(t_shell *d);
 
 // parsing.c
-void		parse_line_to_elem(t_shell *shell);
+bool		parse_line_to_elem(t_shell *shell);
 
-// envp_parse.c
-size_t		parse_envp(t_shell *shell, size_t i);
+// expand_parse.c
+char		*parse_envp(t_shell *shell, size_t i);
+char		*expand_env_in_str(t_shell *shell, char *str);
 
 // envp_init.c
 char		**create_envp(char **envp);
+
+// execition.c
+void		execution(t_shell *shell);
+
+// BUILTINS
+// builtin_echo.c
+void		builtin_echo(t_shell *shell, t_token *token, char *output_file);
 
 // UTILS
 // utils_syntax.c
@@ -26,6 +34,7 @@ bool		syntax_check_line(const char *line);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
+char		*ft_onlyspace(char *str);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);
@@ -45,9 +54,28 @@ void		token_delone(t_token *node);
 // utils_parsing.c
 bool		ft_iswhitespace(char c);
 
+// utils_fd_manipulate.c
+bool		set_input(int input_fd);
+bool		set_output(int output_fd);
+int			open_inputfile(const char *inputfile);
+int			open_outputfile(const char *outputfile);
+
 // _TEST.c
-void		TEST_print_token_lst(t_shell *shell, char *list_name);
-void		TEST_print_string_lst(t_list **head, char *list_name);
-void		TEST_print_pointer_arr(char **arr);
+void		TEST_print_token_lst(t_shell *shell, char *accent_col, bool thick_line, char *name);
+void		TEST_print_elem_list(t_shell *shell, char *accent_col, bool thick_line, char *name);
+void		TEST_print_t_list(
+	t_list **head,
+	t_uchar *precursor,
+	char *pre_col,
+	bool background,
+	char *accent_col,
+	char *list_name);
+void		TEST_print_pointer_arr(
+	char **arr,
+	t_uchar *precursor,
+	char *pre_col,
+	bool background,
+	char *accent_col,
+	char *name);
 
 #endif

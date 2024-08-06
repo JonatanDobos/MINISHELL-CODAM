@@ -3,7 +3,7 @@
 // PARSING: distributing the line over t_list line_element
 
 // ! Void return ! On failure: exit_clean
-static void	ft_elem(t_shell *shell, char *sub_line)
+static void	new_element(t_shell *shell, char *sub_line)
 {
 	t_list	**head_elem;
 	t_list	*new_node;
@@ -20,41 +20,41 @@ static void	ft_elem(t_shell *shell, char *sub_line)
 	ft_lstadd_back(head_elem, new_node);
 }
 
-static void	ft_whitespace(t_shell *shell, size_t *i, size_t *start)
+static bool	ft_expand(t_shell *shell, size_t i, size_t start)
 {
-	if (*start != *i)
-		ft_elem(shell, ft_substr(shell->line, *start, *i - *start));
-	*start = ++(*i);
-}
+	char	*envp_line;
 
-// No malloc/ realloc
-static char	*ft_onlyspace(char *str)
-{
-	size_t	i;
-	size_t	new;
-
-	if (!str)
-		return (NULL);
-	i = 0;
-	new = 0;
-	while (str[i])
+	if (shell->line[start + 1] == '?')
+		return (new_element(shell, ft_itoa(shell->last_errno)), true);
+	else
 	{
-		if (str[i] != ' ' && ft_iswhitespace(str[i]))
-		{
-			while (str[i] != ' ' && ft_iswhitespace(str[i]))
-				++i;
-			str[new++] = ' ';
-		}
-		else
-			str[new++] = str[i++];
+		envp_line = parse_envp(shell, start);
+		if (envp_line)
+			new_element(shell, ft_strdup(ft_strchr(envp_line, '=') + 1));
+		return (true);
 	}
-	str[new] = '\0';
-	return (str);
+	return (false);
 }
 
-static void	ft_quote(t_shell *shell, size_t *i, size_t *start)
+static void	ft_whitespace(t_shell *shell, size_t i, size_t start)
+{
+	bool	expand_success;
+
+	if (start != i)
+	{
+		expand_success = false;
+		if (shell->line[start] == '$')
+			expand_success = ft_expand(shell, i, start);
+		if (!expand_success)
+			new_element(shell, ft_substr(shell->line, start, i - start));
+	}
+}
+
+// ADD: expanding when double quotes
+static bool	ft_quote(t_shell *shell, size_t *i, size_t *start)
 {
 	char	quote;
+	char	*sub_str;
 	size_t	len;
 
 	quote = shell->line[*i];
@@ -62,19 +62,25 @@ static void	ft_quote(t_shell *shell, size_t *i, size_t *start)
 	while (shell->line[*i] != quote && shell->line[*i])
 		++(*i);
 	if (shell->line[*i] == '\0')
-		exit_clean(shell, errno, "syntax error");
+		return (printf("syntax error\n"), false);
 	len = *i - *start;
 	if (quote == '\'')
-		ft_elem(shell, ft_substr(shell->line, *start, len));
+		new_element(shell, ft_substr(shell->line, *start, len));
 	else if (quote == '\"')
-		ft_elem(shell, ft_onlyspace(ft_substr(shell->line, *start, len)));
+	{
+		sub_str = ft_onlyspace(ft_substr(shell->line, *start, len));
+		if (!sub_str)
+			exit_clean(shell, errno, NULL);
+		new_element(shell, expand_env_in_str(shell, sub_str));
+	}
 	*start = ++(*i);
+	return (true);
 }
 
 // Needs:
 // - Testing of in quote formatting and syntax check ??
 // - Pre-check on quote syntax ??
-void	parse_line_to_elem(t_shell *shell)
+bool	parse_line_to_elem(t_shell *shell)
 {
 	size_t	i;
 	size_t	start;
@@ -84,15 +90,22 @@ void	parse_line_to_elem(t_shell *shell)
 	while (shell->line[i])
 	{
 		if (ft_iswhitespace(shell->line[i]))
-			ft_whitespace(shell, &i, &start);
+		{
+			ft_whitespace(shell, i, start);
+			start = ++i;
+		}
 		else
 		{
 			if (shell->line[i] == '\"' || shell->line[i] == '\'')
-				ft_quote(shell, &i, &start);
+			{
+				if (!ft_quote(shell, &i, &start))
+					return (false);
+			}
 			else
 				++i;
 		}
 	}
 	if (start != i)
-		ft_elem(shell, ft_substr(shell->line, start, i - start));
+		ft_whitespace(shell, i, start);
+	return (true);
 }
