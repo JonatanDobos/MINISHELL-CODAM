@@ -30,7 +30,7 @@ void		builtin_echo(t_shell *shell, t_token *token, char *output_file);
 
 // UTILS
 // utils_syntax.c
-bool		syntax_check_line(const char *line);
+bool		syntax_pre(const char *line);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
@@ -61,21 +61,29 @@ int			open_inputfile(const char *inputfile);
 int			open_outputfile(const char *outputfile);
 
 // _TEST.c
-void		TEST_print_token_lst(t_shell *shell, char *accent_col, bool thick_line, char *name);
-void		TEST_print_elem_list(t_shell *shell, char *accent_col, bool thick_line, char *name);
+void		TEST_print_token_lst(
+			t_shell *shell,
+			char *accent_col,
+			bool thick_line,
+			char *name);
+void		TEST_print_elem_list(
+			t_shell *shell,
+			char *accent_col,
+			bool thick_line,
+			char *name);
 void		TEST_print_t_list(
-	t_list **head,
-	t_uchar *precursor,
-	char *pre_col,
-	bool background,
-	char *accent_col,
-	char *list_name);
+			t_list **head,
+			t_uchar *precursor,
+			char *pre_col,
+			bool background,
+			char *accent_col,
+			char *list_name);
 void		TEST_print_pointer_arr(
-	char **arr,
-	t_uchar *precursor,
-	char *pre_col,
-	bool background,
-	char *accent_col,
-	char *name);
+			char **arr,
+			t_uchar *precursor,
+			char *pre_col,
+			bool background,
+			char *accent_col,
+			char *name);
 
 #endif

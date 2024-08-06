@@ -78,8 +78,8 @@ static bool	ft_quote(t_shell *shell, size_t *i, size_t *start)
 }
 
 // Needs:
-// - Testing of in quote formatting and syntax check ??
-// - Pre-check on quote syntax ??
+// - Testing of in quote formatting and syntax check ?? (what dis mean?)
+// - Pre-check on quote syntax ?? DONE (syntax_pre.c)
 bool	parse_line_to_elem(t_shell *shell)
 {
 	size_t	i;

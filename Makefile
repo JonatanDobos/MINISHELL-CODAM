@@ -29,6 +29,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing.c \
+			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/execution.c \
 			$(SRCDIR)/utils_fd_manipulate.c \
@@ -36,7 +37,6 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
-			$(SRCDIR)/utils_syntax.c \
 			$(SRCDIR)/utils_token_list.c
 
 OBJ	=	$(SRC:.c=.o)

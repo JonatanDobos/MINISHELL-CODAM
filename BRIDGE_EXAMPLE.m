@@ -4,5 +4,5 @@ t_list **line_element_head
 	+ "-a"
 	+ "-l"
 	+ "|"
-	+ ""($PATH)/usr/bin""
+	+ "'($PATH)/usr/bin'"
 }
