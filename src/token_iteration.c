@@ -1,6 +1,9 @@
 #include "../minishell.h"
 
-int	token_iteration(t_shell *shell)
+//move to header
+typedef t_tokenfunc
+
+int	token_iteration(t_shell *shell, t_tokenfunc)
 {
 	t_token	*current;
 
