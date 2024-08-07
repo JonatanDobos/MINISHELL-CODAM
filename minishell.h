@@ -60,7 +60,6 @@ void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 
 // utils_parsing.c
-bool		ft_iswhitespace(char c);
 
 // utils_fd_manipulate.c
 bool		set_input(int input_fd);
