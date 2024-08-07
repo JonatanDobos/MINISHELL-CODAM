@@ -88,12 +88,25 @@ char	*str_insert(char *str, char *insert, size_t start, size_t len_del)
 char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 {
 	char	*ret;
+	char	*envp_str;
+	size_t	len_del;
 
-	if (str[i + 1] == '?' && (str[i + 2] == ' ' || !str[i + 2]))
-		ret = str_insert(str, ft_itoa(shell->last_errno), i, 1);
+	if (str[i + 1] == '?' && (ft_iswhitespace(str[i + 2]) || !str[i + 2]))
+		ret = str_insert(str, ft_itoa(shell->last_errno), i, 2);
 	else
-		ret = str_insert(str, parse_envp_str(shell, str, i), i, \
-		ft_strlen_null(parse_envp_str(shell, str, i)));
+	{
+		envp_str = parse_envp_str(shell, str, i);
+		if (envp_str)
+		{
+			len_del = i;
+			while (str[len_del] && !ft_iswhitespace(str[len_del]))
+				++len_del;
+			len_del = len_del - i;
+			ret = str_insert(str, ft_strchr(envp_str, '=') + 1, i, len_del);
+		}
+		else
+			return (str);
+	}
 	return (ret);
 }
 
@@ -123,7 +136,6 @@ char	*expand_env_in_str(t_shell *shell, char *str)
 			}
 			ret = NULL;
 		}
-		printf("TEST> [%zu] %s\n", i, str);// TEST
 		++i;
 	}
 	return (str);
