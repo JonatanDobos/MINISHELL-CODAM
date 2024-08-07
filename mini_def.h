@@ -33,7 +33,7 @@ enum	e_tokens
 	T_PIPE,
 	T_REDIRECT,
 	T_FILE,
-};
+}
 
 // LIST
 
