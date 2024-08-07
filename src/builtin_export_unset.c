@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/07 19:07:55 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:45:21 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	builtin_export(
 	int		i;
 
 	if (syntax_export(token) == false)
-		return ;
+		return (syntax_error());
 	envar = token->element_head->next->content;
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
@@ -73,7 +73,7 @@ void	builtin_unset(
 	int		i;
 
 	if (syntax_unset(token) == false)
-		return ;
+		return (syntax_error());
 	envar = token->element_head->next->content;
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)

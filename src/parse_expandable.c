@@ -3,33 +3,7 @@
 // Parses for envariable corresponding to envkey.
 // RETURN: shell->envp[corresponding index] (non malloced char *)
 char	*parse_envp(
-	t_shell *shell, size_t i)
-{
-	size_t	start;
-	size_t	len;
-	size_t	j;
-
-	if (shell->line[i] != '$' || !ft_isalnum(shell->line[i + 1]))
-		return (NULL);
-	start = ++i;
-	while (shell->line[i] && (shell->line[i] == '_' || \
-	ft_isalnum(shell->line[i])))
-		++i;
-	len = i - start;
-	j = 0;
-	while (shell->envp[j] != NULL)
-	{
-		if (!ft_strncmp(shell->line + start, shell->envp[j], len))
-			break ;
-		++j;
-	}
-	if (shell->envp[j] == NULL)
-		return (NULL);
-	return (shell->envp[j]);
-}
-
-char	*parse_envp_str(
-	t_shell *shell, char *str, size_t i)
+	char **envp, char *str, size_t i)
 {
 	size_t	start;
 	size_t	len;
@@ -38,20 +12,21 @@ char	*parse_envp_str(
 	if (str[i] != '$' || !ft_isalnum(str[i + 1]))
 		return (NULL);
 	start = ++i;
-	while (str[i] && (str[i] == '_' || \
-	ft_isalnum(str[i])))
+	while (str[i] && (str[i] == '_'
+			|| ft_isalnum(str[i])))
 		++i;
 	len = i - start;
 	j = 0;
-	while (shell->envp[j] != NULL)
+	while (envp[j] != NULL)
 	{
-		if (!ft_strncmp(str + start, shell->envp[j], len))
+		if (!ft_strncmp(str + start, envp[j], len)
+			&& envp[j][len] == '=')
 			break ;
 		++j;
 	}
-	if (shell->envp[j] == NULL)
+	if (envp[j] == NULL)
 		return (NULL);
-	return (shell->envp[j]);
+	return (envp[j]);
 }
 
 // Returns:
@@ -95,7 +70,7 @@ char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 		ret = str_insert(str, ft_itoa(shell->last_errno), i, 2);
 	else
 	{
-		envp_str = parse_envp_str(shell, str, i);
+		envp_str = parse_envp(shell->envp, str, i);
 		if (envp_str)
 		{
 			len_del = i;

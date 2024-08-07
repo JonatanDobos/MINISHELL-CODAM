@@ -28,7 +28,7 @@ static bool	ft_expand(t_shell *shell, size_t i, size_t start)
 		return (new_element(shell, ft_itoa(shell->last_errno)), true);
 	else
 	{
-		envp_line = parse_envp(shell, start);
+		envp_line = parse_envp(shell->envp, shell->line, start);
 		if (envp_line)
 			new_element(shell, ft_strdup(ft_strchr(envp_line, '=') + 1));
 		return (true);
@@ -62,7 +62,7 @@ static bool	ft_quote(t_shell *shell, size_t *i, size_t *start)
 	while (shell->line[*i] != quote && shell->line[*i])
 		++(*i);
 	if (shell->line[*i] == '\0')
-		return (printf("syntax error\n"), false);
+		return (syntax_error(), false);
 	len = *i - *start;
 	if (quote == '\'')
 		new_element(shell, ft_substr(shell->line, *start, len));
@@ -77,9 +77,6 @@ static bool	ft_quote(t_shell *shell, size_t *i, size_t *start)
 	return (true);
 }
 
-// Needs:
-// - Testing of in quote formatting and syntax check ?? (what dis mean?)
-// - Pre-check on quote syntax ?? DONE (syntax_pre.c)
 bool	parse_line_to_elem(t_shell *shell)
 {
 	size_t	i;

@@ -10,7 +10,7 @@ void	builtin_echo(t_shell *shell, t_token *token, char *output_file)
 
 	if (!token || !token->element_head)
 		return ;
-	if (output_file != NULL)
+	if (output_file != NULL) // redirects will be handled elsewhere
 	{
 		fd = open_outputfile(output_file);
 		if (fd == -1)

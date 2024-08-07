@@ -15,7 +15,7 @@ bool		parsing_distributor(t_shell *d);
 bool		parse_line_to_elem(t_shell *shell);
 
 // expand_parse.c
-char		*parse_envp(t_shell *shell, size_t i);
+char		*parse_envp(char **envp, char *str, size_t i);
 char		*expand_env_in_str(t_shell *shell, char *str);
 
 // envp_init.c
@@ -36,6 +36,7 @@ bool		syntax_pre(const char *line);
 
 // UTILS
 // utils_syntax.c
+void		syntax_error(void);
 bool		syntax_export(t_token *token);
 bool		syntax_unset(t_token *token);
 
