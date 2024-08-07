@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/06 20:35:57 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/08/07 19:07:55 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,14 +48,14 @@ void	builtin_export(
 	int		keylen;
 	int		i;
 
-	if (syntax_envar(token) == false)
+	if (syntax_export(token) == false)
 		return ;
 	envar = token->element_head->next->content;
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
-	keylen = ft_str_toupper(key); // maybe swap with strlen, do syntax check elsewhere
 	i = 0;
+	keylen = ft_strlen(key);
 	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
 		i++;
 	if (shell->envp[i] == NULL)
@@ -72,14 +72,14 @@ void	builtin_unset(
 	int		keylen;
 	int		i;
 
-	if (syntax_envar(token) == false)
+	if (syntax_unset(token) == false)
 		return ;
 	envar = token->element_head->next->content;
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
-	keylen = ft_str_toupper(key); // maybe swap with strlen, do syntax check elsewhere
 	i = 0;
+	keylen = ft_strlen(key);
 	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
 		i++;
 	if (shell->envp[i] == NULL)

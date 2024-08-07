@@ -22,7 +22,7 @@ static char	*to_bg_color(const char *color)
 		return (C_BG_BLACK);
 }
 
-static void	print_precursor(t_uchar *set, char *color, bool thick_line)
+static void	print_precursor(char *set, char *color, bool thick_line)
 {
 	if (!thick_line)
 		printf("%s%s", color, set);
@@ -32,10 +32,10 @@ static void	print_precursor(t_uchar *set, char *color, bool thick_line)
 
 // Inits precursor set, takes unsigned char!
 static void	precursor_set(
-	t_uchar *set, int precursor_symbol, int optional_folowup_char)
+	char *set, int precursor_symbol, int optional_folowup_char)
 {
-	set[0] = (t_uchar)precursor_symbol;
-	set[1] = (t_uchar)optional_folowup_char;
+	set[0] = (char)precursor_symbol;
+	set[1] = (char)optional_folowup_char;
 	set[2] = '\0';
 }
 
@@ -53,14 +53,14 @@ static char	*type_to_char(short type)
 // Prints out semicol_pos array
 void	TEST_print_pointer_arr(
 	char **arr,
-	t_uchar *precursor,
+	char *precursor,
 	char *pre_col,
 	bool thick_line,
 	char *accent_col,
 	char *name)
 {
 	int		i = 0;
-	t_uchar	set[3];
+	char	set[3];
 
 	if (!arr || !(*arr))
 		return ;
@@ -73,7 +73,7 @@ void	TEST_print_pointer_arr(
 	if (!pre_col)
 		pre_col = C_RESET;
 	if (!precursor)
-		precursor = (t_uchar *)"\0";
+		precursor = "\0";
 	if (name)// print array name
 	{
 		print_precursor(precursor, pre_col, thick_line);
@@ -104,7 +104,7 @@ void	TEST_print_elem_list(t_shell *shell, char *accent_col, bool thick_line,  ch
 // Prints out t_list list
 void	TEST_print_t_list(
 	t_list **head,
-	t_uchar *precursor,
+	char *precursor,
 	char *pre_col,
 	bool thick_line,
 	char *accent_col,
@@ -112,7 +112,7 @@ void	TEST_print_t_list(
 {
 	t_list	*tmp;
 	int		i;
-	t_uchar	set[3];
+	char	set[3];
 
 	if (!head || !(*head))
 		return ;
@@ -127,7 +127,7 @@ void	TEST_print_t_list(
 	if (!pre_col)
 		pre_col = C_RESET;
 	if (!precursor)
-		precursor = (t_uchar *)"\0";
+		precursor = (char *)"\0";
 	if (list_name)// print list name
 	{
 		print_precursor(precursor, pre_col, thick_line);
@@ -156,7 +156,7 @@ void	TEST_print_token_lst(
 {
 	t_token	*tmp;
 	int		i;
-	t_uchar	set[3];
+	char	set[3];
 
 	tmp = shell->token_head;
 	i = 0;

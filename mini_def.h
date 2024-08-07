@@ -23,13 +23,13 @@
 // Typedefs
 
 typedef unsigned int	t_uint;
-typedef unsigned char	t_uchar;
 
 // ? env_var niet als token gebruiken, maar de literal string in een node achter cmd head "export" of "unset"
 enum	e_token_type
 {
 	T_NO_ACTION = 0,
 	T_BUILTIN,
+	T_SYSCMD,
 	T_PIPE,
 	T_REDIRECT,
 	T_FILE,

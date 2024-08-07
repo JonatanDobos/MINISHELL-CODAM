@@ -66,6 +66,7 @@ void	read_loop(t_shell *shell)
 		{
 			TEST_print_token_lst(shell, C_GREEN, true, "Token");
 			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
+			TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
 		}
 		clean_lists(shell);
 	}

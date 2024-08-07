@@ -36,7 +36,8 @@ bool		syntax_pre(const char *line);
 
 // UTILS
 // utils_syntax.c
-bool		syntax_envar(t_token *token);
+bool		syntax_export(t_token *token);
+bool		syntax_unset(t_token *token);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
@@ -79,14 +80,14 @@ void		TEST_print_elem_list(
 			char *name);
 void		TEST_print_t_list(
 			t_list **head,
-			t_uchar *precursor,
+			char *precursor,
 			char *pre_col,
 			bool background,
 			char *accent_col,
 			char *list_name);
 void		TEST_print_pointer_arr(
 			char **arr,
-			t_uchar *precursor,
+			char *precursor,
 			char *pre_col,
 			bool background,
 			char *accent_col,
