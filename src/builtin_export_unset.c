@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_export_unset.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/07 19:45:21 by svan-hoo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../minishell.h"
 
 static void	export_new_key(
@@ -41,22 +29,19 @@ static void	export_update_key(
 
 // envar should be cmd_node->content, will not be free'd in this function
 void	builtin_export(
-	t_shell *shell, t_token *token)
+	t_shell *shell, char **cmd_array)
 {
-	char	*envar;
-	char	*key;
-	int		keylen;
-	int		i;
+	const char	*envar = cmd_array[1];
+	char		*key;
+	int			i;
 
-	if (syntax_export(token) == false)
-		return (syntax_error());
-	envar = token->element_head->next->content;
+	if (syntax_export(envar) == false)
+		return (syntax_error()); // syntax_export could exit instead once pipex is in place
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
 	i = 0;
-	keylen = ft_strlen(key);
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
 		i++;
 	if (shell->envp[i] == NULL)
 		export_new_key(shell, envar);
@@ -65,22 +50,16 @@ void	builtin_export(
 }
 
 void	builtin_unset(
-	t_shell *shell, t_token *token)
+	t_shell *shell, char **cmd_array)
 {
-	char	*envar;
-	char	*key;
-	int		keylen;
-	int		i;
+	char		*key;
+	int			i;
 
-	if (syntax_unset(token) == false)
-		return (syntax_error());
-	envar = token->element_head->next->content;
-	key = ft_strdup_d(envar, '=');
+	key = ft_strdup_d(cmd_array[1], '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
 	i = 0;
-	keylen = ft_strlen(key);
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
 		i++;
 	if (shell->envp[i] == NULL)
 		return ;

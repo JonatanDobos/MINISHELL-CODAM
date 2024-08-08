@@ -2,20 +2,15 @@
 
 void	syntax_error(void)
 {
-		write(STDERR_FILENO, "Syntax Error\n", 14);
+	write(STDERR_FILENO, "Syntax Error\n", 14);
 }
 
-bool	syntax_export(t_token *token)
+bool	syntax_export(char *envar)
 {
-	char	*envar;
 	int		i;
 
-	if (!token
-		|| !token->element_head
-		|| !token->element_head->next
-		|| !token->element_head->next->content)
-		return (false);
-	envar = token->element_head->next->content;
+	if (envar == NULL)
+		return (false); // exit (child) with appropriate error msg
 	i = 0;
 	while (envar[i] && envar[i] != '=')
 	{
@@ -24,16 +19,6 @@ bool	syntax_export(t_token *token)
 		++i;
 	}
 	if (ft_strchr(envar, '=') <= envar)
-		return (false);
-	return (true);
-}
-
-bool	syntax_unset(t_token *token)
-{
-	if (!token
-		|| !token->element_head
-		|| !token->element_head->next
-		|| !token->element_head->next->content)
 		return (false);
 	return (true);
 }

@@ -25,20 +25,20 @@ char		**create_envp(char **envp);
 void		execution(t_shell *shell);
 
 // BUILTINS
+// builtin_cd.c
+void		builtin_cd(t_shell *shell, char **cmd);
 // builtin_echo.c
-void		builtin_echo(t_shell *shell, t_token *token, char *output_file);
+void		builtin_echo(t_shell *shell, char **cmd_array);
 // builtin_export_unset.c
-void		builtin_export(t_shell *shell, t_token *token);
-void		builtin_unset(t_shell *shell, t_token *token);
-
-// syntax_pre.c
-bool		syntax_pre(const char *line);
+void		builtin_export(t_shell *shell, char **cmd_array);
+void		builtin_unset(t_shell *shell, char **cmd_array);
+// builtin_pwd.c
+void		builtin_pwd(t_shell *t_shell, char **cmd);
 
 // UTILS
 // utils_syntax.c
 void		syntax_error(void);
-bool		syntax_export(t_token *token);
-bool		syntax_unset(t_token *token);
+bool		syntax_export(char *envar);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
@@ -61,6 +61,7 @@ void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 
 // utils_parsing.c
+char		*get_env(char **envp, char *key);
 
 // utils_fd_manipulate.c
 bool		set_input(int input_fd);

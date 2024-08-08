@@ -15,7 +15,7 @@ static short	token_type(const char *element)
 	if (ft_strncmp(element, "|", 2) == 0)
 		return (T_PIPE);
 	else
-		return (T_NO_ACTION);
+		return (T_SYS_CMD);
 }
 
 int	tokenize(t_shell *shell)
