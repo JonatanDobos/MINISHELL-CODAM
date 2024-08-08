@@ -12,9 +12,9 @@ int			tokenize(t_shell *shell);
 bool		parsing_distributor(t_shell *d);
 
 // parsing.c
-bool		parse_line_to_elem(t_shell *shell);
+bool		parse_line_to_element(t_shell *shell, char *line);
 
-// expand_parse.c
+// parse_expandable.c
 char		*parse_envp(char **envp, char *str, size_t i);
 char		*expand_env_in_str(t_shell *shell, char *str);
 
@@ -43,6 +43,7 @@ bool		syntax_unset(t_token *token);
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
 char		*ft_onlyspace(char *str);
+char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);

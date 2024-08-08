@@ -12,7 +12,7 @@ void	check_for_exit(t_shell *shell)
 bool	parsing_distributor(t_shell *shell)
 {
 	check_for_exit(shell);
-	if (!parse_line_to_elem(shell))
+	if (!parse_line_to_elem(shell, shell->line))
 		return (false);
 	if (shell->print_info)// TEST
 		TEST_print_elem_list(shell, C_TEAL, true, "Line Element firstcheck");// TEST

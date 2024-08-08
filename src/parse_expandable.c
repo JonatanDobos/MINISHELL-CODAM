@@ -26,37 +26,7 @@ char	*parse_envp(
 	}
 	if (envp[j] == NULL)
 		return (NULL);
-	return (envp[j]);
-}
-
-// Returns:
-// - copy of *str with str[start] -> str[start + len_del] replaced by *insert
-// - *str when input is incufficient
-// - NULL on malloc failure
-char	*str_insert(char *str, char *insert, size_t start, size_t len_del)
-{
-	size_t	i;
-	size_t	j;
-	char	*ret;
-
-	if (!str || !insert || start > ft_strlen(str) || \
-	len_del > ft_strlen_null(str) - start)
-		return (str);
-	ret = (char *)malloc((ft_strlen(str) - len_del) + ft_strlen(insert) + 1);
-	if (!ret)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (i < start)
-		ret[i++] = str[j++];
-	j = 0;
-	while (insert[j])
-		ret[i++] = insert[j++];
-	j = start + len_del;
-	while (str[j])
-		ret[i++] = str[j++];
-	ret[i] = '\0';
-	return (ret);
+	return (ft_strchr(envp[j], '=') + 1);
 }
 
 // Returns NULL on failure
@@ -77,7 +47,7 @@ char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 			while (str[len_del] && !ft_iswhitespace(str[len_del]))
 				++len_del;
 			len_del = len_del - i;
-			ret = str_insert(str, ft_strchr(envp_str, '=') + 1, i, len_del);
+			ret = str_insert(str, envp_str, i, len_del);
 		}
 		else
 			return (str);
