@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/07 19:45:21 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/08/08 18:24:22 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,16 @@ static void	export_update_key(
 
 // envar should be cmd_node->content, will not be free'd in this function
 void	builtin_export(
-	t_shell *shell, t_token *token)
+	t_shell *shell, char **cmd_array)
 {
 	char	*envar;
 	char	*key;
 	int		keylen;
 	int		i;
 
-	if (syntax_export(token) == false)
+	if (syntax_export(cmd_array) == false)
 		return (syntax_error());
-	envar = token->element_head->next->content;
+	envar = cmd_array[1];
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
@@ -65,16 +65,14 @@ void	builtin_export(
 }
 
 void	builtin_unset(
-	t_shell *shell, t_token *token)
+	t_shell *shell, char **cmd_array)
 {
 	char	*envar;
 	char	*key;
 	int		keylen;
 	int		i;
 
-	if (syntax_unset(token) == false)
-		return (syntax_error());
-	envar = token->element_head->next->content;
+	envar = cmd_array[1];
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
