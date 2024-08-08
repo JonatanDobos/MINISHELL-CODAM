@@ -23,8 +23,8 @@ LIBFT	=	$(LFTDIR)/libft.a
 SRCDIR	=	./src
 SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/main.c \
-			$(SRCDIR)/builtin_export_unset.c \
-			$(SRCDIR)/builtin_pwd_cd_env_echo.c \
+			$(SRCDIR)/builtin_unset_export.c \
+			$(SRCDIR)/builtin_cd_pwd_env_echo.c \
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
