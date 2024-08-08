@@ -22,3 +22,18 @@ bool	syntax_export(const char *envar)
 		return (false);
 	return (true);
 }
+
+char	*get_env(char **envp, char *key)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
+		++i;
+	ret = envp[i];
+	if (ret != NULL)
+		while (*ret != '=')
+			++ret;
+	return (ret);
+}

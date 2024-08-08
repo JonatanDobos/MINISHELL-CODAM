@@ -31,12 +31,11 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/parsing.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/execution.c \
+			$(SRCDIR)/utils_builtin.c \
 			$(SRCDIR)/utils_exit.c \
 			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_free.c \
-			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
-			$(SRCDIR)/utils_syntax.c \
 			$(SRCDIR)/utils_token_list.c
 
 OBJ	=	$(SRC:.c=.o)

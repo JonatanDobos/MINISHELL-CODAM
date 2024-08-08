@@ -37,7 +37,6 @@ enum	e_token_type
 
 typedef struct s_token
 {
-	t_list		*element_head;
 	char		**cmd_array;
 	short		type;
 	void		*next;

@@ -55,7 +55,7 @@ void		clean_lists(t_shell *shell);
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
 t_token		*token_last(t_token *node);
-t_token		*token_new(t_list *element_head, char **cmd_array, short token);
+t_token		*token_new(char **cmd_array, short token);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 

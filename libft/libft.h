@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:53:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/07 20:57:31 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/08/08 20:36:44 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int			ft_putstr(char *str);
 int			ft_intlen_base(int n, char *base);
 int			ft_putnbr_base(long n, char *base);
 
+char		**ft_array_append(char **array, const char *add);
 char		**ft_arrdup(char **arr);
 char		**ft_split(const char *str, char c);
 char		*ft_strchr(const char *str, int c);
