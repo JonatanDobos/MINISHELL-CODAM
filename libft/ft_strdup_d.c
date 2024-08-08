@@ -6,12 +6,13 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/06/27 21:11:17 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/07 19:06:26 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/08/08 19:21:18 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
+// includes delimiter \d\0
 char	*ft_strdup_d(const char *str, const char delim)
 {
 	size_t	i;

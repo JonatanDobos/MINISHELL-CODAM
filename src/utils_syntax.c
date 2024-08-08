@@ -5,14 +5,12 @@ void	syntax_error(void)
 	write(STDERR_FILENO, "Syntax Error\n", 14);
 }
 
-bool	syntax_export(char **cmd_array)
+bool	syntax_export(char *envar)
 {
-	char	*envar;
 	int		i;
 
-	if (!cmd_array[1])
+	if (envar == NULL)
 		return (false); // exit (child) with appropriate error msg
-	envar = cmd_array[1];
 	i = 0;
 	while (envar[i] && envar[i] != '=')
 	{

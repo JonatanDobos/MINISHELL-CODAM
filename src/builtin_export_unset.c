@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_export_unset.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/06/27 21:02:04 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/08 18:24:22 by svan-hoo         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../minishell.h"
 
 static void	export_new_key(
@@ -43,20 +31,17 @@ static void	export_update_key(
 void	builtin_export(
 	t_shell *shell, char **cmd_array)
 {
-	char	*envar;
-	char	*key;
-	int		keylen;
-	int		i;
+	const char	*envar = cmd_array[1];
+	char		*key;
+	int			i;
 
-	if (syntax_export(cmd_array) == false)
-		return (syntax_error());
-	envar = cmd_array[1];
+	if (syntax_export(envar) == false)
+		return (syntax_error()); // syntax_export could exit instead once pipex is in place
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
 	i = 0;
-	keylen = ft_strlen(key);
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
 		i++;
 	if (shell->envp[i] == NULL)
 		export_new_key(shell, envar);
@@ -67,18 +52,14 @@ void	builtin_export(
 void	builtin_unset(
 	t_shell *shell, char **cmd_array)
 {
-	char	*envar;
-	char	*key;
-	int		keylen;
-	int		i;
+	char		*key;
+	int			i;
 
-	envar = cmd_array[1];
-	key = ft_strdup_d(envar, '=');
+	key = ft_strdup_d(cmd_array[1], '=');
 	if (key == NULL)
 		exit_clean(shell, errno, NULL);
 	i = 0;
-	keylen = ft_strlen(key);
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, keylen))
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
 		i++;
 	if (shell->envp[i] == NULL)
 		return ;
