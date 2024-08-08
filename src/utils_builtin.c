@@ -5,7 +5,7 @@ void	syntax_error(void)
 	write(STDERR_FILENO, "Syntax Error\n", 14);
 }
 
-bool	syntax_export(char *envar)
+bool	syntax_export(const char *envar)
 {
 	int		i;
 
@@ -21,4 +21,19 @@ bool	syntax_export(char *envar)
 	if (ft_strchr(envar, '=') <= envar)
 		return (false);
 	return (true);
+}
+
+char	*get_env(char **envp, char *key)
+{
+	int		i;
+	char	*ret;
+
+	i = 0;
+	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
+		++i;
+	ret = envp[i];
+	if (ret != NULL)
+		while (*ret != '=')
+			++ret;
+	return (ret);
 }

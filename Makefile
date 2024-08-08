@@ -23,21 +23,19 @@ LIBFT	=	$(LFTDIR)/libft.a
 SRCDIR	=	./src
 SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/main.c \
-			$(SRCDIR)/builtin_export_unset.c \
-			$(SRCDIR)/builtin_echo.c \
+			$(SRCDIR)/builtin_unset_export.c \
+			$(SRCDIR)/builtin_cd_pwd_env_echo.c \
 			$(SRCDIR)/envp_init.c \
-			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parse_expandable.c \
+			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parsing.c \
-			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/execution.c \
-			$(SRCDIR)/utils_fd_manipulate.c \
+			$(SRCDIR)/utils_builtin.c \
 			$(SRCDIR)/utils_exit.c \
+			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_free.c \
-			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
-			$(SRCDIR)/utils_syntax.c \
 			$(SRCDIR)/utils_token_list.c
 
 OBJ	=	$(SRC:.c=.o)

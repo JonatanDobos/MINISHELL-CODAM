@@ -151,42 +151,42 @@ void	TEST_print_t_list(
 
 // Prints out token list
 // thick_line: true = precursor bg is colored, false = prec symbol is colored
-void	TEST_print_token_lst(
-	t_shell *shell, char *accent_col, bool thick_line, char *name)
-{
-	t_token	*tmp;
-	int		i;
-	char	set[3];
+// void	TEST_print_token_lst(
+// 	t_shell *shell, char *accent_col, bool thick_line, char *name)
+// {
+// 	t_token	*tmp;
+// 	int		i;
+// 	char	set[3];
 
-	tmp = shell->token_head;
-	i = 0;
-	if (thick_line)
-		precursor_set(set, ' ', ' ');// inits precursor characters
-	else
-		precursor_set(set, '|', ' ');// inits precursor characters
-	printf("%s\\/%s", C_GREEN, C_RESET);
-	while (tmp != NULL)
-	{
-		printf("\n%s%s%s ", accent_col, name, C_BLUE);// name
-		printf("{%s%i%s}%s\n",C_YELLOW, i, C_BLUE, C_RESET);// index
-		print_precursor(set, accent_col, thick_line);// precursor
-		printf("%s> type:%s %s\n", C_DIM_GREEN, C_B_WHITE, type_to_char(tmp->type));// ->type
-		if (tmp->element_head)
-			TEST_print_t_list(&tmp->element_head, set, accent_col, thick_line, C_BLUE, "element_head");// ->elem_head
-		else
-		{
-			print_precursor(set, accent_col, thick_line);
-			printf("%s> element_head: NULL\n", C_DIM);
-		}
-		if (tmp->cmd_array && *tmp->cmd_array)
-			TEST_print_pointer_arr(tmp->cmd_array, set, accent_col, thick_line, C_DIM_TEAL, "cmd_array");// ->cmd_head
-		else
-		{
-			print_precursor(set, accent_col, thick_line);
-			printf("%s> cmd_array: NULL\n", C_DIM);
-		}
-		tmp=tmp->next;
-		++i;
-	}
-	printf("%s/\\%s\n", C_GREEN, C_RESET);
-}
+// 	tmp = shell->token_head;
+// 	i = 0;
+// 	if (thick_line)
+// 		precursor_set(set, ' ', ' ');// inits precursor characters
+// 	else
+// 		precursor_set(set, '|', ' ');// inits precursor characters
+// 	printf("%s\\/%s", C_GREEN, C_RESET);
+// 	while (tmp != NULL)
+// 	{
+// 		printf("\n%s%s%s ", accent_col, name, C_BLUE);// name
+// 		printf("{%s%i%s}%s\n",C_YELLOW, i, C_BLUE, C_RESET);// index
+// 		print_precursor(set, accent_col, thick_line);// precursor
+// 		printf("%s> type:%s %s\n", C_DIM_GREEN, C_B_WHITE, type_to_char(tmp->type));// ->type
+// 		if (tmp->element_head)
+// 			TEST_print_t_list(&tmp->element_head, set, accent_col, thick_line, C_BLUE, "element_head");// ->elem_head
+// 		else
+// 		{
+// 			print_precursor(set, accent_col, thick_line);
+// 			printf("%s> element_head: NULL\n", C_DIM);
+// 		}
+// 		if (tmp->cmd_array && *tmp->cmd_array)
+// 			TEST_print_pointer_arr(tmp->cmd_array, set, accent_col, thick_line, C_DIM_TEAL, "cmd_array");// ->cmd_head
+// 		else
+// 		{
+// 			print_precursor(set, accent_col, thick_line);
+// 			printf("%s> cmd_array: NULL\n", C_DIM);
+// 		}
+// 		tmp=tmp->next;
+// 		++i;
+// 	}
+// 	printf("%s/\\%s\n", C_GREEN, C_RESET);
+// }

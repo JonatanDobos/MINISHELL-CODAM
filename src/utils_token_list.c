@@ -1,10 +1,10 @@
 #include "../minishell.h"
 
+// !! pointers inside cmd_array are shared with shell->line_element_head !!
 void	token_delone(t_token *node)
 {
 	if (node == NULL)
 		return ;
-	ft_lstclear(&node->element_head, free);
 	ft_free_array(node->cmd_array);
 	free(node);
 }
@@ -24,14 +24,13 @@ void	token_clear(t_token **node)
 }
 
 t_token	*token_new(
-		t_list *element_head, char **cmd_array, short type)
+		char **cmd_array, short type)
 {
 	t_token	*new;
 
 	new = (t_token *)malloc(sizeof(t_token));
 	if (new == NULL)
 		return (NULL);
-	new->element_head = element_head;
 	new->cmd_array = cmd_array;
 	new->type = type;
 	new->next = NULL;

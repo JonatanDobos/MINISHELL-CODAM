@@ -25,20 +25,19 @@ char		**create_envp(char **envp);
 void		execution(t_shell *shell);
 
 // BUILTINS
-// builtin_cd.c
-void		builtin_cd(t_shell *shell, char **cmd);
-// builtin_echo.c
-void		builtin_echo(t_shell *shell, char **cmd_array);
 // builtin_export_unset.c
 void		builtin_export(t_shell *shell, char **cmd_array);
 void		builtin_unset(t_shell *shell, char **cmd_array);
-// builtin_pwd.c
-void		builtin_pwd(t_shell *t_shell, char **cmd);
+// builtin_pwd_cd_env_echo.c
+void		builtin_pwd(t_shell *t_shell);
+void		builtin_cd(t_shell *shell, char **cmd);
+void		builtin_env(t_shell *t_shell);
+void		builtin_echo(t_shell *shell, char **cmd_array);
 
 // UTILS
 // utils_syntax.c
 void		syntax_error(void);
-bool		syntax_export(char *envar);
+bool		syntax_export(const char *envar);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
@@ -56,7 +55,7 @@ void		clean_lists(t_shell *shell);
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
 t_token		*token_last(t_token *node);
-t_token		*token_new(t_list *element_head, char **cmd_array, short token);
+t_token		*token_new(char **cmd_array, short token);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 

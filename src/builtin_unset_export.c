@@ -1,5 +1,28 @@
 #include "../minishell.h"
 
+void	builtin_unset(
+	t_shell *shell, char **cmd_array)
+{
+	char		*key;
+	int			i;
+
+	key = ft_strdup_d(cmd_array[1], '=');
+	if (key == NULL)
+		exit_clean(shell, errno, NULL);
+	i = 0;
+	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
+		i++;
+	if (shell->envp[i] == NULL)
+		return ;
+	free(shell->envp[i]);
+	while (shell->envp[i + 1] != NULL)
+	{
+		shell->envp[i] = shell->envp[i + 1];
+		i++;
+	}
+	shell->envp[i] = NULL;
+}
+
 static void	export_new_key(
 	t_shell *shell, const char *envar)
 {
@@ -47,27 +70,4 @@ void	builtin_export(
 		export_new_key(shell, envar);
 	else
 		export_update_key(shell, envar, i);
-}
-
-void	builtin_unset(
-	t_shell *shell, char **cmd_array)
-{
-	char		*key;
-	int			i;
-
-	key = ft_strdup_d(cmd_array[1], '=');
-	if (key == NULL)
-		exit_clean(shell, errno, NULL);
-	i = 0;
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
-		i++;
-	if (shell->envp[i] == NULL)
-		return ;
-	free(shell->envp[i]);
-	while (shell->envp[i + 1] != NULL)
-	{
-		shell->envp[i] = shell->envp[i + 1];
-		i++;
-	}
-	shell->envp[i] = NULL;
 }

@@ -3,6 +3,7 @@ NAME	=	libft.a
 CFLAGS	=	-Wall -Wextra -Werror
 
 SRC		=	ft_abs.c \
+			ft_array_append.c \
 			ft_arrdup.c \
 			ft_atoi.c \
 			ft_bzero.c \
