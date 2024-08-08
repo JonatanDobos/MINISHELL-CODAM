@@ -2,10 +2,35 @@
 
 // PARSING: distributing the line over t_list line_element
 
-// Deletes all quotes in a string
-void	delete_quotes()
+// Deletes all (outer)quotes in a string
+// Returns: false if quotes are uneven
+bool	delete_quotes(char *str)
 {
+	size_t	i;
+	size_t	skip;
+	int		quote;
 
+	i = 0;
+	skip = 0;
+	quote = 0;
+	while (str[i + skip])
+	{
+		if (str[i + skip] == '\'' || '\"' && !quote)
+		{
+			++skip;
+			quote = str[i + skip];
+		}
+		if (str[i + skip] == quote)
+		{
+			++skip;
+			quote = 0;
+		}
+		str[i] = str[i + skip];
+		++i;
+	}
+	if (quote)
+		return (false);
+	return (true);
 }
 
 // ! Void return ! On failure: exit_clean
@@ -46,14 +71,20 @@ static bool	ft_expand(t_shell *shell, size_t i, size_t start)
 static void	add_element_node(t_shell *shell, size_t i, size_t start)
 {
 	bool	expand_success;
+	char	*line;
 
 	if (start != i)
 	{
+		line = ft_substr(shell->line, start, i - start);
+		if (!line)
+			exit_clean(shell, errno, "add_element_node");
+		delete_quotes(line);
 		expand_success = false;
 		if (shell->line[start] == '$')
 			expand_success = ft_expand(shell, i, start);
 		if (!expand_success)
-			new_element(shell, ft_substr(shell->line, start, i - start));
+			new_element(shell, line);
+		free(line);
 	}
 }
 
