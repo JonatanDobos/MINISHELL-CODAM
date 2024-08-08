@@ -5,7 +5,7 @@ static void	execute_builtin(t_shell *shell, t_token *token)
 	if (!token || !token->element_head)
 		return ;
 	if (!ft_strncmp(token->cmd_array[0], "echo", 5))
-		builtin_echo(shell, token, NULL);
+		builtin_echo(shell, token->cmd_array);
 	if (!ft_strncmp(token->cmd_array[0], "export", 7))
 		builtin_export(shell, token->cmd_array);
 	if (!ft_strncmp(token->cmd_array[0], "unset", 6))
