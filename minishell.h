@@ -12,9 +12,9 @@ int			tokenize(t_shell *shell);
 bool		parsing_distributor(t_shell *d);
 
 // parsing.c
-bool		parse_line_to_elem(t_shell *shell);
+bool		parse_line_to_element(t_shell *shell, char *line);
 
-// expand_parse.c
+// parse_expandable.c
 char		*parse_envp(char **envp, char *str, size_t i);
 char		*expand_env_in_str(t_shell *shell, char *str);
 
@@ -25,24 +25,24 @@ char		**create_envp(char **envp);
 void		execution(t_shell *shell);
 
 // BUILTINS
-// builtin_cd.c
-void		builtin_cd(t_shell *shell, char **cmd);
-// builtin_echo.c
-void		builtin_echo(t_shell *shell, char **cmd_array);
 // builtin_export_unset.c
 void		builtin_export(t_shell *shell, char **cmd_array);
 void		builtin_unset(t_shell *shell, char **cmd_array);
-// builtin_pwd.c
-void		builtin_pwd(t_shell *t_shell, char **cmd);
+// builtin_pwd_cd_env_echo.c
+void		builtin_pwd(t_shell *t_shell);
+void		builtin_cd(t_shell *shell, char **cmd);
+void		builtin_env(t_shell *t_shell);
+void		builtin_echo(t_shell *shell, char **cmd_array);
 
 // UTILS
 // utils_syntax.c
 void		syntax_error(void);
-bool		syntax_export(char *envar);
+bool		syntax_export(const char *envar);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);
 char		*ft_onlyspace(char *str);
+char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);

@@ -2,12 +2,6 @@
 
 // PARSING: distributing the line over t_list line_element
 
-// Deletes all quotes in a string
-void	delete_quotes()
-{
-
-}
-
 // ! Void return ! On failure: exit_clean
 static void	new_element(t_shell *shell, char *sub_line)
 {
@@ -57,66 +51,58 @@ static void	add_element_node(t_shell *shell, size_t i, size_t start)
 	}
 }
 
-static bool	quote_handling(t_shell *shell, char *line, size_t i)
+// ADD: expanding when double quotes
+static bool	ft_quote(t_shell *shell, size_t *i, size_t *start)
 {
 	char	quote;
 	char	*sub_str;
-	size_t	start;
 	size_t	len;
 
-	quote = line[i];
-	start = ++(i);
-	while (line[i] != quote && line[i])
-		++(i);
-	if (line[i] == '\0')
+	quote = shell->line[*i];
+	*start = ++(*i);
+	while (shell->line[*i] != quote && shell->line[*i])
+		++(*i);
+	if (shell->line[*i] == '\0')
 		return (syntax_error(), false);
-	len = i - start;
+	len = *i - *start;
 	if (quote == '\'')
-		new_element(shell, ft_substr(line, start, len));
+		new_element(shell, ft_substr(shell->line, *start, len));
 	else if (quote == '\"')
 	{
-		sub_str = ft_onlyspace(ft_substr(line, start, len));
+		sub_str = ft_onlyspace(ft_substr(shell->line, *start, len));
 		if (!sub_str)
 			exit_clean(shell, errno, NULL);
 		new_element(shell, expand_env_in_str(shell, sub_str));
 	}
+	*start = ++(*i);
 	return (true);
 }
 
-static size_t	skip_to_end_quote(char *str)
-{
-	size_t		skip_amount;
-	const char	quote = *str;
-
-	skip_amount = 0;
-	while (str[skip_amount] && str[skip_amount] != quote)
-		++skip_amount;
-	return (skip_amount + 1);
-}
-
-bool	parse_line_to_element(t_shell *shell, char *line)
+bool	parse_line_to_elem(t_shell *shell)
 {
 	size_t	i;
 	size_t	start;
 
 	i = 0;
 	start = i;
-	while (line[i])
+	while (shell->line[i])
 	{
-		if ((line[i] == '\"' || line[i] == '\'')
-			&& (i == 0 || ft_iswhitespace(line[i - 1])))
-		{
-			if (!quote_handling(shell, line, i))
-				return (false);
-			skip_to_end_quote(line + i);
-		}
-		if (ft_iswhitespace(line[i]))
+		if (ft_iswhitespace(shell->line[i]))
 		{
 			add_element_node(shell, i, start);
 			start = ++i;
 		}
 		else
-			++i;
+		{
+			if ((shell->line[i] == '\"' || shell->line[i] == '\'')
+				&& (i == 0 || ft_iswhitespace(shell->line[i - 1])))
+			{
+				if (!ft_quote(shell, &i, &start))
+					return (false);
+			}
+			else
+				++i;
+		}
 	}
 	if (start != i)
 		add_element_node(shell, i, start);

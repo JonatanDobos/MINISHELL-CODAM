@@ -5,7 +5,7 @@ void	syntax_error(void)
 	write(STDERR_FILENO, "Syntax Error\n", 14);
 }
 
-bool	syntax_export(char *envar)
+bool	syntax_export(const char *envar)
 {
 	int		i;
 

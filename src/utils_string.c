@@ -46,3 +46,33 @@ char	*ft_onlyspace(char *str)
 	str[new] = '\0';
 	return (str);
 }
+
+// Returns:
+// - copy of *str with str[start] -> str[start + len_del] replaced by *insert
+// - *str when input is incufficient
+// - NULL on malloc failure
+char	*str_insert(char *str, char *insert, size_t start, size_t len_del)
+{
+	size_t	i;
+	size_t	j;
+	char	*ret;
+
+	if (!str || !insert || start > ft_strlen(str) || \
+	len_del > ft_strlen_null(str) - start)
+		return (str);
+	ret = (char *)malloc((ft_strlen(str) - len_del) + ft_strlen(insert) + 1);
+	if (!ret)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (i < start)
+		ret[i++] = str[j++];
+	j = 0;
+	while (insert[j])
+		ret[i++] = insert[j++];
+	j = start + len_del;
+	while (str[j])
+		ret[i++] = str[j++];
+	ret[i] = '\0';
+	return (ret);
+}

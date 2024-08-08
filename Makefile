@@ -24,16 +24,15 @@ SRCDIR	=	./src
 SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/main.c \
 			$(SRCDIR)/builtin_export_unset.c \
-			$(SRCDIR)/builtin_echo.c \
+			$(SRCDIR)/builtin_pwd_cd_env_echo.c \
 			$(SRCDIR)/envp_init.c \
-			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parse_expandable.c \
+			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parsing.c \
-			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/execution.c \
-			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_exit.c \
+			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \

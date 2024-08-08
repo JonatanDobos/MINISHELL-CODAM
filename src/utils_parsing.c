@@ -28,8 +28,8 @@ char	*get_env(char **envp, char *key)
 	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
 		++i;
 	ret = envp[i];
-	if (ret != NULL);
-		while (*ret != "=")
+	if (ret != NULL)
+		while (*ret != '=')
 			++ret;
 	return (ret);
 }
