@@ -45,31 +45,31 @@ int	tokenize(t_shell *shell)
 	return (SUCCESS);
 }
 
-int	tokenize(t_shell *shell)
-{
-	t_list	*current;
-	t_token	*new_token;
-	short	type;
+// int	tokenize(t_shell *shell)
+// {
+// 	t_list	*current;
+// 	t_token	*new_token;
+// 	short	type;
 
-	current = shell->line_element_head;
-	while (current)
-	{
-		type = token_type(current->content);
-		while (type == T_PIPE)
-		{
-			current = current->next;
-			type = token_type(current->content);
-		}
-		if (type == T_REDIRECT)
-		{
-			new_token = token_new(NULL, type);
-			if (new_token == NULL)
-				return (EXIT_FAILURE);
-			token_add_back(&shell->token_head, new_token);
-		}
-		ft_array_append(token_last(shell->token_head)->cmd_array, current->content);
-		current = current->next;
-	}
-	// free line_element_head
-	return (SUCCESS);
-}
+// 	current = shell->line_element_head;
+// 	while (current)
+// 	{
+// 		type = token_type(current->content);
+// 		while (type == T_PIPE)
+// 		{
+// 			current = current->next;
+// 			type = token_type(current->content);
+// 		}
+// 		if (type == T_REDIRECT)
+// 		{
+// 			new_token = token_new(NULL, type);
+// 			if (new_token == NULL)
+// 				return (EXIT_FAILURE);
+// 			token_add_back(&shell->token_head, new_token);
+// 		}
+// 		ft_array_append(token_last(shell->token_head)->cmd_array, current->content);
+// 		current = current->next;
+// 	}
+// 	// free line_element_head
+// 	return (SUCCESS);
+// }
