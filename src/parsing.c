@@ -3,7 +3,6 @@
 // PARSING: distributing the line over t_list line_element
 
 // Deletes all (outer)quotes in a string
-// Returns: false if quotes are uneven
 void	delete_quotes(char *str)
 {
 	size_t	i;
@@ -13,21 +12,22 @@ void	delete_quotes(char *str)
 	i = 0;
 	skip = 0;
 	quote = 0;
-	while (str[i + skip])
+	while (str[skip])
 	{
-		if (!quote && (str[i + skip] == '\'' || str[i + skip] == '\"'))
+		if (!quote && (str[skip] == '\'' || str[skip] == '\"'))
 		{
+			quote = str[skip];
 			++skip;
-			quote = str[i + skip];
 		}
-		if (quote && str[i + skip] == quote)
+		else if (quote && str[skip] == quote)
 		{
-			++skip;
 			quote = 0;
+			++skip;
 		}
-		str[i] = str[i + skip];
-		++i;
+		else
+			str[i++] = str[skip++];
 	}
+	str[i] = '\0';
 }
 
 // ! Void return ! On failure: exit_clean
@@ -107,15 +107,13 @@ static void	quote_handling(t_shell *shell, char *line, size_t i)
 	}
 }
 
-static size_t	skip_to_end_quote(char *str)
+static size_t	skip_to_end_quote(const char *line, size_t i)
 {
-	size_t		skip_amount;
-	const char	quote = *str;
+	const char	quote = line[i];
 
-	skip_amount = 0;
-	while (str[skip_amount] && str[skip_amount] != quote)
-		++skip_amount;
-	return (skip_amount + 1);
+	while (line[i] && line[i] != quote)
+		++i;
+	return (i);
 }
 
 void	parse_line_to_element(t_shell *shell, char *line)
@@ -128,10 +126,12 @@ void	parse_line_to_element(t_shell *shell, char *line)
 	while (line[i])
 	{
 		if ((line[i] == '\"' || line[i] == '\'')
-			&& (i == 0 || ft_iswhitespace(line[i - 1])))
+			&& (i == 0 || ft_iswhitespace(line[i - 1]))
+			&& (line[skip_to_end_quote(line, i) + 1] == '\0'
+			|| ft_iswhitespace(line[skip_to_end_quote(line, i) + 1])))
 		{
 			quote_handling(shell, line, i);
-			skip_to_end_quote(line + i);
+			i = skip_to_end_quote(line, i);
 		}
 		if (ft_iswhitespace(line[i]))
 		{

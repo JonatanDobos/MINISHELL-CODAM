@@ -80,7 +80,6 @@ char	*expand_env_in_str(t_shell *shell, char *str)
 				str = ret;
 			}
 			ret = NULL;
-			printf("TEST> [%zu] %s\n", i, str);// TEST
 		}
 		++i;
 	}

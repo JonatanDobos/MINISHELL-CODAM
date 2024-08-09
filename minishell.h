@@ -24,6 +24,9 @@ char		**create_envp(char **envp);
 // execition.c
 void		execution(t_shell *shell);
 
+// syntax_pre.c
+bool		syntax_pre(const char *line);
+
 // BUILTINS
 // builtin_export_unset.c
 void		builtin_export(t_shell *shell, char **cmd_array);

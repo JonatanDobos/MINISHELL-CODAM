@@ -29,6 +29,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parsing.c \
+			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/execution.c \
 			$(SRCDIR)/utils_builtin.c \

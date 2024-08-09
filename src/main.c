@@ -53,20 +53,23 @@ void	read_loop(t_shell *shell)
 	while (true)
 	{
 		rl_on_new_line();
-		shell->line = readline(C_YELLOW "minishell" C_RED " > " C_RESET);
+		shell->line = readline(PROMPT);
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
-		// if (syntax_pre(shell->line) == false)
-		// 	syntax_error();
-		line_history_management(shell);
-		TEST_printline(shell);// TEST
-		if (parsing_distributor(shell))// if return = false: reprompt
-			execution(shell);// experimental
-		if (shell->print_info)// TEST
+		if (syntax_pre(shell->line) == false)
+			syntax_error();
+		else
 		{
-			TEST_print_token_lst(shell, C_GREEN, true, "Token");
-			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
-			// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
+			line_history_management(shell);
+			TEST_printline(shell);// TEST
+			if (parsing_distributor(shell))// if return = false: reprompt
+				execution(shell);// experimental
+			if (shell->print_info)// TEST
+			{
+				TEST_print_token_lst(shell, C_GREEN, true, "Token");
+				TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
+				// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
+			}
 		}
 		clean_lists(shell);
 	}
