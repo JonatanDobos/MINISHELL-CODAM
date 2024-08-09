@@ -6,5 +6,8 @@
 		op basis van return van builtin functie een errno setten
 		exit() wanneer succesvol
 
+>> TOKENIZE
+	only split elements on T_PIPEs and T_REDIRECTs
+
 >>	SIGNALS
 	geen idee
