@@ -21,18 +21,21 @@ char		*expand_env_in_str(t_shell *shell, char *str);
 // envp_init.c
 char		**create_envp(char **envp);
 
-// execition.c
-void		execution(t_shell *shell);
+// pipe_execution.c
+void		execute_builtin(char **cmd_array, char **envp);
+void		execute_sys_cmd(char **cmd_array, char **envp);
+// pipe_forking.c
+int			execution(t_shell *shell);
 
 // BUILTINS
-// builtin_export_unset.c
-void		builtin_export(t_shell *shell, char **cmd_array);
-void		builtin_unset(t_shell *shell, char **cmd_array);
 // builtin_pwd_cd_env_echo.c
-void		builtin_pwd(t_shell *t_shell);
-void		builtin_cd(t_shell *shell, char **cmd);
-void		builtin_env(t_shell *t_shell);
-void		builtin_echo(t_shell *shell, char **cmd_array);
+void		builtin_cd(char **cmd_array, char **envp);
+void		builtin_pwd(char **envp);
+void		builtin_env(char **envp);
+void		builtin_echo(char **cmd_array, char **envp);
+// builtin_export_unset.c
+void		builtin_export(char **cmd_array, char **envp);
+void		builtin_unset(char **cmd_array, char **envp);
 
 // UTILS
 // utils_syntax.c
@@ -46,6 +49,7 @@ char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);
+void		error_exit(int num, char *param);
 // void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
 
 // utils_freeing.c
@@ -55,7 +59,7 @@ void		clean_lists(t_shell *shell);
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
 t_token		*token_last(t_token *node);
-t_token		*token_new(char **cmd_array, short token);
+t_token		*token_new(char **cmd_array, short type);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 

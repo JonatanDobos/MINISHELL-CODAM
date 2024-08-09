@@ -30,3 +30,20 @@ void	exit_clean(t_shell *shell, int num, char *message)
 // 	va_end(ptrs_to_free);
 // 	exit_clean(shell, num, message);
 // }
+
+// used by children
+void	error_exit(int num, char *param)
+{
+	const char	*nill = "\0";
+
+	if (num != errno)
+		errno = num;
+	if (param == NULL)
+		param = (char *)nill;
+	dup2(STDERR_FILENO, STDOUT_FILENO);
+	if (errno == 127)
+		printf("minishell: command not found: %s\n", param);
+	else
+		printf("minishell: %s: %s\n", strerror(errno), param);
+	exit(errno);
+}

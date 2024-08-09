@@ -61,12 +61,14 @@ void	read_loop(t_shell *shell)
 		line_history_management(shell);
 		TEST_printline(shell);// TEST
 		if (parsing_distributor(shell))// if return = false: reprompt
-			execution(shell);// experimental
-		if (shell->print_info)// TEST
 		{
-			TEST_print_token_lst(shell, C_GREEN, true, "Token");
-			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
-			// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
+			if (shell->print_info)// TEST
+			{
+				TEST_print_token_lst(shell, C_GREEN, true, "Token");
+				TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
+				// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
+			}
+			shell->last_errno = execution(shell);// experimental
 		}
 		clean_lists(shell);
 	}

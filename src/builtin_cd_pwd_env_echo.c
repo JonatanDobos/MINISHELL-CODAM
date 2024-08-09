@@ -1,20 +1,20 @@
 #include "../minishell.h"
 
-void	builtin_pwd(t_shell *shell)
+void	builtin_pwd(char **envp)
 {
-	printf("%s\n", get_env(shell->envp, "PWD="));
+	printf("%s\n", get_env(envp, "PWD="));
 	// exit success
 }
 
-void	builtin_cd(t_shell *shell, char **cmd)
+void	builtin_cd(char **cmd_array, char **envp)
 {
-	const char	*path = cmd[1];
+	const char	*path = cmd_array[1];
 	int			ret;
 
 	if (path == NULL)
-		ret = chdir(get_env(shell->envp, "HOME="));
+		ret = chdir(get_env(envp, "HOME="));
 	else if (strncmp(path, "-", 2))
-		ret = chdir(get_env(shell->envp, "OLDPWD="));
+		ret = chdir(get_env(envp, "OLDPWD="));
 	else
 		ret = chdir(path);
 	if (ret != SUCCESS)
@@ -22,16 +22,16 @@ void	builtin_cd(t_shell *shell, char **cmd)
 	// exit success
 }
 
-void	builtin_env(t_shell *shell)
+void	builtin_env(char **envp)
 {
 	int	i;
 
 	i = 0;
-	while (shell->envp[i])
-		printf("%s\n", shell->envp[i++]);
+	while (envp[i])
+		printf("%s\n", envp[i++]);
 }
 
-void	builtin_echo(t_shell *shell, char **cmd_array)
+void	builtin_echo(char **cmd_array, char **envp)
 {
 	int	i;
 
