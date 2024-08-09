@@ -22,21 +22,24 @@ int	tokenize(t_shell *shell)
 {
 	t_list	*current;
 	t_token	*new_token;
-	short	type;
 
 	current = shell->line_element_head;
 	while (current)
 	{
-		type = token_type(current->content);
-		if (type == T_BUILTIN || type == T_PIPE || type == T_REDIRECT)
+		if (current && token_type(current->content) == T_PIPE)
+			current = current->next;
+		if (token_type(current->content) == T_PIPE)
+			exit_clean(shell, 22, "syntax error near unexpected token '|'");
+		new_token = token_new(NULL, token_type(current->content));
+		if (new_token == NULL)
+			exit_clean(shell, errno, NULL);
+		token_add_back(&shell->token_head, new_token);
+		while (current && token_type(current->content) != T_PIPE)
 		{
-			new_token = token_new(NULL, type);
-			if (new_token == NULL)
-				return (EXIT_FAILURE);
-			token_add_back(&shell->token_head, new_token);
+			token_last(shell->token_head)->cmd_array = ft_array_append(
+				token_last(shell->token_head)->cmd_array, current->content);
+			current = current->next;
 		}
-		ft_array_append(token_last(shell->token_head)->cmd_array, current->content);
-		current = current->next;
 	}
 	// free line_element_head
 	return (SUCCESS);

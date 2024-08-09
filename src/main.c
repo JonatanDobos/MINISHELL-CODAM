@@ -58,13 +58,13 @@ void	read_loop(t_shell *shell)
 			exit_clean(shell, errno, NULL);
 		// if (syntax_pre(shell->line) == false)
 		// 	syntax_error();
-		TEST_printline(shell);// TEST
 		line_history_management(shell);
+		TEST_printline(shell);// TEST
 		if (parsing_distributor(shell))// if return = false: reprompt
 			execution(shell);// experimental
 		if (shell->print_info)// TEST
 		{
-			// TEST_print_token_lst(shell, C_GREEN, true, "Token");
+			TEST_print_token_lst(shell, C_GREEN, true, "Token");
 			TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
 			// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
 		}
@@ -93,12 +93,10 @@ void	TEST_printline(t_shell *shell)
 {
 	char	*tmp_line;
 
-	if (ft_strlen(shell->line) >= 7 && !ft_strncmp(shell->line, "print ", 6))
-		printf("*\n%s\n*\n", shell->line + 6);
-	if (ft_strlen(shell->line) >= 6 && !ft_strncmp(shell->line, "info ", 5))
+	if (!ft_strncmp(shell->line, "info ", 5))
 	{
 		shell->print_info = true;
-		tmp_line = ft_strdup(shell->line);
+		tmp_line = ft_strdup(shell->line + 5);
 		if (!tmp_line)
 			exit_clean(shell, errno, NULL);
 		free(shell->line);

@@ -25,8 +25,27 @@ void	execution(t_shell *shell)
 	token = shell->token_head;
 	while (token != NULL)
 	{
+		// fork_them_kids()
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token);
 		token = token->next;
 	}
 }
+
+// int	fork_them_kids(int input_fd, char *command, char **envp)
+// {
+// 	pid_t	pid;
+// 	int		pipe_fds[2];
+
+// 	set_input(input_fd);
+// 	if (pipe(pipe_fds) == -1)
+// 		error_exit(errno, command);
+// 	set_output(pipe_fds[1]);
+// 	pid = fork();
+// 	if (pid == 0)
+// 	{
+// 		close(pipe_fds[0]);
+// 		execute(command, envp);
+// 	}
+// 	return (pipe_fds[0]);
+// }
