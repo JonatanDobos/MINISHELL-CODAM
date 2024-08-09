@@ -13,7 +13,6 @@ void	delete_quotes(char *str)
 	i = 0;
 	skip = 0;
 	quote = 0;
-	printf("%s\n", str);//test
 	while (str[i + skip])
 	{
 		if (!quote && (str[i + skip] == '\'' || str[i + skip] == '\"'))
