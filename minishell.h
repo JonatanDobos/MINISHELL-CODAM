@@ -12,7 +12,7 @@ int			tokenize(t_shell *shell);
 bool		parsing_distributor(t_shell *d);
 
 // parsing.c
-bool		parse_line_to_element(t_shell *shell, char *line);
+void		parse_line_to_element(t_shell *shell, char *line);
 
 // parse_expandable.c
 char		*parse_envp(char **envp, char *str, size_t i);

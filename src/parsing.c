@@ -4,7 +4,7 @@
 
 // Deletes all (outer)quotes in a string
 // Returns: false if quotes are uneven
-bool	delete_quotes(char *str)
+void	delete_quotes(char *str)
 {
 	size_t	i;
 	size_t	skip;
@@ -13,14 +13,15 @@ bool	delete_quotes(char *str)
 	i = 0;
 	skip = 0;
 	quote = 0;
+	printf("%s\n", str);//test
 	while (str[i + skip])
 	{
-		if (str[i + skip] == '\'' || '\"' && !quote)
+		if (!quote && (str[i + skip] == '\'' || str[i + skip] == '\"'))
 		{
 			++skip;
 			quote = str[i + skip];
 		}
-		if (str[i + skip] == quote)
+		if (quote && str[i + skip] == quote)
 		{
 			++skip;
 			quote = 0;
@@ -28,9 +29,6 @@ bool	delete_quotes(char *str)
 		str[i] = str[i + skip];
 		++i;
 	}
-	if (quote)
-		return (false);
-	return (true);
 }
 
 // ! Void return ! On failure: exit_clean
@@ -84,11 +82,10 @@ static void	add_element_node(t_shell *shell, size_t i, size_t start)
 			expand_success = ft_expand(shell, i, start);
 		if (!expand_success)
 			new_element(shell, line);
-		free(line);
 	}
 }
 
-static bool	quote_handling(t_shell *shell, char *line, size_t i)
+static void	quote_handling(t_shell *shell, char *line, size_t i)
 {
 	char	quote;
 	char	*sub_str;
@@ -99,8 +96,6 @@ static bool	quote_handling(t_shell *shell, char *line, size_t i)
 	start = ++(i);
 	while (line[i] != quote && line[i])
 		++(i);
-	if (line[i] == '\0')
-		return (syntax_error(), false);
 	len = i - start;
 	if (quote == '\'')
 		new_element(shell, ft_substr(line, start, len));
@@ -111,7 +106,6 @@ static bool	quote_handling(t_shell *shell, char *line, size_t i)
 			exit_clean(shell, errno, NULL);
 		new_element(shell, expand_env_in_str(shell, sub_str));
 	}
-	return (true);
 }
 
 static size_t	skip_to_end_quote(char *str)
@@ -125,7 +119,7 @@ static size_t	skip_to_end_quote(char *str)
 	return (skip_amount + 1);
 }
 
-bool	parse_line_to_element(t_shell *shell, char *line)
+void	parse_line_to_element(t_shell *shell, char *line)
 {
 	size_t	i;
 	size_t	start;
@@ -137,8 +131,7 @@ bool	parse_line_to_element(t_shell *shell, char *line)
 		if ((line[i] == '\"' || line[i] == '\'')
 			&& (i == 0 || ft_iswhitespace(line[i - 1])))
 		{
-			if (!quote_handling(shell, line, i))
-				return (false);
+			quote_handling(shell, line, i);
 			skip_to_end_quote(line + i);
 		}
 		if (ft_iswhitespace(line[i]))
@@ -151,5 +144,4 @@ bool	parse_line_to_element(t_shell *shell, char *line)
 	}
 	if (start != i)
 		add_element_node(shell, i, start);
-	return (true);
 }
