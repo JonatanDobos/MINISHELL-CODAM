@@ -40,7 +40,7 @@ void	builtin_echo(t_shell *shell, char **cmd_array)
 	{
 		printf("%s", cmd_array[i]);
 		if (cmd_array[++i])
-			write(STDOUT_FILENO, " ", 1);
+			printf(" ");
 	}
 	printf("\n");
 }
