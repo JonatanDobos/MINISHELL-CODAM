@@ -1,39 +1,37 @@
 #include "../minishell.h"
 
-// RETURN: false = failure
-bool	set_input(int input_fd)
+int	set_input(int input_fd)
 {
 	if (dup2(input_fd, STDIN_FILENO) == -1)
-		return (false);
+		return (ERROR);
 	if (close(input_fd) == -1)
-		return (false);
-	return (true);
+		return (ERROR);
+	return (SUCCESS);
 }
 
-// RETURN: false = failure
-bool	set_output(int output_fd)
+int	set_output(int output_fd)
 {
 	if (dup2(output_fd, STDOUT_FILENO) == -1)
-		return (false);
+		return (ERROR);
 	if (close(output_fd) == -1)
-		return (false);
-	return (true);
+		return (ERROR);
+	return (SUCCESS);
 }
 
 // RETURN: -1 = failure
-int	open_inputfile(const char *inputfile)
+int	open_infile(const char *infile)
 {
 	int	fd;
 
-	fd = open(inputfile, O_RDONLY);
+	fd = open(infile, O_RDONLY);
 	return (fd);
 }
 
 // RETURN: -1 = failure
-int	open_outputfile(const char *outputfile)
+int	open_outfile(const char *outfile)
 {
 	int	fd;
 
-	fd = open(outputfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+	fd = open(outfile, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 	return (fd);
 }

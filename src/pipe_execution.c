@@ -54,15 +54,15 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 void	execute_builtin(char **cmd_array, char **envp)
 {
 	if (!ft_strncmp(cmd_array[0], "cd", 3))
-		builtin_cd(envp, cmd_array);
+		builtin_cd(cmd_array, envp);
 	if (!ft_strncmp(cmd_array[0], "pwd", 4))
 		builtin_pwd(envp);
 	if (!ft_strncmp(cmd_array[0], "env", 4))
 		builtin_env(envp);
 	if (!ft_strncmp(cmd_array[0], "echo", 5))
-		builtin_echo(envp, cmd_array);
+		builtin_echo(cmd_array, envp);
 	if (!ft_strncmp(cmd_array[0], "unset", 6))
-		builtin_unset(envp, cmd_array);
+		builtin_unset(cmd_array, envp);
 	if (!ft_strncmp(cmd_array[0], "export", 7))
-		builtin_export(envp, cmd_array);
+		builtin_export(cmd_array, envp);
 }

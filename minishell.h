@@ -59,7 +59,7 @@ void		clean_lists(t_shell *shell);
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
 t_token		*token_last(t_token *node);
-t_token		*token_new(char **cmd_array, short type);
+t_token		*token_new(char **cmd_array, char **redirect, short type);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
 
@@ -67,10 +67,10 @@ void		token_delone(t_token *node);
 char		*get_env(char **envp, char *key);
 
 // utils_fd_manipulate.c
-bool		set_input(int input_fd);
-bool		set_output(int output_fd);
-int			open_inputfile(const char *inputfile);
-int			open_outputfile(const char *outputfile);
+int			set_input(int input_fd);
+int			set_output(int output_fd);
+int			open_infile(const char *infile);
+int			open_outfile(const char *outfile);
 
 // _TEST.c
 void		TEST_print_token_lst(
