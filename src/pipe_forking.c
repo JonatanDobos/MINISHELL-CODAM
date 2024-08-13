@@ -60,9 +60,9 @@ int	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 		if (token->redirect)
 			open_files(shell, token);
 		if (token->type == T_BUILTIN)
-			execute_builtin(token->cmd_array, shell->envp);
+			execute_builtin(token->cmd_array, shell);
 		else
-			execute_sys_cmd(token->cmd_array, shell->envp);
+			execute_builtin(token->cmd_array, shell); // change to sys_cmd (currently has zombie/wait issue)
 	}
 	close(pipe_fds[1]);
 	return (pid);

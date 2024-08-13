@@ -32,7 +32,7 @@ void	exit_clean(t_shell *shell, int num, char *message)
 // }
 
 // used by children
-void	error_exit(int num, char *param)
+void	error_exit(int num, const char *param)
 {
 	const char	*nill = "\0";
 
