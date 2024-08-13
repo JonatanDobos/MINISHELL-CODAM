@@ -51,11 +51,11 @@ int	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 	if (pid == 0)
 	{
 		close(pipe_fds[0]);
-		if (token->next == NULL)
+		if (token->next == NULL){
 			if (set_output(standup[1]) == ERROR)
 				exit_clean(shell, errno, "set_output()");
-		else
-			if (set_output(pipe_fds[1]) == ERROR)
+		}
+		else if (set_output(pipe_fds[1]) == ERROR)
 				exit_clean(shell, errno, "set_output()");
 		if (token->redirect)
 			open_files(shell, token);
@@ -98,6 +98,7 @@ int	execution(t_shell *shell)
 		pid = kiddo(shell, token, standup, pipe_fds);
 		token = token->next;
 	}
+	dup2(standup[0], STDIN_FILENO);
 	close(pipe_fds[0]);
 	close(standup[0]);
 	close(standup[1]);
