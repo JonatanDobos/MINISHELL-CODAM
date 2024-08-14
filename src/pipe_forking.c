@@ -43,10 +43,6 @@ int	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 {
 	pid_t	pid;
 
-	if (pipe(pipe_fds) == -1)
-		exit_clean(shell, errno, "pipe()");
-	if (set_input(pipe_fds[0]) == ERROR)
-		exit_clean(shell, errno, "set_input()");
 	pid = fork();
 	if (pid == 0)
 	{
@@ -63,8 +59,8 @@ int	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 			execute_builtin(token->cmd_array, shell);
 		else
 			execute_builtin(token->cmd_array, shell); // change to sys_cmd (currently has zombie/wait issue)
+		exit(errno);
 	}
-	close(pipe_fds[1]);
 	return (pid);
 }
 
@@ -93,10 +89,17 @@ int	execution(t_shell *shell)
 	standup[0] = dup(STDIN_FILENO);
 	standup[1] = dup(STDOUT_FILENO);
 	token = shell->token_head;
+	if (token->next == NULL && token->type == T_BUILTIN)
+		return (execute_builtin(token->cmd_array, shell));
 	while (token != NULL)
 	{
+		if (pipe(pipe_fds) == -1)
+			exit_clean(shell, errno, "pipe()");
+		if (set_input(pipe_fds[0]) == ERROR)
+			exit_clean(shell, errno, "set_input()");
 		pid = kiddo(shell, token, standup, pipe_fds);
 		token = token->next;
+		close(pipe_fds[1]);
 	}
 	dup2(standup[0], STDIN_FILENO);
 	close(pipe_fds[0]);

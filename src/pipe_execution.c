@@ -51,10 +51,10 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 	error_exit(errno, cmd_array[0]);
 }
 
-void	execute_builtin(char **cmd_array, t_shell *shell)
+int	execute_builtin(char **cmd_array, t_shell *shell)
 {
 	if (!ft_strncmp(cmd_array[0], "cd", 3))
-		builtin_cd(cmd_array, shell->envp);
+		builtin_cd(cmd_array[1], shell->envp, shell);
 	if (!ft_strncmp(cmd_array[0], "pwd", 4))
 		builtin_pwd(shell->envp);
 	if (!ft_strncmp(cmd_array[0], "env", 4))
@@ -64,6 +64,6 @@ void	execute_builtin(char **cmd_array, t_shell *shell)
 	if (!ft_strncmp(cmd_array[0], "unset", 6))
 		builtin_unset(cmd_array, shell->envp);
 	if (!ft_strncmp(cmd_array[0], "export", 7))
-		builtin_export(cmd_array, shell);
-	error_exit(127, cmd_array[0]);
+		builtin_export(cmd_array[1], shell);
+	return (errno);
 }

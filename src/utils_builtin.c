@@ -5,22 +5,48 @@ void	syntax_error(void)
 	write(STDERR_FILENO, "Syntax Error\n", 14);
 }
 
-void	syntax_export(const char *envar)
+void	cd_error(char *path)
+{
+	ft_putstr_fd("cd: ", STDERR_FILENO);
+	if (access(path, F_OK) == ERROR)
+		ft_putstr_fd("no such file or directory", STDERR_FILENO);
+	else if (access(path, R_OK) == ERROR)
+		ft_putstr_fd("permission denied", STDERR_FILENO);
+	else
+		ft_putstr_fd("not a directory", STDERR_FILENO);
+	ft_putendl_fd(path, STDERR_FILENO);
+}
+
+void	cd_deslash(char *operand)
+{
+	int	i;
+
+	if (!operand)
+		return ;
+	i = 0;
+	while (operand[i])
+		++i;
+	--i;
+	if (operand[i] == '/')
+		operand[i] = '\0';
+}
+
+int	export_syntax(const char *envar)
 {
 	int		i;
 
 	if (envar == NULL)
-		error_exit(EINVAL, envar); // exit (child) with appropriate error msg (see bash output)
+		return (false);
 	i = 0;
 	while (envar[i] && envar[i] != '=')
 	{
-		if (!ft_isalnum(envar[i]) && envar[i] != '_')
-			error_exit(EINVAL, envar);
+		if (!ft_isalpha(envar[i]) && envar[i] != '_')
+			return (false);
 		++i;
 	}
 	if (ft_strchr(envar, '=') <= envar)
-		error_exit(EINVAL, envar);
-	return ;
+		return (false);
+	return (true);
 }
 
 char	*get_env(char **envp, const char *key)

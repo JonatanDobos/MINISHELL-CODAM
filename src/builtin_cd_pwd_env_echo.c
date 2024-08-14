@@ -4,22 +4,31 @@ void	builtin_pwd(char **envp)
 {
 	errno = 0;
 	printf("%s\n", get_env(envp, "PWD="));
-	exit(errno);
 }
 
-void	builtin_cd(char **cmd_array, char **envp)
+void	builtin_cd(char *operand, char **envp, t_shell *shell)
 {
-	const char	*path = cmd_array[1];
+	char		*path;
 	int			ret;
+	const char	*cwd = strdup(get_env(envp, "PWD="));
 
 	errno = 0;
-	if (path == NULL)
-		ret = chdir(get_env(envp, "HOME="));
-	else if (strncmp(path, "-", 2))
-		ret = chdir(get_env(envp, "OLDPWD="));
+	cd_deslash(operand);
+	if (operand == NULL || !ft_strncmp(operand, "~", 1))
+		path = get_env(envp, "HOME=");
+	else if (!ft_strncmp(operand, "-", 2))
+		path = get_env(envp, "OLDPWD=");
 	else
-		ret = chdir(path);
-	exit(errno);
+		path = ft_strjoin_d(ft_strdup(get_env(envp, "PWD=")), operand, '/');
+	ret = chdir(path);
+	if (ret == ERROR)
+		cd_error(path);
+	else
+	{
+		builtin_export(ft_strjoin("PWD=", path), shell);
+		builtin_export(ft_strjoin("OLDPWD=", cwd), shell);
+	}
+	free((char *)cwd);
 }
 
 void	builtin_env(char **envp)
@@ -30,7 +39,6 @@ void	builtin_env(char **envp)
 	i = 0;
 	while (envp[i])
 		printf("%s\n", envp[i++]);
-	exit(errno);
 }
 
 void	builtin_echo(char **cmd_array, char **envp)
@@ -46,5 +54,4 @@ void	builtin_echo(char **cmd_array, char **envp)
 			printf(" ");
 	}
 	printf("\n");
-	exit(errno);
 }

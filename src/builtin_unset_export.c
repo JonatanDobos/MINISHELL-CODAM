@@ -24,7 +24,6 @@ void	builtin_unset(char **cmd_array, char **envp)
 		i++;
 	}
 	envp[i] = NULL;
-	exit(errno);
 }
 
 static void	export_new_key(const char *envar, char ***envp)
@@ -52,14 +51,16 @@ static void	export_update_key(const char *envar, int i, char **envp)
 		error_exit(errno, "export_update_key -> ft_strdup");
 }
 
-void	builtin_export(char **cmd_array, t_shell *shell)
+void	builtin_export(char *envar, t_shell *shell)
 {
-	const char	*envar = cmd_array[1];
 	char		*key;
 	int			i;
 
 	errno = 0;
-	syntax_export(envar);
+	if (export_syntax(envar) == false)
+	{
+		printf("export: '%s': not a valid identifier\n", envar);
+	}
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		error_exit(errno, "builtin_export");
@@ -71,9 +72,5 @@ void	builtin_export(char **cmd_array, t_shell *shell)
 	else
 		export_update_key(envar, i, shell->envp);
 	shell->history = NULL;
-	printf("[9] shell: %p\nenvp: %p\n", shell, shell->envp);
-	printf("%s%s\n\n", key, get_env(shell->envp, envar));
-	// builtin_env(shell->envp);
 	free(key);
-	exit(errno);
 }
