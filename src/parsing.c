@@ -92,9 +92,9 @@ static void	quote_handling(t_shell *shell, char *line, size_t i)
 	size_t	len;
 
 	quote = line[i];
-	start = ++(i);
+	start = ++i;
 	while (line[i] != quote && line[i])
-		++(i);
+		++i;
 	len = i - start;
 	if (quote == '\'')
 		new_element(shell, ft_substr(line, start, len));
@@ -109,13 +109,14 @@ static void	quote_handling(t_shell *shell, char *line, size_t i)
 
 static size_t	skip_to_end_quote(const char *line, size_t i)
 {
-	const char	quote = line[i];
+	const char	quote = line[i++];
 
 	while (line[i] && line[i] != quote)
 		++i;
 	return (i);
 }
 
+// TOO LONG!
 void	parse_line_to_element(t_shell *shell, char *line)
 {
 	size_t	i;
@@ -132,8 +133,9 @@ void	parse_line_to_element(t_shell *shell, char *line)
 		{
 			quote_handling(shell, line, i);
 			i = skip_to_end_quote(line, i);
+			start = ++i;
 		}
-		if (ft_iswhitespace(line[i]))
+		else if (ft_iswhitespace(line[i]))
 		{
 			add_element_node(shell, i, start);
 			start = ++i;
