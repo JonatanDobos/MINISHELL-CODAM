@@ -27,6 +27,9 @@ void		execute_sys_cmd(char **cmd_array, char **envp);
 // pipe_forking.c
 int			execution(t_shell *shell);
 
+// syntax_pre.c
+bool		syntax_pre(const char *line);
+
 // BUILTINS
 // builtin_pwd_cd_env_echo.c
 void		builtin_cd(char *operand, char **envp, t_shell *shell);

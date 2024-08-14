@@ -53,12 +53,15 @@ void	read_loop(t_shell *shell)
 	while (true)
 	{
 		rl_on_new_line();
-		shell->line = readline(C_YELLOW "minishell" C_RED " > " C_RESET);
+		shell->line = readline(PROMPT);
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
-		// if (syntax_pre(shell->line) == false)
-		// 	syntax_error();
 		line_history_management(shell);
+		if (syntax_pre(shell->line) == false)
+		{
+			syntax_error();
+			continue ;
+		}
 		TEST_printline(shell);// TEST
 		if (parsing_distributor(shell))// if return = false: reprompt
 		{

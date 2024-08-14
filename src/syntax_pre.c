@@ -27,13 +27,12 @@ static bool	syntax_quotes(const char *line)
 	char	quote;
 	size_t	i;
 
-	quote = '\0';
 	i = 0;
 	while (line[i])
 	{
 		if (line[i] == '\'' || line[i] == '\"')
 		{
-			quote = line[i];
+			quote = line[i++];
 			while (line[i] && line[i] != quote)
 				++i;
 			if (line[i] != quote)

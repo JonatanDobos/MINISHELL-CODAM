@@ -43,15 +43,23 @@ void	builtin_env(char **envp)
 
 void	builtin_echo(char **cmd_array, char **envp)
 {
-	int	i;
+	int		i;
+	bool	n_flag;
 
 	errno = 0;
 	i = 1;
+	n_flag = false;
+	if (cmd_array[i] && !ft_strncmp("-n", cmd_array[i], 3))
+	{
+		n_flag = true;
+		++i;
+	}
 	while (cmd_array[i])
 	{
 		printf("%s", cmd_array[i]);
 		if (cmd_array[++i])
 			printf(" ");
 	}
-	printf("\n");
+	if (!n_flag)
+		printf("\n");
 }

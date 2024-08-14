@@ -14,6 +14,8 @@
 # include <stdbool.h>
 # include <termios.h>
 
+# define PROMPT		"\033[0m\033[0;33mminishell \033[0m\033[0;31m> \033[0m"
+
 // Colors
 
 # define C_RESET	"\033[0m"
