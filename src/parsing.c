@@ -2,7 +2,7 @@
 
 // PARSING: distributing the line over t_list line_element
 
-// Deletes all (outer)quotes in a string
+// Deletes all quotes in a string
 void	delete_quotes(char *str)
 {
 	size_t	i;
@@ -65,7 +65,7 @@ static bool	ft_expand(t_shell *shell, size_t i, size_t start)
 }
 
 // Creates element node of the part between index [start] and [i] on 
-static void	add_element_node(t_shell *shell, size_t i, size_t start)
+static size_t	add_element_node(t_shell *shell, size_t i, size_t start)
 {
 	bool	expand_success;
 	char	*line;
@@ -82,6 +82,7 @@ static void	add_element_node(t_shell *shell, size_t i, size_t start)
 		if (!expand_success)
 			new_element(shell, line);
 	}
+	return (i + 1);
 }
 
 static void	quote_handling(t_shell *shell, char *line, size_t i)
@@ -133,15 +134,13 @@ void	parse_line_to_element(t_shell *shell, char *line)
 		{
 			quote_handling(shell, line, i);
 			i = skip_to_end_quote(line, i);
-			start = ++i;
+			start = i + 1;
 		}
 		else if (ft_iswhitespace(line[i]))
 		{
-			add_element_node(shell, i, start);
-			start = ++i;
+			start = add_element_node(shell, i, start);
 		}
-		else
-			++i;
+		++i;
 	}
 	if (start != i)
 		add_element_node(shell, i, start);
