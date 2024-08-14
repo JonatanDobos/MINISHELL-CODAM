@@ -52,6 +52,7 @@ void	read_loop(t_shell *shell)
 {
 	while (true)
 	{
+		printf("[0] shell: %p\nenvp: %p\n", shell, shell->envp);
 		rl_on_new_line();
 		shell->line = readline(C_YELLOW "minishell" C_RED " > " C_RESET);
 		if (shell->line == NULL)

@@ -70,8 +70,10 @@ void	builtin_export(char **cmd_array, t_shell *shell)
 		export_new_key(envar, &shell->envp);
 	else
 		export_update_key(envar, i, shell->envp);
-	printf("%s%s\n", key, get_env(shell->envp, envar));
-	builtin_env(shell->envp);
+	shell->history = NULL;
+	printf("[9] shell: %p\nenvp: %p\n", shell, shell->envp);
+	printf("%s%s\n\n", key, get_env(shell->envp, envar));
+	// builtin_env(shell->envp);
 	free(key);
 	exit(errno);
 }
