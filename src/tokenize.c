@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static short	token_type(const char *element)
+static short	get_element_type(const char *element)
 {
 	if (ft_strncmp(element, "cd", 3) == 0
 		|| ft_strncmp(element, "pwd", 4) == 0
@@ -9,8 +9,9 @@ static short	token_type(const char *element)
 		|| ft_strncmp(element, "unset", 6) == 0
 		|| ft_strncmp(element, "export", 7) == 0)
 		return (T_BUILTIN);
-	if (ft_strncmp(element, ">", 2) == 0
-		||ft_strncmp(element, "<", 2) == 0)
+	if (ft_strncmp(element, "<<", 2) == 0
+		|| ft_strncmp(element, "<", 1) == 0
+		|| ft_strncmp(element, ">", 1) == 0)
 		return (T_REDIRECT);
 	if (ft_strncmp(element, "|", 2) == 0)
 		return (T_PIPE);
@@ -18,29 +19,47 @@ static short	token_type(const char *element)
 		return (T_SYS_CMD);
 }
 
+static void	fill_new_token(t_token *new_token, t_list *current, short type)
+{
+	if (type == T_REDIRECT)	
+		new_token->redirect = ft_array_append(
+			new_token->redirect, current->content);
+	else
+		new_token->cmd_array = ft_array_append(
+			new_token->cmd_array, current->content);
+}
+
+static void	next_node(t_list **ref_current, short *ref_type)
+{
+	*ref_current = (*ref_current)->next;
+	if (*ref_current)
+		*ref_type = get_element_type((*ref_current)->content);
+}
+
 int	tokenize(t_shell *shell)
 {
 	t_list	*current;
 	t_token	*new_token;
+	short	type;
 
 	current = shell->line_element_head;
+	type = get_element_type(current->content);
 	while (current)
 	{
-		if (current && token_type(current->content) == T_PIPE)
-			current = current->next;
-		if (token_type(current->content) == T_PIPE)
-			exit_clean(shell, 22, "syntax error near unexpected token '|'");
-		new_token = token_new(NULL, token_type(current->content));
+		if (type == T_PIPE)
+			next_node(&current, &type);
+		new_token = token_new(NULL, NULL, type);
 		if (new_token == NULL)
 			exit_clean(shell, errno, NULL);
 		token_add_back(&shell->token_head, new_token);
-		while (current && token_type(current->content) != T_PIPE)
+		while (current && type != T_PIPE)
 		{
-			token_last(shell->token_head)->cmd_array = ft_array_append(
-				token_last(shell->token_head)->cmd_array, current->content);
-			current = current->next;
+			fill_new_token(new_token, current, type);
+			next_node(&current, &type);
 		}
 	}
+	// if (syntax_post(shell) == FAILURE)
+	// 	return (FAILURE);
 	// free line_element_head
 	return (SUCCESS);
 }

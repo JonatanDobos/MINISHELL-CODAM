@@ -5,16 +5,42 @@ void	syntax_error(void)
 	write(STDERR_FILENO, "Syntax Error\n", 14);
 }
 
-bool	syntax_export(const char *envar)
+void	cd_error(char *path)
+{
+	ft_putstr_fd("cd: ", STDERR_FILENO);
+	if (access(path, F_OK) == ERROR)
+		ft_putstr_fd("no such file or directory", STDERR_FILENO);
+	else if (access(path, R_OK) == ERROR)
+		ft_putstr_fd("permission denied", STDERR_FILENO);
+	else
+		ft_putstr_fd("not a directory", STDERR_FILENO);
+	ft_putendl_fd(path, STDERR_FILENO);
+}
+
+void	cd_deslash(char *operand)
+{
+	int	i;
+
+	if (!operand)
+		return ;
+	i = 0;
+	while (operand[i])
+		++i;
+	--i;
+	if (operand[i] == '/')
+		operand[i] = '\0';
+}
+
+int	export_syntax(const char *envar)
 {
 	int		i;
 
 	if (envar == NULL)
-		return (false); // exit (child) with appropriate error msg
+		return (false);
 	i = 0;
 	while (envar[i] && envar[i] != '=')
 	{
-		if (!ft_isalnum(envar[i]) && envar[i] != '_')
+		if (!ft_isalpha(envar[i]) && envar[i] != '_')
 			return (false);
 		++i;
 	}
@@ -23,7 +49,7 @@ bool	syntax_export(const char *envar)
 	return (true);
 }
 
-char	*get_env(char **envp, char *key)
+char	*get_env(char **envp, const char *key)
 {
 	int		i;
 	char	*ret;
@@ -33,7 +59,7 @@ char	*get_env(char **envp, char *key)
 		++i;
 	ret = envp[i];
 	if (ret != NULL)
-		while (*ret != '=')
-			++ret;
-	return (++ret);
+		while (*ret++ != '=')
+			;
+	return (ret);
 }

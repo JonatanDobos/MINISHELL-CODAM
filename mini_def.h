@@ -40,6 +40,7 @@ enum	e_token_type
 typedef struct s_token
 {
 	char		**cmd_array;
+	char		**redirect;
 	short		type;
 	void		*next;
 }	t_token;

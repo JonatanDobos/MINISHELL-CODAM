@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin_d.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: simon <simon@student.42.fr>                +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/19 17:37:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/04/30 23:44:50 by simon            ###   ########.fr       */
+/*   Updated: 2024/08/14 19:28:01 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 char	*ft_strjoin_d(const char *s1, const char *s2, const char delim)
 {
 	char			*ptr;
-	const size_t	s1len = ft_strlen(s1);
-	const size_t	s2len = ft_strlen(s2);
+	const size_t	s1len = ft_strlen_null(s1);
+	const size_t	s2len = ft_strlen_null(s2);
 
 	ptr = (char *)malloc((s1len + s2len + 2) * sizeof(char));
 	if (ptr == NULL)

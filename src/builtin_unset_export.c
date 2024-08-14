@@ -1,73 +1,76 @@
 #include "../minishell.h"
 
-void	builtin_unset(
-	t_shell *shell, char **cmd_array)
+void	builtin_unset(char **cmd_array, char **envp)
 {
 	char		*key;
 	int			i;
 
+	errno = 0;
 	key = ft_strdup_d(cmd_array[1], '=');
 	if (key == NULL)
-		exit_clean(shell, errno, NULL);
+		error_exit(errno, "builtin_unset -> ft_strdup_d");
 	i = 0;
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
+	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
 		i++;
-	if (shell->envp[i] == NULL)
-		return ;
-	free(shell->envp[i]);
-	while (shell->envp[i + 1] != NULL)
+	if (envp[i] == NULL)
 	{
-		shell->envp[i] = shell->envp[i + 1];
+		free(key);
+		exit(SUCCESS);
+	}
+	free(envp[i]);
+	while (envp[i + 1] != NULL)
+	{
+		envp[i] = envp[i + 1];
 		i++;
 	}
-	shell->envp[i] = NULL;
+	envp[i] = NULL;
 }
 
-static void	export_new_key(
-	t_shell *shell, const char *envar)
+static void	export_new_key(const char *envar, char ***envp)
 {
 	char	**new_envp;
 	int		i;
 
 	i = 0;
-	while (shell->envp[i] != NULL)
+	while ((*envp)[i] != NULL)
 		i++;
-	new_envp = ft_realloc_array(shell->envp, i + 1);
+	new_envp = ft_realloc_array(*envp, i + 1);
 	if (new_envp == NULL)
-		exit_clean(shell, errno, NULL);
-	shell->envp = new_envp;
-	shell->envp[i] = ft_strdup(envar);
+		error_exit(errno, "export_new_key -> ft_realloc_array");
+	new_envp[i] = ft_strdup(envar);
 	if (new_envp[i] == NULL)
-		exit_clean(shell, errno, NULL);
+		error_exit(errno, "export_new_key -> ft_strdup");
+	*envp = new_envp;
 }
 
-static void	export_update_key(
-	t_shell *shell, const char *envar, int i)
+static void	export_update_key(const char *envar, int i, char **envp)
 {
-	free(shell->envp[i]);
-	shell->envp[i] = ft_strdup(envar);
-	if (shell->envp[i] == NULL)
-		exit_clean(shell, errno, NULL);
+	free(envp[i]);
+	envp[i] = ft_strdup(envar);
+	if (envp[i] == NULL)
+		error_exit(errno, "export_update_key -> ft_strdup");
 }
 
-// envar should be cmd_node->content, will not be free'd in this function
-void	builtin_export(
-	t_shell *shell, char **cmd_array)
+void	builtin_export(char *envar, t_shell *shell)
 {
-	const char	*envar = cmd_array[1];
 	char		*key;
 	int			i;
 
-	if (syntax_export(envar) == false)
-		return (syntax_error()); // syntax_export could exit instead once pipex is in place
+	errno = 0;
+	if (export_syntax(envar) == false)
+	{
+		printf("export: '%s': not a valid identifier\n", envar);
+	}
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
-		exit_clean(shell, errno, NULL);
+		error_exit(errno, "builtin_export");
 	i = 0;
 	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
 		i++;
 	if (shell->envp[i] == NULL)
-		export_new_key(shell, envar);
+		export_new_key(envar, &shell->envp);
 	else
-		export_update_key(shell, envar, i);
+		export_update_key(envar, i, shell->envp);
+	shell->history = NULL;
+	free(key);
 }
