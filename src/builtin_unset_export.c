@@ -60,6 +60,7 @@ void	builtin_export(char *envar, t_shell *shell)
 	if (export_syntax(envar) == false)
 	{
 		printf("export: '%s': not a valid identifier\n", envar);
+		return ;
 	}
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)

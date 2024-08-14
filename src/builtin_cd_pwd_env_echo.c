@@ -23,7 +23,7 @@ void	builtin_cd(char *operand, char **envp, t_shell *shell)
 	ret = chdir(path);
 	if (ret == ERROR)
 		cd_error(path);
-	else
+	else // change saved path after with cd ..
 	{
 		builtin_export(ft_strjoin("PWD=", path), shell);
 		builtin_export(ft_strjoin("OLDPWD=", cwd), shell);

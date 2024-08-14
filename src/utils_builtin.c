@@ -9,12 +9,15 @@ void	cd_error(char *path)
 {
 	ft_putstr_fd("cd: ", STDERR_FILENO);
 	if (access(path, F_OK) == ERROR)
-		ft_putstr_fd("no such file or directory", STDERR_FILENO);
+		ft_putstr_fd("no such file or directory: ", STDERR_FILENO);
 	else if (access(path, R_OK) == ERROR)
-		ft_putstr_fd("permission denied", STDERR_FILENO);
+		ft_putstr_fd("permission denied: ", STDERR_FILENO);
 	else
-		ft_putstr_fd("not a directory", STDERR_FILENO);
-	ft_putendl_fd(path, STDERR_FILENO);
+		ft_putstr_fd("not a directory: ", STDERR_FILENO);
+	if (path == NULL)
+		ft_putendl_fd(" ", STDERR_FILENO);
+	else
+		ft_putendl_fd(path, STDERR_FILENO);
 }
 
 void	cd_deslash(char *operand)
