@@ -56,11 +56,11 @@ void	read_loop(t_shell *shell)
 		shell->line = readline(PROMPT);
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
+		line_history_management(shell);
 		if (syntax_pre(shell->line) == false)
 			syntax_error();
 		else
 		{
-			line_history_management(shell);
 			TEST_printline(shell);// TEST
 			if (parsing_distributor(shell))// if return = false: reprompt
 				execution(shell);// experimental

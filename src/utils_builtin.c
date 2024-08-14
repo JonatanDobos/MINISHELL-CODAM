@@ -35,5 +35,5 @@ char	*get_env(char **envp, char *key)
 	if (ret != NULL)
 		while (*ret != '=')
 			++ret;
-	return (ret);
+	return (++ret);
 }
