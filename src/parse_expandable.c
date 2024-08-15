@@ -12,8 +12,7 @@ char	*parse_envp(
 	if (str[i] != '$' || !ft_isalnum(str[i + 1]))
 		return (NULL);
 	start = ++i;
-	while (str[i] && (str[i] == '_'
-			|| ft_isalnum(str[i])))
+	while (str[i] == '_' || ft_isalnum(str[i]))
 		++i;
 	len = i - start;
 	j = 0;
@@ -36,21 +35,19 @@ char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 	char	*envp_str;
 	size_t	len_del;
 
-	if (str[i + 1] == '?' && (ft_iswhitespace(str[i + 2]) || !str[i + 2]))
+	if (str[i + 1] == '?')
 		ret = str_insert(str, ft_itoa(shell->last_errno), i, 2);
 	else
 	{
+		len_del = i + 1;
+		while (str[len_del] == '_' || ft_isalnum(str[len_del]))
+			++len_del;
+		len_del = len_del - i;
 		envp_str = parse_envp(shell->envp, str, i);
 		if (envp_str)
-		{
-			len_del = i;
-			while (str[len_del] && !ft_iswhitespace(str[len_del]))
-				++len_del;
-			len_del = len_del - i;
 			ret = str_insert(str, envp_str, i, len_del);
-		}
 		else
-			return (str);
+			ret = str_insert(str, "\0", i, len_del);
 	}
 	return (ret);
 }
@@ -69,16 +66,10 @@ char	*expand_env_in_str(t_shell *shell, char *str)
 		if (str[i] == '$')
 		{
 			ret = insert_envp_in_str(shell, str, i);
+			free(str);
 			if (!ret)
-			{
-				free(str);
 				exit_clean(shell, errno, "expand_envp_in_str");
-			}
-			if (ft_strncmp(str, ret, ft_strlen(str) + 1))
-			{
-				free(str);
-				str = ret;
-			}
+			str = ret;
 			ret = NULL;
 		}
 		++i;
