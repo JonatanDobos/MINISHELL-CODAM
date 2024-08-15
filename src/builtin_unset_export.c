@@ -5,17 +5,16 @@ void	builtin_unset(char **cmd_array, char **envp)
 	char		*key;
 	int			i;
 
-	errno = 0;
 	key = ft_strdup_d(cmd_array[1], '=');
 	if (key == NULL)
-		error_exit(errno, "builtin_unset -> ft_strdup_d");
+		return ;
 	i = 0;
 	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
 		i++;
 	if (envp[i] == NULL)
 	{
 		free(key);
-		exit(SUCCESS);
+		return ;
 	}
 	free(envp[i]);
 	while (envp[i + 1] != NULL)
@@ -36,10 +35,10 @@ static void	export_new_key(const char *envar, char ***envp)
 		i++;
 	new_envp = ft_realloc_array(*envp, i + 1);
 	if (new_envp == NULL)
-		error_exit(errno, "export_new_key -> ft_realloc_array");
+		return ;
 	new_envp[i] = ft_strdup(envar);
 	if (new_envp[i] == NULL)
-		error_exit(errno, "export_new_key -> ft_strdup");
+		return ;
 	*envp = new_envp;
 }
 
@@ -47,31 +46,28 @@ static void	export_update_key(const char *envar, int i, char **envp)
 {
 	free(envp[i]);
 	envp[i] = ft_strdup(envar);
-	if (envp[i] == NULL)
-		error_exit(errno, "export_update_key -> ft_strdup");
 }
 
-void	builtin_export(char *envar, t_shell *shell)
+char	**builtin_export(char *envar, char **envp)
 {
 	char		*key;
 	int			i;
 
-	errno = 0;
 	if (export_syntax(envar) == false)
 	{
 		printf("export: '%s': not a valid identifier\n", envar);
-		return ;
+		return (envp);
 	}
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
-		error_exit(errno, "builtin_export");
+		return (envp);
 	i = 0;
-	while (shell->envp[i] && ft_strncmp(shell->envp[i], key, ft_strlen(key)))
+	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
 		i++;
-	if (shell->envp[i] == NULL)
-		export_new_key(envar, &shell->envp);
+	if (envp[i] == NULL)
+		export_new_key(envar, &envp);
 	else
-		export_update_key(envar, i, shell->envp);
-	shell->history = NULL;
+		export_update_key(envar, i, envp);
 	free(key);
+	return (envp);
 }

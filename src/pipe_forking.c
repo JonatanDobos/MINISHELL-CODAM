@@ -56,10 +56,10 @@ int	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 		if (token->redirect)
 			open_files(shell, token);
 		if (token->type == T_BUILTIN)
-			execute_builtin(token->cmd_array, shell);
+			execute_builtin(token->cmd_array, &shell->envp);
 		else
-			execute_builtin(token->cmd_array, shell); // change to sys_cmd (currently has zombie/wait issue)
-		exit(errno);
+			execute_sys_cmd(token->cmd_array, shell->envp);
+		exit_clean(shell, errno, token->cmd_array[0]);
 	}
 	return (pid);
 }
@@ -90,7 +90,7 @@ int	execution(t_shell *shell)
 	standup[1] = dup(STDOUT_FILENO);
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
-		return (execute_builtin(token->cmd_array, shell));
+		return (execute_builtin(token->cmd_array, &shell->envp));
 	while (token != NULL)
 	{
 		if (pipe(pipe_fds) == -1)

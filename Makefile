@@ -17,14 +17,13 @@ endif
 LFTDIR	=	./libft
 LIBFT	=	$(LFTDIR)/libft.a
 
-# SRCDIR	=	./test_env_src
-# SRC	=	$(SRCDIR)/main.c
 
 SRCDIR	=	./src
 SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/main.c \
 			$(SRCDIR)/builtin_unset_export.c \
-			$(SRCDIR)/builtin_cd_pwd_env_echo.c \
+			$(SRCDIR)/builtin_cd.c \
+			$(SRCDIR)/builtin_pwd_env_echo.c \
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
@@ -40,21 +39,26 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/utils_string.c \
 			$(SRCDIR)/utils_token_list.c
 
-OBJ	=	$(SRC:.c=.o)
+OBJDIR	=	./obj
+OBJ		=	$(SRC:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
 
-all: $(NAME)
+all:  $(NAME)
 
 $(LIBFT):
 	make -C $(LFTDIR) all -s
 
-%.o: %.c
+$(OBJDIR):
+	mkdir -p $(OBJDIR)
+
+$(OBJDIR)/%.o: $(SRCDIR)/%.c
 	$(CC) $(CFLAGS) $(INCLUDES) -o $@ -c $<
 
-$(NAME): $(LIBFT) $(OBJ)
+$(NAME): $(LIBFT) $(OBJDIR) $(OBJ)
 	$(CC) $(OBJ) $(LIBFT) $(LDFLAGS) -o $(NAME)
 
 clean:
 	rm -f $(OBJ)
+	rm -df $(OBJDIR)
 	make -C $(LFTDIR) clean
 
 fclean: clean

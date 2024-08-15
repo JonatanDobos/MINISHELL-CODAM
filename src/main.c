@@ -59,7 +59,7 @@ void	read_loop(t_shell *shell)
 		line_history_management(shell);
 		if (syntax_pre(shell->line) == false)
 		{
-			syntax_error();
+			printf("newline on input not yet implemented");
 			continue ;
 		}
 		TEST_printline(shell);// TEST
@@ -72,6 +72,8 @@ void	read_loop(t_shell *shell)
 				// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
 			}
 			shell->last_errno = execution(shell);// experimental
+			if (shell->last_errno == ENOMEM)
+				exit_clean(shell, errno, "malloc fail");
 		}
 		clean_lists(shell);
 	}

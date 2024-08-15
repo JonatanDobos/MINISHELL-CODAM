@@ -22,7 +22,7 @@ char		*expand_env_in_str(t_shell *shell, char *str);
 char		**create_envp(char **envp);
 
 // pipe_execution.c
-int			execute_builtin(char **cmd_array, t_shell *shell);
+int			execute_builtin(char **cmd_array, char ***envp);
 void		execute_sys_cmd(char **cmd_array, char **envp);
 // pipe_forking.c
 int			execution(t_shell *shell);
@@ -32,19 +32,16 @@ bool		syntax_pre(const char *line);
 
 // BUILTINS
 // builtin_pwd_cd_env_echo.c
-void		builtin_cd(char *operand, char **envp, t_shell *shell);
+void		builtin_cd(char *operand, char ***envp);
 void		builtin_pwd(char **envp);
 void		builtin_env(char **envp);
 void		builtin_echo(char **cmd_array, char **envp);
 // builtin_unset_export.c
 void		builtin_unset(char **cmd_array, char **envp);
-void		builtin_export(char *envar, t_shell *shell);
+char		**builtin_export(char *envar, char **envp);
 
 // UTILS
 // utils_builtin.c
-void		cd_error(char *path);
-void		cd_deslash(char *operand);
-void		syntax_error(void);
 int			export_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
 
@@ -55,7 +52,6 @@ char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);
-void		error_exit(int num, const char *param);
 // void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
 
 // utils_free.c

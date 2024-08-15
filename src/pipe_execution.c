@@ -13,13 +13,13 @@ static char	*select_path(char *command, char **envp)
 		return (ft_strjoin_d(".", command, '/'));
 	all_paths = ft_split(envp[i] + 5, ':');
 	if (all_paths == NULL)
-		error_exit(errno, command);
+		return (NULL);
 	i = 0;
 	while (all_paths[i] != NULL)
 	{
 		path = ft_strjoin_d(all_paths[i], command, '/');
 		if (path == NULL)
-			error_exit(errno, command);
+			return (NULL);
 		if (access(path, F_OK) == 0)
 			break ;
 		ft_free_null(&path);
@@ -43,27 +43,27 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 	{
 		path = select_path(cmd_array[0], envp);
 		if (path == NULL)
-			error_exit(127, cmd_array[0]);
+			return ;
 		execve(path, cmd_array, envp);
-		if (access(cmd_array[0], X_OK) == -1)
-			error_exit(127, cmd_array[0]);
 	}
-	error_exit(errno, cmd_array[0]);
+	if (access(cmd_array[0], X_OK) == -1)
+		errno = 127;
 }
 
-int	execute_builtin(char **cmd_array, t_shell *shell)
+int	execute_builtin(char **cmd_array, char ***envp)
 {
+	errno = 0;
 	if (!ft_strncmp(cmd_array[0], "cd", 3))
-		builtin_cd(cmd_array[1], shell->envp, shell);
-	if (!ft_strncmp(cmd_array[0], "pwd", 4))
-		builtin_pwd(shell->envp);
-	if (!ft_strncmp(cmd_array[0], "env", 4))
-		builtin_env(shell->envp);
-	if (!ft_strncmp(cmd_array[0], "echo", 5))
-		builtin_echo(cmd_array, shell->envp);
-	if (!ft_strncmp(cmd_array[0], "unset", 6))
-		builtin_unset(cmd_array, shell->envp);
-	if (!ft_strncmp(cmd_array[0], "export", 7))
-		builtin_export(cmd_array[1], shell);
+		builtin_cd(cmd_array[1], envp);
+	else if (!ft_strncmp(cmd_array[0], "pwd", 4))
+		builtin_pwd(*envp);
+	else if (!ft_strncmp(cmd_array[0], "env", 4))
+		builtin_env(*envp);
+	else if (!ft_strncmp(cmd_array[0], "echo", 5))
+		builtin_echo(cmd_array, *envp);
+	else if (!ft_strncmp(cmd_array[0], "unset", 6))
+		builtin_unset(cmd_array, *envp);
+	else if (!ft_strncmp(cmd_array[0], "export", 7))
+		*envp = builtin_export(cmd_array[1], *envp);
 	return (errno);
 }
