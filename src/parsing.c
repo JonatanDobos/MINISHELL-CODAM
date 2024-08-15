@@ -48,22 +48,6 @@ static void	new_element(t_shell *shell, char *sub_line)
 	ft_lstadd_back(head_elem, new_node);
 }
 
-static bool	ft_expand(t_shell *shell, size_t i, size_t start)
-{
-	char	*envp_line;
-
-	if (shell->line[start + 1] == '?')
-		return (new_element(shell, ft_itoa(shell->last_errno)), true);
-	else
-	{
-		envp_line = parse_envp(shell->envp, shell->line, start);
-		if (envp_line)
-			new_element(shell, ft_strdup(envp_line));
-		return (true);
-	}
-	return (false);
-}
-
 // Creates element node of the part between index [start] and [i] on 
 static size_t	add_element_node(t_shell *shell, size_t i, size_t start)
 {
@@ -76,11 +60,7 @@ static size_t	add_element_node(t_shell *shell, size_t i, size_t start)
 		if (!line)
 			exit_clean(shell, errno, "add_element_node");
 		delete_quotes(line);
-		expand_success = false;
-		if (shell->line[start] == '$')
-			expand_success = ft_expand(shell, i, start);
-		if (!expand_success)
-			new_element(shell, line);
+		new_element(shell, expand_env_in_str(shell, line));
 	}
 	return (i + 1);
 }
