@@ -11,7 +11,8 @@ static short	get_element_type(const char *element)
 		return (T_BUILTIN);
 	if (ft_strncmp(element, "<<", 2) == 0
 		|| ft_strncmp(element, "<", 1) == 0
-		|| ft_strncmp(element, ">", 1) == 0)
+		|| ft_strncmp(element, ">", 1) == 0
+		|| ft_strncmp(element, ">>", 2) == 0)
 		return (T_REDIRECT);
 	if (ft_strncmp(element, "|", 2) == 0)
 		return (T_PIPE);
@@ -19,21 +20,28 @@ static short	get_element_type(const char *element)
 		return (T_SYS_CMD);
 }
 
-static void	fill_new_token(t_token *new_token, t_list *current, short type)
-{
-	if (type == T_REDIRECT)	
-		new_token->redirect = ft_array_append(
-			new_token->redirect, current->content);
-	else
-		new_token->cmd_array = ft_array_append(
-			new_token->cmd_array, current->content);
-}
-
-static void	next_node(t_list **ref_current, short *ref_type)
+static short	next_node(t_list **ref_current)
 {
 	*ref_current = (*ref_current)->next;
 	if (*ref_current)
-		*ref_type = get_element_type((*ref_current)->content);
+		return (get_element_type((*ref_current)->content));
+	return (T_SYS_CMD);
+}
+
+static void	fill_new_token(t_token *new_token, t_list **current, short type)
+{
+	while (*current && type != T_PIPE)
+	{
+		if (type == T_REDIRECT)	
+			new_token->redirect = ft_array_append(
+				new_token->redirect, (*current)->content);
+		else
+			new_token->cmd_array = ft_array_append(
+				new_token->cmd_array, (*current)->content);
+		type = next_node(current);
+	}
+	while (new_token->type == T_REDIRECT && current)
+		new_token->type = next_node(current);
 }
 
 int	tokenize(t_shell *shell)
@@ -47,19 +55,13 @@ int	tokenize(t_shell *shell)
 	while (current)
 	{
 		if (type == T_PIPE)
-			next_node(&current, &type);
+			next_node(&current);
 		new_token = token_new(NULL, NULL, type);
 		if (new_token == NULL)
 			exit_clean(shell, errno, NULL);
+		fill_new_token(new_token, &current, type);
 		token_add_back(&shell->token_head, new_token);
-		while (current && type != T_PIPE)
-		{
-			fill_new_token(new_token, current, type);
-			next_node(&current, &type);
-		}
 	}
-	// if (syntax_post(shell) == FAILURE)
-	// 	return (FAILURE);
 	// free line_element_head
 	return (SUCCESS);
 }

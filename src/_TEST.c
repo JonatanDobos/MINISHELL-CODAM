@@ -178,8 +178,10 @@ void	TEST_print_token_lst(
 		// 	print_precursor(set, accent_col, thick_line);
 		// 	printf("%s> element_head: NULL\n", C_DIM);
 		// }
-		if (tmp->cmd_array && *tmp->cmd_array)
+		if (tmp->cmd_array)
 			TEST_print_pointer_arr(tmp->cmd_array, set, accent_col, thick_line, C_DIM_TEAL, "cmd_array");// ->cmd_head
+		if (tmp->cmd_array)
+			TEST_print_pointer_arr(tmp->redirect, set, accent_col, thick_line, "\e[2;33m", "redirect");// ->redirect
 		else
 		{
 			print_precursor(set, accent_col, thick_line);
