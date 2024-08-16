@@ -20,28 +20,27 @@ static short	get_element_type(const char *element)
 		return (T_SYS_CMD);
 }
 
-static short	next_node(t_list **ref_current)
+static void	next_node(t_list **ref_current, short *type)
 {
 	*ref_current = (*ref_current)->next;
 	if (*ref_current)
-		return (get_element_type((*ref_current)->content));
-	return (T_SYS_CMD);
+		*type = get_element_type((*ref_current)->content);
 }
 
-static void	fill_new_token(t_token *new_token, t_list **current, short type)
+static void	fill_new_token(t_token *new_token, t_list **current, short *type)
 {
-	while (*current && type != T_PIPE)
+	while (*type != T_PIPE && *current)
 	{
-		if (type == T_REDIRECT)	
+		if (*type == T_REDIRECT)	
 			new_token->redirect = ft_array_append(
 				new_token->redirect, (*current)->content);
 		else
 			new_token->cmd_array = ft_array_append(
 				new_token->cmd_array, (*current)->content);
-		type = next_node(current);
+		if (new_token->type == T_REDIRECT)
+			new_token->type = *type;
+		next_node(current, type);
 	}
-	while (new_token->type == T_REDIRECT && current)
-		new_token->type = next_node(current);
 }
 
 int	tokenize(t_shell *shell)
@@ -54,12 +53,12 @@ int	tokenize(t_shell *shell)
 	type = get_element_type(current->content);
 	while (current)
 	{
-		if (type == T_PIPE)
-			next_node(&current);
+		while (type == T_PIPE && current)
+			next_node(&current, &type);
 		new_token = token_new(NULL, NULL, type);
 		if (new_token == NULL)
 			exit_clean(shell, errno, NULL);
-		fill_new_token(new_token, &current, type);
+		fill_new_token(new_token, &current, &type);
 		token_add_back(&shell->token_head, new_token);
 	}
 	// free line_element_head
