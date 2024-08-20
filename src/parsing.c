@@ -52,9 +52,9 @@ static void	new_element(t_shell *shell, char *sub_line)
 // after splitting where needed
 static void	splitter(t_shell *shell, size_t i, size_t start)
 {
-	bool	expand_success;
+	bool		expand_success;
 	const char	*line = ft_substr(shell->line, start, i - start);
-	char	quote;
+	char		quote;
 
 	if (!line)
 		exit_clean(shell, errno, "splitter()");
