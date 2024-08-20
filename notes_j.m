@@ -1,9 +1,6 @@
-Fix parsing:
+TODO:
 
-- handling of: $HOME""
-
-
-To do:
-
-- think about what the best input is for pipex part 
-(eg.: linked list with nodes: token + pointer arr)
+- fixing redirects: includeing the filename in the node
+- expanding to AFETR tokenize
+- handling quotes after tokenize ??
+- negating expandables before commands
