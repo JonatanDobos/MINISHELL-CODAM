@@ -62,6 +62,7 @@ void	read_loop(t_shell *shell)
 			printf("newline on input not yet implemented");
 			continue ;
 		}
+		str_pre_format(shell->line);
 		TEST_printline(shell);// TEST
 		if (parsing_distributor(shell))// if return = false: reprompt
 		{

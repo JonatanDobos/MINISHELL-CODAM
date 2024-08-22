@@ -49,6 +49,7 @@ char		*get_env(char **envp, const char *key);
 char		*strdup_index(char *str, size_t	start, size_t end);
 char		*ft_onlyspace(char *str);
 char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
+void		str_pre_format(char *str);
 
 // utils_exit.c
 void		exit_clean(t_shell *shell, int num, char *message);

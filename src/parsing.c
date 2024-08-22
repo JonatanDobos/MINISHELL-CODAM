@@ -77,7 +77,7 @@ static void	splitter(t_shell *shell, size_t i, size_t start)
 }
 
 // Filters out whitespace
-void	parse_line_to_element(t_shell *shell, char *line)
+void	parse_line_to_element(t_shell *shell, char *line)// LEFT OFF !!
 {
 	size_t	i;
 	size_t	start;

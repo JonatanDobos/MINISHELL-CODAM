@@ -76,3 +76,33 @@ char	*str_insert(char *str, char *insert, size_t start, size_t len_del)
 	ret[i] = '\0';
 	return (ret);
 }
+
+// Formats str before parsing
+// - takes out unnecessary whitespace
+// - not between single quotes
+void	str_pre_format(char *str)
+{
+	bool	quote;
+	size_t	new;
+	size_t	i;
+
+	i = 0;
+	new = 0;
+	quote = false;
+	while (str[i])
+	{
+		if (quote == false && str[i] == '\'')
+			quote = true;
+		else if (quote && str[i] == '\'')
+			quote = false;
+		if (quote == false && str[i] != ' ' && ft_iswhitespace(str[i]))
+		{
+			while (str[i] != ' ' && ft_iswhitespace(str[i]))
+				++i;
+			str[new++] = ' ';
+		}
+		else
+			str[new++] = str[i++];
+	}
+	str[new] = '\0';
+}
