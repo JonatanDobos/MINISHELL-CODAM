@@ -34,6 +34,7 @@ void	outfile_trunc(t_shell *shell, char *outfile)
 {
 	int	fd;
 
+	printf("%s\n", outfile);
 	fd = open_outfile(outfile);
 	if (fd == -1)
 		exit_clean(shell, errno, "open_outfile()");
@@ -48,14 +49,14 @@ void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
 	i = 0;
 	while (token->redirect[i])
 	{
-		/*if (!ft_strncmp(token->cmd_array[i], "<<", 2))
-		 	heredoc(shell, token->cmd_array[i]);
-		else */if (!ft_strncmp(token->cmd_array[i], "<", 1))
-			infile(shell, token->cmd_array[i]);
-		/*if (!ft_strncmp(token->cmd_array[i], ">>", 1))
-			outfile_append(shell, token->cmd_array[i]);
-		else */if (!ft_strncmp(token->cmd_array[i], ">", 1))
-			outfile_trunc(shell, token->cmd_array[i]);
+		/*if (!ft_strncmp(token->redirect[i], "<<", 2))
+		 	heredoc(shell, token->redirect[i] + 2);
+		else */if (!ft_strncmp(token->redirect[i], "<", 1))
+			infile(shell, token->redirect[i] + 1);
+		/*if (!ft_strncmp(token->redirect[i], ">>", 2))
+			outfile_append(shell, token->redirect[i] + 2);
+		else */if (!ft_strncmp(token->redirect[i], ">", 1))
+			outfile_trunc(shell, token->redirect[i] + 1);
 		i++;
 	}
 }
