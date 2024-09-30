@@ -18,26 +18,6 @@ static void	new_node(t_shell *shell, char *sub_line)
 	ft_lstadd_back(head_elem, new_node);
 }
 
-// Should it throw: error: unexpected token???
-static int	isaction(char *c)
-{
-	if (!c)
-		return (0);
-	if (c[0] == '<' && c[1] == '<')
-		return (2);
-	if (c[0] == '>' && c[1] == '>')
-		return (2);
-	if (c[0] == '|' && c[1] == '|')
-		return (2);
-	if (c[0] == '<')
-		return (1);
-	if (c[0] == '>')
-		return (1);
-	if (c[0] == '|')
-		return (1);
-	return (0);
-}
-
 static int	isact_char(char c)
 {
 	if (c == '<' || c == '>' || c == '|')
@@ -45,18 +25,23 @@ static int	isact_char(char c)
 	return (0);
 }
 
+// Returns: amount of characters to skip, or -1 if error unexpected token
 static int	isaction(char *c)
 {
+	if (!isact_char(c[0]))
+		return (0);
 	if (isact_char(c[0]) && !isact_char(c[1]))
 		return (1);
-	if (c[0] == '<' && c[1] == '<')
+	if ((c[0] == '<' && isact_char(c[1]) && c[1] != '|')
+		|| (c[0] == '>' && isact_char(c[1]) && c[1] != '<')
+		|| (c[0] == '|' && isact_char(c[1])))
 	{
 		if (!isact_char(c[3]))
 			return (2);
 		else
 			return (-1);
 	}
-	// LEFTOFF! RESUME IF ELSE
+	return (0);
 }
 
 // Uses basic t_list
