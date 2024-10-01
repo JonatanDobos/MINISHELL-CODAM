@@ -66,8 +66,8 @@ void		token_delone(t_token *node);
 
 
 // utils_fd_manipulate.c
-int			set_input(int input_fd);
-int			set_output(int output_fd);
+void		set_input(t_shell *shell, int input_fd);
+void		set_output(t_shell *shell, int output_fd);
 void		set_infile(t_shell *shell, char *infile);
 void		set_outfile_append(t_shell *shell, char *outfile);
 void		set_outfile_trunc(t_shell *shell, char *outfile);

@@ -1,12 +1,21 @@
 #include "../minishell.h"
 
-// static void	ft_close(int fd, char *id)
-// {
-// 	if (close(fd) == -1)
-// 		fprintf(stderr, "%s:\t\e[31mfailed to close [%d]\e[0m\n", id ,fd);
-// 	else
-// 		fprintf(stderr, "%s:\t\e[34mclosed [%d]\e[0m\n", id ,fd);
-// }
+static void	determine_output(t_shell *shell,
+	t_list *next, int *standup, int *pipe_fds)
+{
+	if (next == NULL)
+	{
+		set_output(shell, standup[1]);
+		if (close(pipe_fds[1]) == -1)
+			exit_clean(shell, errno, "set_output()");
+	}
+	else
+	{
+		set_output(shell, pipe_fds[1]);
+		if (close(standup[1]) == -1)
+			exit_clean(shell, errno, "set_output()");
+	}
+}
 
 void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
 {
@@ -15,19 +24,22 @@ void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
 	i = 0;
 	while (token->redirect[i])
 	{
-		/*if (!ft_strncmp(token->redirect[i], "<<", 2))
-		 	heredoc(shell, token->redirect[i] + 2);
-		else */if (!ft_strncmp(token->redirect[i], "<", 1))
+		// if (!ft_strncmp(token->redirect[i], "<<", 2))
+		//  	heredoc(shell, token->redirect[i] + 2);
+		// else
+		if (!ft_strncmp(token->redirect[i], "<", 1))
 			set_infile(shell, token->redirect[i] + 1);
-		/*if (!ft_strncmp(token->redirect[i], ">>", 2))
-			set_outfile_append(shell, token->redirect[i] + 2);
-		else */if (!ft_strncmp(token->redirect[i], ">", 1))
+		// if (!ft_strncmp(token->redirect[i], ">>", 2))
+		// 	set_outfile_append(shell, token->redirect[i] + 2);
+		// else
+		if (!ft_strncmp(token->redirect[i], ">", 1))
 			set_outfile_trunc(shell, token->redirect[i] + 1);
 		i++;
 	}
 }
 
-static pid_t	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
+static pid_t	kiddo(t_shell *shell,
+	t_token *token, int *standup, int *pipe_fds)
 {
 	pid_t	pid;
 
@@ -36,20 +48,10 @@ static pid_t	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 	{
 		close(standup[0]);
 		close(pipe_fds[0]);
-		if (token->next == NULL)
-		{
-			if (set_output(standup[1]) == ERROR
-				|| close(pipe_fds[1]) == -1)
-				exit_clean(shell, errno, "set_output()");
-		}
-		else
-		{
-			if (set_output(pipe_fds[1]) == ERROR
-				|| close(standup[1]) == -1)
-				exit_clean(shell, errno, "set_output()");
-		}
+		determine_output(shell, token->next, standup, pipe_fds);
+		// open_files doesn't work because parsing is incomplete
 		if (token->redirect)
-			open_files(shell, token); // doesn't work because parsing is incomplete
+			open_files(shell, token);
 		if (token->type == T_BUILTIN)
 			execute_builtin(token->cmd_array, &shell->envp);
 		else
@@ -88,18 +90,20 @@ int	execution(t_shell *shell)
 	standup[1] = dup(STDOUT_FILENO);
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
-		return (execute_builtin(token->cmd_array, &shell->envp)); // doesn't include redirects yet
+	{
+		open_files(shell, token);
+		return (execute_builtin(token->cmd_array, &shell->envp));
+	}
 	while (token != NULL)
 	{
 		if (pipe(pipe_fds) == -1)
 			exit_clean(shell, errno, "pipe()");
 		pid = kiddo(shell, token, standup, pipe_fds);
-		if (set_input(pipe_fds[0]) == ERROR)
-			exit_clean(shell, errno, "set_input()");
+		set_input(shell, pipe_fds[0]);
 		close(pipe_fds[1]);
 		token = token->next;
 	}
-	set_input(standup[0]);
-	set_output(standup[1]);
+	set_input(shell, standup[0]);
+	set_output(shell, standup[1]);
 	return (zombie_prevention_protocol(pid));
 }

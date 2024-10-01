@@ -30,6 +30,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/parsing.c \
 			$(SRCDIR)/pipe_execution.c \
 			$(SRCDIR)/pipe_forking.c \
+			$(SRCDIR)/signals.c \
 			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_builtin.c \

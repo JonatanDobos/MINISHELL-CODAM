@@ -69,6 +69,7 @@ SRC		=	ft_abs.c \
 			ft_strtrim.c \
 			ft_substr.c \
 			ft_swap_ints.c \
+			ft_swap.c \
 			ft_tolower.c \
 			ft_toupper.c \
 			ft_writing.c \

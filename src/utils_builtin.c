@@ -9,7 +9,7 @@ int	export_syntax(const char *envar)
 		return (false);
 	i = 0;
 	if (!ft_isalpha(envar[i]) && envar[i] != '_')
-			return (false);
+		return (false);
 	++i;
 	while (envar[i] && envar[i] != '=')
 	{

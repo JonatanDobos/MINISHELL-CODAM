@@ -6,7 +6,7 @@ char	**create_envp(char **envp)
 	int		i;
 
 	i = 0;
-	while(envp[i] != NULL)
+	while (envp[i] != NULL)
 		++i;
 	array = (char **)malloc(sizeof(char *) * (i + 1));
 	array[i] = NULL;
