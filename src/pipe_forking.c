@@ -8,40 +8,6 @@
 // 		fprintf(stderr, "%s:\t\e[34mclosed [%d]\e[0m\n", id ,fd);
 // }
 
-void	infile(t_shell *shell, char *infile)
-{
-	int	fd;
-
-	fd = open_infile(infile);
-	if (fd == -1)
-		exit_clean(shell, errno, "open_infile()");
-	if (set_input(fd) == ERROR)
-		exit_clean(shell, errno, "set_input()");
-}
-
-void	outfile_append(t_shell *shell, char *outfile)
-{
-	int	fd;
-
-	fd = open_outfile(outfile);
-	if (fd == -1)
-		exit_clean(shell, errno, "open_outfile()");
-	if (set_output(fd) == ERROR)
-		exit_clean(shell, errno, "set_output()");
-}
-
-void	outfile_trunc(t_shell *shell, char *outfile)
-{
-	int	fd;
-
-	printf("%s\n", outfile);
-	fd = open_outfile(outfile);
-	if (fd == -1)
-		exit_clean(shell, errno, "open_outfile()");
-	if (set_output(fd) == ERROR)
-		exit_clean(shell, errno, "set_output()");
-}
-
 void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
 {
 	int	i;
@@ -52,11 +18,11 @@ void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
 		/*if (!ft_strncmp(token->redirect[i], "<<", 2))
 		 	heredoc(shell, token->redirect[i] + 2);
 		else */if (!ft_strncmp(token->redirect[i], "<", 1))
-			infile(shell, token->redirect[i] + 1);
+			set_infile(shell, token->redirect[i] + 1);
 		/*if (!ft_strncmp(token->redirect[i], ">>", 2))
-			outfile_append(shell, token->redirect[i] + 2);
+			set_outfile_append(shell, token->redirect[i] + 2);
 		else */if (!ft_strncmp(token->redirect[i], ">", 1))
-			outfile_trunc(shell, token->redirect[i] + 1);
+			set_outfile_trunc(shell, token->redirect[i] + 1);
 		i++;
 	}
 }
@@ -79,7 +45,7 @@ static pid_t	kiddo(t_shell *shell, t_token *token, int *standup, int *pipe_fds)
 		else
 		{
 			if (set_output(pipe_fds[1]) == ERROR
-				|| close(standup[1]))
+				|| close(standup[1]) == -1)
 				exit_clean(shell, errno, "set_output()");
 		}
 		if (token->redirect)
