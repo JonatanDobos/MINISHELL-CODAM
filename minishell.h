@@ -59,6 +59,10 @@ void		exit_clean(t_shell *shell, int num, char *message);
 void		free_va(int amount, ...);
 void		clean_lists(t_shell *shell);
 
+// utils_parsing.c
+bool		istoken(char c);
+size_t		skip_redir_whitespace(char *line);
+
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
 t_token		*token_last(t_token *node);

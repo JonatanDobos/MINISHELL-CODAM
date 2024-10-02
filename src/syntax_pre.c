@@ -1,10 +1,5 @@
 #include "../minishell.h"
 
-static bool	istoken(char c)
-{
-	return (c == '|' || c == '<' || c == '>');
-}
-
 static bool	quote_check(const char *line)
 {
 	char	quote;

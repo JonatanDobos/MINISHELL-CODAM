@@ -1,33 +1,33 @@
 #include "../minishell.h"
 
-// ONLY SPLITS LINE INTO ELEMENTS ON:
-// - whitespace - redirect - pipe
+// PARSING: distributing the line over t_list line_element
 
-static int	isn_r(char c)
+// Deletes all quotes in a string
+void	delete_quotes(char *str)
 {
-	if (c != '>' && c != '<')
-		return (1);
-	return (0);
-}
+	size_t	i;
+	size_t	skip;
+	int		quote;
 
-// Should it throw: error: unexpected token???
-static int	isaction(char *c)
-{
-	if (!c)
-		return (0);
-	if (c[0] == '<' && c[1] == '<')
-		return (2);
-	if (c[0] == '>' && c[1] == '>')
-		return (2);
-	if (c[0] == '|' && c[1] == '|')
-		return (2);
-	if (c[0] == '<')
-		return (1);
-	if (c[0] == '>')
-		return (1);
-	if (c[0] == '|')
-		return (1);
-	return (0);
+	i = 0;
+	skip = 0;
+	quote = 0;
+	while (str[skip])
+	{
+		if (!quote && (str[skip] == '\'' || str[skip] == '\"'))
+		{
+			quote = str[skip];
+			++skip;
+		}
+		else if (quote && str[skip] == quote)
+		{
+			quote = 0;
+			++skip;
+		}
+		else
+			str[i++] = str[skip++];
+	}
+	str[i] = '\0';
 }
 
 // ! Void return ! On failure: exit_clean
@@ -38,46 +38,66 @@ static void	new_element(t_shell *shell, char *sub_line)
 
 	head_elem = &shell->line_element_head;
 	if (!sub_line)
-		exit_clean(shell, errno, "new_element()");
+		exit_clean(shell, errno, NULL);
 	new_node = ft_lstnew(sub_line);
 	if (!new_node)
 	{
 		free(sub_line);
-		exit_clean(shell, errno, "new_element()");
+		exit_clean(shell, errno, NULL);
 	}
 	ft_lstadd_back(head_elem, new_node);
 }
 
-// Creates element node of the part between index [start] and [i]
-// after splitting where needed
-static void	splitter(t_shell *shell, size_t i, size_t start)
+// Creates element node of the part between index [start] and [i] on 
+static size_t	add_element_node(t_shell *shell, size_t i, size_t start)
 {
-	bool		expand_success;
-	const char	*line = ft_substr(shell->line, start, i - start);
-	char		quote;
+	bool	expand_success;
+	char	*line;
 
-	if (!line)
-		exit_clean(shell, errno, "splitter()");
-	start = 0;
-	i = 0;
-	quote = 0;
-	while (line[i])
+	if (start != i)
 	{
-		if (line[i] == quote)
-			quote = 0;
-		if (quote == 0 && (line[i] == '\'' || line[i] == '\"'))
-			quote = line[i];
-		if (quote == 0 && isaction(line + i))
-			new_element(shell, ft_substr(line, start, i - start));
-		if (quote == 0 && isaction(line + i))
-			new_element(shell, ft_substr(line, start, i - start));
-		++i;
+		line = ft_substr(shell->line, start, i - start);
+		if (!line)
+			exit_clean(shell, errno, "add_element_node");
+		delete_quotes(line);
+		new_element(shell, expand_env_in_str(shell, line));
 	}
-	free(line);
+	return (i + 1);
 }
 
-// Filters out whitespace
-void	parse_line_to_element(t_shell *shell, char *line)// LEFT OFF !!
+static void	quote_handling(t_shell *shell, char *line, size_t i)
+{
+	char	quote;
+	char	*sub_str;
+	size_t	start;
+	size_t	len;
+
+	quote = line[i];
+	start = ++i;
+	while (line[i] != quote && line[i])
+		++i;
+	len = i - start;
+	if (quote == '\'')
+		new_element(shell, ft_substr(line, start, len));
+	else if (quote == '\"')
+	{
+		sub_str = ft_onlyspace(ft_substr(line, start, len));
+		if (!sub_str)
+			exit_clean(shell, errno, NULL);
+		new_element(shell, expand_env_in_str(shell, sub_str));
+	}
+}
+
+static size_t	skip_to_end_quote(const char *line, size_t i)
+{
+	const char	quote = line[i++];
+
+	while (line[i] && line[i] != quote)
+		++i;
+	return (i);
+}
+
+void	parse_line_to_element(t_shell *shell, char *line)
 {
 	size_t	i;
 	size_t	start;
@@ -86,14 +106,21 @@ void	parse_line_to_element(t_shell *shell, char *line)// LEFT OFF !!
 	start = i;
 	while (line[i])
 	{
-		if (ft_iswhitespace(line[i]))
+		if ((line[i] == '\"' || line[i] == '\'')
+			&& (i == 0 || ft_iswhitespace(line[i - 1]))
+			&& (line[skip_to_end_quote(line, i) + 1] == '\0'
+			|| ft_iswhitespace(line[skip_to_end_quote(line, i) + 1])))
 		{
-			if (start != i)
-				splitter(shell, i, start);
+			quote_handling(shell, line, i);
+			i = skip_to_end_quote(line, i);
 			start = i + 1;
 		}
+		else if (line[i] == '<' || line[i] == '>')
+			i += skip_redir_whitespace(line + i);
+		else if (ft_iswhitespace(line[i]) && i != 0)
+			start = add_element_node(shell, i, start);
 		++i;
 	}
 	if (start != i)
-		splitter(shell, i, start);
+		add_element_node(shell, i, start);
 }

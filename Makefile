@@ -36,6 +36,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/utils_exit.c \
 			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_free.c \
+			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
 			$(SRCDIR)/utils_token_list.c
 
