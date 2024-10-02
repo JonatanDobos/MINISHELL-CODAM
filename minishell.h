@@ -59,13 +59,15 @@ void		exit_clean(t_shell *shell, int num, char *message);
 void		free_va(int amount, ...);
 void		clean_lists(t_shell *shell);
 
+// utils_tokenize.c
+bool		istoken(char c);
+
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
 t_token		*token_last(t_token *node);
 t_token		*token_new(char **cmd_array, char **redirect, short type);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
-
 
 // utils_fd_manipulate.c
 int			set_input(int input_fd);

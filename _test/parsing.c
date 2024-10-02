@@ -18,47 +18,48 @@ static void	new_node(t_shell *shell, char *sub_line)
 	ft_lstadd_back(head_elem, new_node);
 }
 
-static int	isact_char(char c)
-{
-	if (c == '<' || c == '>' || c == '|')
-		return (1);
-	return (0);
-}
-
 // Returns: amount of characters to skip, or -1 if error unexpected token
 static int	isaction(char *c)
 {
-	if (!isact_char(c[0]))
+	if (!istoken(c[0]))
 		return (0);
-	if (isact_char(c[0]) && !isact_char(c[1]))
+	if (istoken(c[0]) && !istoken(c[1]))
 		return (1);
-	if ((c[0] == '<' && isact_char(c[1]) && c[1] != '|')
-		|| (c[0] == '>' && isact_char(c[1]) && c[1] != '<')
-		|| (c[0] == '|' && isact_char(c[1])))
+	if ((c[0] == '<' && istoken(c[1]) && c[1] != '|')
+		|| (c[0] == '>' && istoken(c[1]) && c[1] != '<')
+		|| (c[0] == '|' && istoken(c[1])))
 	{
-		if (!isact_char(c[3]))
+		if (!istoken(c[3]))
 			return (2);
 		else
-			return (-1);
+			return (-9999);// segfault test
 	}
 	return (0);
 }
 
 // Uses basic t_list
-void	tokenize(t_shell *shell, char *line)
+void	split_line_per_token(t_shell *shell, char *line)
 {
 	size_t	i;
 	size_t	start;
+	char	quote;
 
 	i = 0;
 	start = 0;
+	quote = 0;
 	while (line[i])
 	{
-		if (isaction(line + i))
+		if (quote == 0 && line[i] == '\'' || line[i] == '\"')
+			quote = line[i++];
+		if (line[i] == quote)
+			quote = 0;
+		else if (quote == 0 && isaction(line + i))
 		{
 			new_node(shell, ft_substr(line, start, i - start));
 			start = i;
 		}
 		++i;
 	}
+	if (start < i)
+		new_node(shell, ft_substr(line, start, i - start));
 }

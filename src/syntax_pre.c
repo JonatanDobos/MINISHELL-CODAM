@@ -1,10 +1,5 @@
 #include "../minishell.h"
 
-static bool	istoken(char c)
-{
-	return (c == '|' || c == '<' || c == '>');
-}
-
 static bool	quote_check(const char *line)
 {
 	char	quote;
@@ -26,24 +21,21 @@ static bool	quote_check(const char *line)
 	return (true);
 }
 
-static bool	pipe_redir_check(const char *line)
+static bool	token_check(const char *line)
 {
-	char	symbol;
 	size_t	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (istoken(line[i]))
-		{
-			symbol = line[i++];
-			if (line[i] && istoken(line[i + 1]))
-				return (false);
-			if (line[i] == '<' && line[i + 1] == '|')
-				return (false);
-			if (line[i] == '>' && line[i + 1] == '<')
-				return (false);
-		}
+		if (istoken(line[i]) && line[i + 1] == '\0')
+			return (printf("minishell: syntax error near unexpected token \'newline\'\n"), false);
+		if (istoken(line[i]) && istoken(line[i + 1]) && istoken(line[i + 2]))
+			return (printf("minishell: syntax error near unexpected token \'%c\'\n", line[i + 2]), false);
+		if (line[i] == '<' && line[i + 1] == '|')
+			return (printf("minishell: syntax error near unexpected token \'|\'\n"), false);
+		if (line[i] == '>' && line[i + 1] == '<')
+			return (printf("minishell: syntax error near unexpected token \'<\'\n"), false);
 		++i;
 	}
 	return (true);
@@ -53,7 +45,7 @@ bool	syntax_pre(const char *line)
 {
 	if (!quote_check(line))
 		return (false);
-	if (!pipe_redir_check(line))
+	if (!token_check(line))
 		return (false);
 	return (true);
 }
