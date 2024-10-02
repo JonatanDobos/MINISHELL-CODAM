@@ -21,24 +21,21 @@ static bool	quote_check(const char *line)
 	return (true);
 }
 
-static bool	pipe_redir_check(const char *line)
+static bool	token_check(const char *line)
 {
-	char	symbol;
 	size_t	i;
 
 	i = 0;
 	while (line[i])
 	{
-		if (istoken(line[i]))
-		{
-			symbol = line[i++];
-			if (line[i] && istoken(line[i + 1]))
-				return (false);
-			if (line[i] == '<' && line[i + 1] == '|')
-				return (false);
-			if (line[i] == '>' && line[i + 1] == '<')
-				return (false);
-		}
+		if (istoken(line[i]) && line[i + 1] == '\0')
+			return (printf("%s\'newline\'\n", TOKEN_ERR), false);
+		if (istoken(line[i]) && istoken(line[i + 1]) && istoken(line[i + 2]))
+			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i + 2]), false);
+		if (line[i] == '<' && line[i + 1] == '|')
+			return (printf("%s\'|\'\n", TOKEN_ERR), false);
+		if (line[i] == '>' && line[i + 1] == '<')
+			return (printf("%s\'<\'\n", TOKEN_ERR), false);
 		++i;
 	}
 	return (true);
@@ -48,7 +45,7 @@ bool	syntax_pre(const char *line)
 {
 	if (!quote_check(line))
 		return (false);
-	if (!pipe_redir_check(line))
+	if (!token_check(line))
 		return (false);
 	return (true);
 }

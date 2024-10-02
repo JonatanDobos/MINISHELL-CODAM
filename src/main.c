@@ -59,7 +59,7 @@ void	read_loop(t_shell *shell)
 		line_history_management(shell);
 		if (syntax_pre(shell->line) == false)
 		{
-			printf("newline on input not yet implemented");
+			printf("newline on input not yet implemented\n");
 			continue ;
 		}
 		str_pre_format(shell->line);

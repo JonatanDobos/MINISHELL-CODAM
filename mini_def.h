@@ -15,6 +15,7 @@
 # include <termios.h>
 
 # define PROMPT		"\033[0;33mminishell \033[0;31m> \033[0m"
+# define TOKEN_ERR	"minishell: syntax error near unexpected token "
 
 // Colors
 
