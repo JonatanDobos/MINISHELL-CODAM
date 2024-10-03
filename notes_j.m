@@ -1,4 +1,4 @@
 TODO:
 
 - expanding to AFETR tokenize
-- handling quotes after tokenize ??
+- expanding to AFTER tokenize ? " or '
