@@ -34,13 +34,13 @@ void	builtin_echo(char **cmd_array, char **envp)
 		i = 2;
 	while (cmd_array[i])
 	{
-		printf("%s", cmd_array[i]);
+		ft_putstr(cmd_array[i]);
 		if (cmd_array[i + 1])
-			printf(" ");
+			ft_putchar(' ');
 		i++;
 	}
 	if (!n_flag)
 	{
-		printf("\n");
+		ft_putchar('\n');
 	}
 }

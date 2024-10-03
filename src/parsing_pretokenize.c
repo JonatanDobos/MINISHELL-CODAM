@@ -21,19 +21,19 @@ static void	new_element(t_shell *shell, char *sub_line)
 }
 
 // Creates element node of the part between index [start] and [i] on 
-static size_t	add_element_node(t_shell *shell, size_t i, size_t start)
+static size_t	add_element_node(t_shell *shell, size_t end, size_t start)
 {
 	bool	expand_success;
 	char	*line;
 
-	if (start < i)
+	if (start < end)
 	{
-		line = ft_substr(shell->line, start, i - start);
+		line = ft_substr(shell->line, start, end - start);
 		if (!line)
 			exit_clean(shell, errno, "add_element_node");
 		new_element(shell, line);
 	}
-	return (i + 1);
+	return (end + 1);
 }
 
 static size_t	quote_element(t_shell *shell, char *line, size_t i)
@@ -55,22 +55,21 @@ void	parse_pre(t_shell *shell, char *line)
 {
 	size_t	i;
 	size_t	start;
+	char	quote;
 
 	i = 0;
 	start = i;
+	quote = 0;
 	while (line[i])
 	{
-		if ((line[i] == '\"' || line[i] == '\'')
-			&& (i == 0 || ft_iswhitespace(line[i - 1]))
-			&& skip_to_end_quote(line, i))
-		{
-			i = quote_element(shell, line, i);
-			start = i + 1;
-		}
-		else if (line[i] == '<' || line[i] == '>')
-			i += skip_redir_whitespace(line + i);
-		else if (ft_iswhitespace(line[i]) && i != 0)
+		if (quote == 0 && line[i] == '\'' || line[i] =='\"')
+			quote = line[i];
+		else if (quote && line[i] == quote)
+			quote = 0;
+		if (ft_iswhitespace(line[i]) && !quote)
 			start = add_element_node(shell, i, start);
+		if (line[i] == '<' || line[i] == '>')
+			i += skip_redir_whitespace(line + i);
 		++i;
 	}
 	add_element_node(shell, i, start);

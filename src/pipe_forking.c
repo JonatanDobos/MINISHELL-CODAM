@@ -29,10 +29,9 @@ void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
 		// else
 		if (!ft_strncmp(token->redirect[i], "<", 1))
 			set_infile(shell, token->redirect[i] + 1);
-		// if (!ft_strncmp(token->redirect[i], ">>", 2))
-		// 	set_outfile_append(shell, token->redirect[i] + 2);
-		// else
-		if (!ft_strncmp(token->redirect[i], ">", 1))
+		if (!ft_strncmp(token->redirect[i], ">>", 2))
+			set_outfile_append(shell, token->redirect[i] + 2);
+		else if (!ft_strncmp(token->redirect[i], ">", 1))
 			set_outfile_trunc(shell, token->redirect[i] + 1);
 		i++;
 	}
@@ -79,6 +78,18 @@ static int	zombie_prevention_protocol(int pid)
 	return (errno);
 }
 
+static int
+	exceptionweee(t_shell *shell, t_token *token, int *standup)
+{
+	int	status;
+	if (token->redirect)
+		open_files(shell, token);
+	status = execute_builtin(token->cmd_array, &shell->envp);
+	set_input(shell, standup[0]);
+	set_output(shell, standup[1]);
+	return (status);
+}
+
 int	execution(t_shell *shell)
 {
 	t_token	*token;
@@ -91,8 +102,7 @@ int	execution(t_shell *shell)
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
 	{
-		open_files(shell, token);
-		return (execute_builtin(token->cmd_array, &shell->envp));
+		return (exceptionweee(shell, token, standup));
 	}
 	while (token != NULL)
 	{
