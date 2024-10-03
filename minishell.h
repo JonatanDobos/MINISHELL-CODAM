@@ -3,10 +3,12 @@
 # include "libft/libft.h"
 # include "mini_def.h"
 
-// Function parameters
+// INIT / PARSING
+// envp_init.c
+char		**create_envp(char **envp);
 
-//tokenize.c
-int			tokenize(t_shell *shell);
+// syntax_pre.c
+bool		syntax_pre(const char *line);
 
 // parsing_distributor.c
 bool		parsing_distributor(t_shell *d);
@@ -23,17 +25,16 @@ void		delete_quotes(char *str);
 char		*parse_envp(char **envp, char *str, size_t i);
 char		*expand_env_in_str(t_shell *shell, char *str);
 
-// envp_init.c
-char		**create_envp(char **envp);
+//tokenize.c
+int			tokenize(t_shell *shell);
 
+// EXECUTION
 // pipe_execution.c
 int			execute_builtin(char **cmd_array, char ***envp);
 void		execute_sys_cmd(char **cmd_array, char **envp);
 // pipe_forking.c
 int			execution(t_shell *shell);
-
-// syntax_pre.c
-bool		syntax_pre(const char *line);
+// heredoc.c
 
 // BUILTINS
 // builtin_pwd_cd_env_echo.c
@@ -82,10 +83,11 @@ void		token_delone(t_token *node);
 
 
 // utils_fd_manipulate.c
-int			set_input(int input_fd);
-int			set_output(int output_fd);
-int			open_infile(const char *infile);
-int			open_outfile(const char *outfile);
+void		set_input(t_shell *shell, int input_fd);
+void		set_output(t_shell *shell, int output_fd);
+void		set_infile(t_shell *shell, char *infile);
+void		set_outfile_append(t_shell *shell, char *outfile);
+void		set_outfile_trunc(t_shell *shell, char *outfile);
 
 // _TEST.c
 void		TEST_print_token_lst(

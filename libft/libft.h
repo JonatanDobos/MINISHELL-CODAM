@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:53:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/08/08 20:42:00 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/10/01 19:18:24 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void		ft_bzero(void *src, size_t n);
 void		*ft_calloc(size_t nmemb, size_t size);
 char		*ft_itoa(int n);
 void		ft_swap_ints(int *a, int *b);
+void		ft_swap(void *a, void *b, size_t size);
 
 int			ft_isalnum(int c);
 int			ft_isalpha(int c);
@@ -57,7 +58,6 @@ int			ft_isascii(int c);
 int			ft_isdigit(int c);
 int			ft_isprint(int c);
 int			ft_iswhitespace(char c);
-
 
 int			ft_tolower(int c);
 int			ft_toupper(int c);

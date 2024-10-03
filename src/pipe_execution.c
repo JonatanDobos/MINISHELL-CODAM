@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static char	*select_path(char *command, char **envp)
+static char	*find_path(char *command, char **envp)
 {
 	char	*path;
 	char	**all_paths;
@@ -41,7 +41,7 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 	}
 	else
 	{
-		path = select_path(cmd_array[0], envp);
+		path = find_path(cmd_array[0], envp);
 		if (path == NULL)
 			return ;
 		execve(path, cmd_array, envp);

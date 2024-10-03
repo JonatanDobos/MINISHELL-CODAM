@@ -1,5 +1,6 @@
 #include "../minishell.h"
 
+// replicates bash's syntax for valid envp KEYs/identifiers
 int	export_syntax(const char *envar)
 {
 	int		i;
@@ -7,17 +8,21 @@ int	export_syntax(const char *envar)
 	if (envar == NULL)
 		return (false);
 	i = 0;
+	if (!ft_isalpha(envar[i]) && envar[i] != '_')
+		return (false);
+	++i;
 	while (envar[i] && envar[i] != '=')
 	{
-		if (!ft_isalpha(envar[i]) && envar[i] != '_')
+		if (!ft_isalnum(envar[i]) && envar[i] != '_')
 			return (false);
 		++i;
 	}
-	if (ft_strchr(envar, '=') <= envar)
+	if (i < 1)
 		return (false);
 	return (true);
 }
 
+// points to the value behind given kye inside envp, not malloc'd
 char	*get_env(char **envp, const char *key)
 {
 	int		i;

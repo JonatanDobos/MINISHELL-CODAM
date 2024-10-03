@@ -19,7 +19,8 @@ void	free_va(int amount, ...)
 void	clean_lists(t_shell *shell)
 {
 	token_clear(&shell->token_head);
-	// ft_lstclear(&shell->line_element_head, free);// pointers are shared with tokens
+	// ft_lstclear(&shell->line_element_head, free);
+	// pointers are shared with tokens
 	ft_free_null(&shell->line);
 	shell->token_head = NULL;
 	shell->line_element_head = NULL;

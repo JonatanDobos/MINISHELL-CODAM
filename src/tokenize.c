@@ -31,12 +31,12 @@ static void	fill_new_token(t_token *new_token, t_list **current, short *type)
 {
 	while (*type != T_PIPE && *current)
 	{
-		if (*type == T_REDIRECT)	
+		if (*type == T_REDIRECT)
 			new_token->redirect = ft_array_append(
-				new_token->redirect, (*current)->content);
+					new_token->redirect, (*current)->content);
 		else
 			new_token->cmd_array = ft_array_append(
-				new_token->cmd_array, (*current)->content);
+					new_token->cmd_array, (*current)->content);
 		if (new_token->type == T_REDIRECT)
 			new_token->type = *type;
 		next_node(current, type);
@@ -61,6 +61,6 @@ int	tokenize(t_shell *shell)
 		fill_new_token(new_token, &current, &type);
 		token_add_back(&shell->token_head, new_token);
 	}
-	// free line_element_head
+	// probably free line_element_head here
 	return (SUCCESS);
 }

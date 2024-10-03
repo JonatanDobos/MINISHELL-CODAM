@@ -17,7 +17,10 @@ void	builtin_env(char **envp)
 
 	i = 0;
 	while (envp[i])
-		printf("%s\n", envp[i++]);
+	{
+		printf("%s\n", envp[i]);
+		i++;
+	}
 }
 
 void	builtin_echo(char **cmd_array, char **envp)
@@ -26,18 +29,18 @@ void	builtin_echo(char **cmd_array, char **envp)
 	bool	n_flag;
 
 	i = 1;
-	n_flag = false;
-	if (cmd_array[i] && !ft_strncmp("-n", cmd_array[i], 3))
-	{
-		n_flag = true;
-		++i;
-	}
+	n_flag = (cmd_array[1] && !ft_strncmp("-n", cmd_array[1], 3));
+	if (n_flag)
+		i = 2;
 	while (cmd_array[i])
 	{
 		printf("%s", cmd_array[i]);
-		if (cmd_array[++i])
+		if (cmd_array[i + 1])
 			printf(" ");
+		i++;
 	}
 	if (!n_flag)
+	{
 		printf("\n");
+	}
 }

@@ -12,8 +12,6 @@ MINISHELL:
 
 void	TEST_printline(t_shell *shell);// TEST
 
-short	sig = 0;
-
 // Initializes struct of all structs: t_shell.
 void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 {
@@ -62,17 +60,20 @@ void	read_loop(t_shell *shell)
 			printf("newline on input not yet implemented\n");
 			continue ;
 		}
-		str_pre_format(shell->line);
-		TEST_printline(shell);// TEST
+		// TEST
+		TEST_printline(shell);
+		// TEST
 		if (parsing_distributor(shell))// if return = false: reprompt
 		{
-			if (shell->print_info)// TEST
+			// TEST
+			if (shell->print_info)
 			{
 				TEST_print_token_lst(shell, C_GREEN, true, "Token");
 				TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
 				// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
 			}
-			shell->last_errno = execution(shell);// experimental
+			// TEST
+			shell->last_errno = execution(shell);// experimental?
 			if (shell->last_errno == ENOMEM)
 				exit_clean(shell, errno, "malloc fail");
 		}

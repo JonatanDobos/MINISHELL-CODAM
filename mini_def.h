@@ -9,6 +9,7 @@
 # include <readline/history.h>
 # include <limits.h>
 # include <sys/wait.h>
+# include <signal.h>
 # include <errno.h>
 # include <fcntl.h>
 # include <stdbool.h>
@@ -17,17 +18,15 @@
 # define PROMPT		"\033[0;33mminishell \033[0;31m> \033[0m"
 # define TOKEN_ERR	"minishell: syntax error near unexpected token "
 
-// Colors
+extern int g_signal;
 
+// text colours
 # define C_RESET	"\033[0m"
 # define C_YELLOW	"\033[0;33m"
 # define C_RED		"\033[0;31m"
 
-// Typedefs
-
 typedef unsigned int	t_uint;
 
-// ? env_var niet als token gebruiken, maar de literal string in een node achter cmd head "export" of "unset"
 enum	e_token_type
 {
 	T_SYS_CMD = 0,
@@ -36,8 +35,6 @@ enum	e_token_type
 	T_REDIRECT
 };
 
-// LIST
-
 typedef struct s_token
 {
 	char		**cmd_array;
@@ -45,8 +42,6 @@ typedef struct s_token
 	short		type;
 	void		*next;
 }	t_token;
-
-// STRUCTS
 
 typedef struct s_shell
 {
