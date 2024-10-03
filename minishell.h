@@ -45,6 +45,9 @@ void		builtin_echo(char **cmd_array, char **envp);
 void		builtin_unset(char **cmd_array, char **envp);
 char		**builtin_export(char *envar, char **envp);
 
+// here_doc.c
+bool		here_doc(t_shell *shell, char *delim, int fd);
+
 // UTILS
 // utils_builtin.c
 int			export_syntax(const char *envar);
