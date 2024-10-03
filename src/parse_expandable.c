@@ -68,7 +68,7 @@ char	*expand_env_in_str(t_shell *shell, char *str)
 			ret = insert_envp_in_str(shell, str, i);
 			free(str);
 			if (!ret)
-				exit_clean(shell, errno, "expand_envp_in_str");
+				exit_clean(shell, errno, "expand_envp_in_str(): malloc fail");
 			str = ret;
 			ret = NULL;
 		}

@@ -18,5 +18,6 @@ bool	parsing_distributor(t_shell *shell)
 	if (shell->line_element_head == NULL)
 		return (false);
 	tokenize(shell);
+	parse_post(shell);
 	return (true);
 }

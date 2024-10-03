@@ -16,6 +16,8 @@ void		parse_pre(t_shell *shell, char *line);
 
 // parsing_posttokenize.c
 void		parse_post(t_shell *shell);
+void		check_cmd(t_shell *shell, char **cmd);
+void		delete_quotes(char *str);
 
 // parse_expandable.c
 char		*parse_envp(char **envp, char *str, size_t i);

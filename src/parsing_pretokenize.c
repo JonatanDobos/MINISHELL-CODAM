@@ -31,7 +31,7 @@ static size_t	add_element_node(t_shell *shell, size_t i, size_t start)
 		line = ft_substr(shell->line, start, i - start);
 		if (!line)
 			exit_clean(shell, errno, "add_element_node");
-		new_element(shell, expand_env_in_str(shell, line));
+		new_element(shell, line);
 	}
 	return (i + 1);
 }
