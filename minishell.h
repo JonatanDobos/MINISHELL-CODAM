@@ -11,8 +11,11 @@ int			tokenize(t_shell *shell);
 // parsing_distributor.c
 bool		parsing_distributor(t_shell *d);
 
-// parsing.c
-void		parse_line_to_element(t_shell *shell, char *line);
+// parsing_pretokenize.c
+void		parse_pre(t_shell *shell, char *line);
+
+// parsing_posttokenize.c
+void		parse_post(t_shell *shell);
 
 // parse_expandable.c
 char		*parse_envp(char **envp, char *str, size_t i);
@@ -62,6 +65,8 @@ void		clean_lists(t_shell *shell);
 // utils_parsing.c
 bool		istoken(char c);
 size_t		skip_redir_whitespace(char *line);
+size_t		skip_to_next_quote(const char *line, size_t i);
+size_t		skip_to_end_quote(const char *line, size_t i);
 
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);

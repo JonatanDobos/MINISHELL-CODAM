@@ -27,7 +27,8 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
-			$(SRCDIR)/parsing.c \
+			$(SRCDIR)/parsing_posttokenize.c \
+			$(SRCDIR)/parsing_pretokenize.c \
 			$(SRCDIR)/pipe_execution.c \
 			$(SRCDIR)/pipe_forking.c \
 			$(SRCDIR)/syntax_pre.c \
