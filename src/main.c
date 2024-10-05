@@ -50,7 +50,7 @@ void	read_loop(t_shell *shell)
 {
 	while (true)
 	{
-		rl_on_new_line();
+		rl_on_new_line();// is dit bedoeld om op een nieuwe lijn te beginnen als terminal width bereikt is??
 		shell->line = readline(PROMPT);
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);

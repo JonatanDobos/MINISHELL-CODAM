@@ -36,20 +36,6 @@ static size_t	add_element_node(t_shell *shell, size_t end, size_t start)
 	return (end + 1);
 }
 
-static size_t	quote_element(t_shell *shell, char *line, size_t i)
-{
-	char	quote;
-	size_t	start;
-
-	start = i;
-	quote = line[i++];
-	while (line[i] && !(line[i] == quote
-			&& (line[i + 1] == '\0' || ft_iswhitespace(line[i + 1]))))
-		++i;
-	add_element_node(shell, i + 1, start);
-	return (i);
-}
-
 // Parse form input line to elent list (t_list)
 void	parse_pre(t_shell *shell, char *line)
 {
@@ -62,9 +48,9 @@ void	parse_pre(t_shell *shell, char *line)
 	quote = 0;
 	while (line[i])
 	{
-		if (quote == 0 && line[i] == '\'' || line[i] =='\"')
+		if (!quote && (line[i] == '\'' || line[i] =='\"'))
 			quote = line[i];
-		else if (quote && line[i] == quote)
+		else if (line[i] == quote)
 			quote = 0;
 		if (ft_iswhitespace(line[i]) && !quote)
 			start = add_element_node(shell, i, start);
