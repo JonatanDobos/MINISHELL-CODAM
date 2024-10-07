@@ -15,7 +15,7 @@ bool	here_doc(t_shell *shell, char *delim, int fd)
 			break ;
 		write(fd, line, ft_strlen(line));
 		write(fd, "\n", 1);
-		ft_free_null(line);
+		ft_free_null(&line);
 	}
 	free(line);
 	return (true);

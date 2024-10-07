@@ -25,6 +25,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/builtin_cd.c \
 			$(SRCDIR)/builtin_pwd_env_echo.c \
 			$(SRCDIR)/envp_init.c \
+			$(SRCDIR)/here_doc.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parsing_posttokenize.c \

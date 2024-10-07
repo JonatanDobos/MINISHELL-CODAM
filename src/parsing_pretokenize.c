@@ -39,20 +39,22 @@ static size_t	add_element_node(t_shell *shell, size_t end, size_t start)
 }
 
 // NEEDS TESTING!! LEFTOFF
-static size_t	token_element_node(t_shell *shell, char *line, size_t i)
+static size_t	token_element_node(
+	t_shell *shell, char *line, size_t i, size_t start)
 {
 	char	*sub_line;
 	size_t	len;
 
+	add_element_node(shell, i, start);
 	if (line[i] == '|' && !line[i + 1])
-		return (here_doc(shell, NULL, 0), i);// needs fixing, pipe?
-	if (line[i + 1] == '|')
+		return (new_element(shell, ft_strdup("<<")), i + 1);// good idea to use heredoc?
+	if (line[i] == '|')
 	{
-		sub_line = ft_substr(line, i, 2);
+		sub_line = ft_substr(line, i, 1);
 		if (!sub_line)
 			exit_clean(shell, errno, "token_element_node");
 		new_element(shell, sub_line);
-		while (ft_iswhitespace(line[i + 2]))
+		while (ft_iswhitespace(line[i + 1]))
 			++i;
 		return (i + 1);
 	}
@@ -60,10 +62,10 @@ static size_t	token_element_node(t_shell *shell, char *line, size_t i)
 	while (!ft_iswhitespace(line[i + len]) && !istoken(line[i + len])
 			&& line[i + len])
 		++len;
-	sub_line = ft_substr(line, i, len);
+	new_element(shell, ft_substr(line, i, len));
 	while (ft_iswhitespace(line[i + len]))
 		++len;
-	return (i + len - 1);
+	return (i + len);
 }
 
 // Parse form input line to elent list (t_list)
@@ -86,10 +88,11 @@ void	parse_pre(t_shell *shell, char *line)
 			start = add_element_node(shell, i, start);
 		if (istoken(line[i]) && !quote)
 		{
-			i += token_element_node(shell, shell->line, i);
+			i = token_element_node(shell, shell->line, i, start);
 			start = i;
 		}
-		++i;
+		else
+			++i;
 	}
 	add_element_node(shell, i, start);
 }
