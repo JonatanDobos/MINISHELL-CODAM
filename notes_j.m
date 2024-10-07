@@ -1,4 +1,6 @@
 TODO:
 
-- expanding to AFETR tokenize
-- expanding to AFTER tokenize ? " or '
+- syntax pre change for: |> |< (invalid) >| (valid!)
+- HEREDOC
+- HEREDOC priority
+- formatting inside buitins!
