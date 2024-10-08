@@ -1,18 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
+/*   ft_stris.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/19 14:51:42 by simon             #+#    #+#             */
-/*   Updated: 2024/10/08 19:35:03 by svan-hoo         ###   ########.fr       */
+/*   Created: 2024/10/08 20:50:48 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/10/08 21:13:57 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_putstr_fd(const char *s, int fd)
+// evaluate each character in string with func
+// return evaluation value for first time func(c) != 0
+int	ft_stris(const char *string, int (*func)(int c))
 {
-	write(fd, s, ft_strlen(s));
+	size_t	i;
+	int		check;
+
+	i = 0;
+	check = 0;
+	while (string[i])
+	{
+		check = func(string[i]);
+		if (check == false)
+			return (false);
+		i++;
+	}
+	return (true);
 }

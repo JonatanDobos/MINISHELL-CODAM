@@ -17,7 +17,7 @@ static void	determine_output(t_shell *shell,
 	}
 }
 
-void	open_files(t_shell *shell, t_token *token) // << heredoc, >> append
+void	open_files(t_shell *shell, t_token *token) // << heredoc
 {
 	int	i;
 
@@ -48,11 +48,10 @@ static pid_t	kiddo(t_shell *shell,
 		close(standup[0]);
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
-		// open_files doesn't work because parsing is incomplete
 		if (token->redirect)
 			open_files(shell, token);
 		if (token->type == T_BUILTIN)
-			execute_builtin(token->cmd_array, &shell->envp);
+			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
 			execute_sys_cmd(token->cmd_array, shell->envp);
 		close(STDOUT_FILENO);
@@ -65,12 +64,10 @@ static int	zombie_prevention_protocol(int pid)
 {
 	int	status;
 
-	// printf("\e[35mParent:\tlooking for pid...\e[0m\n");
 	if (waitpid(pid, &status, 0) == -1)
 		return (errno);
-	// printf("\e[35mParent:\tpid found\e[0m\n");
 	while (wait(NULL) != -1)
-		;
+		;//check status, if ENOMEM do not wait for the others, escape while you still can
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
@@ -84,7 +81,7 @@ static int
 	int	status;
 	if (token->redirect)
 		open_files(shell, token);
-	status = execute_builtin(token->cmd_array, &shell->envp);
+	status = execute_builtin(shell, token->cmd_array, &shell->envp);
 	set_input(shell, standup[0]);
 	set_output(shell, standup[1]);
 	return (status);

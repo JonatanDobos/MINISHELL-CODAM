@@ -54,6 +54,7 @@ SRC		=	ft_abs.c \
 			ft_strchr_null.c \
 			ft_strdup.c \
 			ft_strdup_d.c \
+			ft_stris.c \
 			ft_striteri.c \
 			ft_strjoin_d.c \
 			ft_strjoin.c \

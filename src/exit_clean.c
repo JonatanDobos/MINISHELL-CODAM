@@ -3,22 +3,29 @@
 // attempts to free everything known to shell, then exits
 void	exit_clean(t_shell *shell, int num, char *message)
 {
+	int	exit_code;
+
+	exit_code = errno;
 	if (num != SUCCESS)
 	{
-		errno = num;
-		dup2(STDERR_FILENO, STDOUT_FILENO);
+		exit_code = num;
 		if (message)
+		{
+			dup2(STDERR_FILENO, STDOUT_FILENO);
 			printf("minishell: %s: ", message);
-		if (errno == 127)
-			printf("command not found\n");
-		else
-			printf("%s\n", strerror(errno));
+			if (exit_code == 127)
+				printf("command not found\n");
+			else
+				printf("%s\n", strerror(exit_code));
+		}
 	}
 	clean_lists(shell);
 	ft_free_array(shell->envp);
 	ft_free_null(&shell->history);
 	rl_clear_history();
-	exit(errno);
+	if (errno != SUCCESS)
+		exit_code = errno;
+	exit(exit_code);
 }
 
 // (EXPERIMENTAL)

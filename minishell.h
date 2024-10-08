@@ -31,22 +31,23 @@ int			tokenize(t_shell *shell);
 
 // EXECUTION
 // pipe_execution.c
-int			execute_builtin(char **cmd_array, char ***envp);
+int			execute_builtin(t_shell *shell, char **cmd_array, char ***envp);
 void		execute_sys_cmd(char **cmd_array, char **envp);
-// pipe_forking.c
+// pipe_forking_redirection.c
 int			execution(t_shell *shell);
 // heredoc.c
 
 // BUILTINS
-// builtin_pwd_cd_env_echo.c
-void		builtin_cd(char *operand, char ***envp);
-void		builtin_pwd(char **envp);
-void		builtin_env(char **envp);
-void		builtin_echo(char **cmd_array, char **envp);
+// builtin_pwd_cd_env_echo_exit.c
+int			builtin_cd(char **cmd_array, char ***envp);
+int			builtin_pwd(char **envp);
+int			builtin_env(char **envp);
+int			builtin_echo(char **cmd_array, char **envp);
+int			builtin_exit(t_shell *shell, char **cmd_array, char **envp);
 
 // builtin_unset_export.c
-void		builtin_unset(char **cmd_array, char **envp);
-char		**builtin_export(char *envar, char **envp);
+int			builtin_unset(char *envar, char **envp);
+int			builtin_export(char *envar, char ***envp);
 
 // here_doc.c
 bool		here_doc(t_shell *shell, char *delim, int fd);
@@ -82,7 +83,6 @@ t_token		*token_last(t_token *node);
 t_token		*token_new(char **cmd_array, char **redirect, short type);
 void		token_clear(t_token **node);
 void		token_delone(t_token *node);
-
 
 // utils_fd_manipulate.c
 void		set_input(t_shell *shell, int input_fd);

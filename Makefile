@@ -23,7 +23,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/main.c \
 			$(SRCDIR)/builtin_unset_export.c \
 			$(SRCDIR)/builtin_cd.c \
-			$(SRCDIR)/builtin_pwd_env_echo.c \
+			$(SRCDIR)/builtin_pwd_env_echo_exit.c \
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/exit_clean.c \
 			$(SRCDIR)/parse_expandable.c \
@@ -31,7 +31,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/parsing_posttokenize.c \
 			$(SRCDIR)/parsing_pretokenize.c \
 			$(SRCDIR)/pipe_execution.c \
-			$(SRCDIR)/pipe_forking.c \
+			$(SRCDIR)/pipe_forking_redirection.c \
 			$(SRCDIR)/signals.c \
 			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \

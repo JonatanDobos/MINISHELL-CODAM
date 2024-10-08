@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static int	cd_init_direction(char ***direction, char *operand)
+static int	cd_init_direction(char ***direction, const char *operand)
 {
 	int	i;
 
@@ -12,7 +12,7 @@ static int	cd_init_direction(char ***direction, char *operand)
 	if (i)
 		--i;
 	if (operand[i] == '/')
-		operand[i] = '\0';
+		((char *)operand)[i] = '\0';
 	*direction = ft_split(operand, '/');
 	if (*direction == NULL)
 		return (ERROR);
@@ -42,75 +42,84 @@ static char	*cd_append_direction(char *path, char *direction)
 	return (path);
 }
 
-static char	*cd_create_path(char *path, char *operand)
+static char	*cd_create_path(char *path, const char *operand, char **envp)
 {
 	char	**direction;
 	int		i;
 
 	if (path == NULL)
 		return (NULL);
+	if (operand == NULL || !ft_strncmp(operand, "~", 2))
+		return (ft_strdup(get_env(envp, "HOME=")));
+	else if (!ft_strncmp(operand, "-", 2))
+	{
+		printf("%s\n", get_env(envp, "OLDPWD="));
+		return (ft_strdup(get_env(envp, "OLDPWD=")));
+	}
+	if (*operand == '/')
+		return (path);
 	if (cd_init_direction(&direction, operand) == ERROR)
 		return (NULL);
 	i = 0;
 	while (direction[i] != NULL)
 	{
-		path = cd_append_direction(path, direction[i]);
+		path = cd_append_direction(path, direction[i++]);
 		if (path == NULL)
 			return (NULL);
-		++i;
 	}
 	ft_free_array(direction);
 	return (path);
 }
 
-static void	cd_print_error(char *operand)
+static int	cd_print_error(const char *operand)
 {
 	ft_putstr_fd("cd: ", STDERR_FILENO);
 	if (operand == NULL || !ft_strncmp(operand, "~", 2))
 	{
-		ft_putendl_fd("HOME not set", STDERR_FILENO);
-		return ;
+		ft_putstr_fd("HOME not set\n", STDERR_FILENO);
 	}
 	if (!ft_strncmp(operand, "-", 2))
 	{
-		ft_putendl_fd("OLDPWD not set", STDERR_FILENO);
-		return ;
+		ft_putstr_fd("OLDPWD not set\n", STDERR_FILENO);
 	}
 	else
+	{
 		ft_putstr_fd(operand, STDERR_FILENO);
-	if (access(operand, F_OK) == ERROR)
-		ft_putendl_fd(": no such file or directory", STDERR_FILENO);
-	else if (access(operand, R_OK) == ERROR)
-		ft_putendl_fd(": permission denied", STDERR_FILENO);
-	else
-		ft_putendl_fd(": not a directory", STDERR_FILENO);
+		if (access(operand, F_OK) == ERROR)
+			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);
+		else if (access(operand, R_OK) == ERROR)
+			ft_putstr_fd(": Permission denied\n", STDERR_FILENO);
+		else if (access(operand, X_OK) == ERROR)
+			ft_putstr_fd(": Not a directory\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
+	}
+	return (EXIT_SUCCESS);
 }
 
-void	builtin_cd(char *operand, char ***envp)
+int	builtin_cd(char **cmd_array, char ***envp)
 {
+	const char	*operand = cmd_array[1];
 	const char	*cwd = getcwd(NULL, 0);
 	char		*path;
-	int			ret;
+	int			exit_code;
 
-	if (operand == NULL || !ft_strncmp(operand, "~", 2))
-		path = ft_strdup(get_env(*envp, "HOME="));
-	else if (!ft_strncmp(operand, "-", 2))
+	if (cmd_array[1] && cmd_array[2])
 	{
-		printf("%s\n", get_env(*envp, "OLDPWD="));
-		path = ft_strdup(get_env(*envp, "OLDPWD="));
+		ft_putstr_fd("cd: too many arguments\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
-	else
-		path = cd_create_path(ft_strdup(cwd), operand);
+	exit_code = EXIT_SUCCESS;
+		path = cd_create_path(ft_strdup(cwd), operand, *envp);
 	if (path == NULL)
-		return ;
-	ret = chdir(path);
-	if (ret == ERROR)
-		cd_print_error(operand);
+		exit_code = errno;
+	if (chdir(path) == ERROR && ft_strncmp(path, cwd, ft_strlen(path)))
+		exit_code = cd_print_error(operand);
 	else
 	{
-		*envp = builtin_export(ft_strjoin("PWD=", path), *envp);
-		*envp = builtin_export(ft_strjoin("OLDPWD=", cwd), *envp);
+		builtin_export(ft_strjoin("PWD=", path), envp);
+		builtin_export(ft_strjoin("OLDPWD=", cwd), envp);
 	}
 	free((char *)cwd);
 	free(path);
+	return (exit_code);
 }

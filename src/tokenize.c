@@ -6,6 +6,7 @@ static short	get_element_type(const char *element)
 		|| ft_strncmp(element, "pwd", 4) == 0
 		|| ft_strncmp(element, "env", 4) == 0
 		|| ft_strncmp(element, "echo", 5) == 0
+		|| ft_strncmp(element, "exit", 5) == 0
 		|| ft_strncmp(element, "unset", 6) == 0
 		|| ft_strncmp(element, "export", 7) == 0)
 		return (T_BUILTIN);

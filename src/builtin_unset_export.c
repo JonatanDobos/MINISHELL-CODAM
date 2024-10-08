@@ -1,20 +1,22 @@
 #include "../minishell.h"
 
-void	builtin_unset(char **cmd_array, char **envp)
+int	builtin_unset(char *envar, char **envp)
 {
 	char		*key;
 	int			i;
 
-	key = ft_strdup_d(cmd_array[1], '=');
+	if (envar == NULL)
+		return (EXIT_SUCCESS);
+	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
-		return ;
+		return (errno);
 	i = 0;
 	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
 		i++;
 	if (envp[i] == NULL)
 	{
 		free(key);
-		return ;
+		return (EXIT_SUCCESS);
 	}
 	free(envp[i]);
 	while (envp[i + 1] != NULL)
@@ -23,9 +25,10 @@ void	builtin_unset(char **cmd_array, char **envp)
 		i++;
 	}
 	envp[i] = NULL;
+	return (EXIT_SUCCESS);
 }
 
-static void	export_new_key(const char *envar, char ***envp)
+static int	export_new_key(const char *envar, char ***envp)
 {
 	char	**new_envp;
 	int		i;
@@ -35,39 +38,47 @@ static void	export_new_key(const char *envar, char ***envp)
 		i++;
 	new_envp = ft_realloc_array(*envp, i + 1);
 	if (new_envp == NULL)
-		return ;
+		return (errno);
 	new_envp[i] = ft_strdup(envar);
 	if (new_envp[i] == NULL)
-		return ;
+		return (errno);
 	*envp = new_envp;
+	return (EXIT_SUCCESS);
 }
 
-static void	export_update_key(const char *envar, int i, char **envp)
+static int	export_update_key(const char *envar, int i, char **envp)
 {
 	free(envp[i]);
 	envp[i] = ft_strdup(envar);
+	if (envp[i] == NULL)
+		return (errno);
+	return (EXIT_SUCCESS);
 }
 
-char	**builtin_export(char *envar, char **envp)
+int	builtin_export(char *envar, char ***envp)
 {
-	char		*key;
-	int			i;
+	char	*key;
+	int		i;
+	short	exit_code;
 
 	if (export_syntax(envar) == false)
 	{
-		printf("export: '%s': not a valid identifier\n", envar);
-		return (envp);
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+		ft_putstr_fd(envar, STDERR_FILENO);
+		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
+		return (EXIT_FAILURE);
 	}
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
-		return (envp);
+		return (EXIT_FAILURE);
 	i = 0;
-	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
+	while ((*envp)[i] && ft_strncmp((*envp)[i], key, ft_strlen(key)))
 		i++;
-	if (envp[i] == NULL)
-		export_new_key(envar, &envp);
+	exit_code = EXIT_SUCCESS;
+	if ((*envp)[i] == NULL)
+		exit_code = export_new_key(envar, envp);
 	else
-		export_update_key(envar, i, envp);
+		exit_code = export_update_key(envar, i, *envp);
 	free(key);
-	return (envp);
+	return (exit_code);
 }

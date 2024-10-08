@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:53:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/10/01 19:18:24 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/10/08 21:12:34 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include <unistd.h>
 # include <limits.h>
 # include <fcntl.h>
+# include <stdbool.h>
 
 # ifndef GNL_BUFFER_SIZE
 #  define GNL_BUFFER_SIZE 100
@@ -58,6 +59,7 @@ int			ft_isascii(int c);
 int			ft_isdigit(int c);
 int			ft_isprint(int c);
 int			ft_iswhitespace(char c);
+int			ft_stris(const char *string, int (*func)(int c));
 
 int			ft_tolower(int c);
 int			ft_toupper(int c);
@@ -72,9 +74,9 @@ void		ft_memclear(char *src, size_t n);
 void		*ft_memset(void *src, int c, size_t n);
 
 void		ft_putchar_fd(char c, int fd);
-void		ft_putendl_fd(char *str, int fd);
+void		ft_putendl_fd(const char *str, int fd);
 void		ft_putnbr_fd(int n, int fd);
-void		ft_putstr_fd(char *str, int fd);
+void		ft_putstr_fd(const char *str, int fd);
 
 int			ft_putnbr(long n);
 int			ft_putchar(char c);

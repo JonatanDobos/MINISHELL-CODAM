@@ -57,7 +57,7 @@ void	read_loop(t_shell *shell)
 		line_history_management(shell);
 		if (syntax_pre(shell->line) == false)
 		{
-			printf("newline on input not yet implemented\n");
+			ft_putstr_fd("minishell: Function not implemented\n", STDERR_FILENO);
 			continue ;
 		}
 		// TEST
