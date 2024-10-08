@@ -29,6 +29,9 @@ char	*parse_envp(
 }
 
 // Returns NULL on failure
+// *str is freed inside function
+// except for when the KEY isn't in the ENV list,
+// meaning: no expansion occurs, input char* is returned
 char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 {
 	char	*ret;
@@ -47,30 +50,28 @@ char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 		if (envp_str)
 			ret = str_insert(str, envp_str, i, len_del);
 		else
-			ret = str_insert(str, "\0", i, len_del);
+			return (str);
 	}
+	free(str);
 	return (ret);
 }
 
 // Expands envp inside string
 // used in double quotes
-// *str is freed inside function
+// *str can be freed inside function
+// Exit inside on malloc failure
 char	*expand_env_in_str(t_shell *shell, char *str)
 {
 	size_t	i;
-	char	*ret;
 
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$')
 		{
-			ret = insert_envp_in_str(shell, str, i);
-			free(str);
-			if (!ret)
+			str = insert_envp_in_str(shell, str, i);
+			if (!str)
 				exit_clean(shell, errno, "expand_envp_in_str(): malloc fail");
-			str = ret;
-			ret = NULL;
 		}
 		++i;
 	}

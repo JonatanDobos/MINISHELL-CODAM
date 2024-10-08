@@ -18,12 +18,13 @@ void		parse_pre(t_shell *shell, char *line);
 
 // parsing_posttokenize.c
 void		parse_post(t_shell *shell);
-void		check_cmd(t_shell *shell, char **cmd);
+void		format_element_str(t_shell *shell, char **cmd);
 void		delete_quotes(char *str);
 
 // parse_expandable.c
 char		*parse_envp(char **envp, char *str, size_t i);
 char		*expand_env_in_str(t_shell *shell, char *str);
+char		*insert_envp_in_str(t_shell *shell, char *str, size_t i);
 
 //tokenize.c
 int			tokenize(t_shell *shell);
@@ -42,6 +43,7 @@ void		builtin_cd(char *operand, char ***envp);
 void		builtin_pwd(char **envp);
 void		builtin_env(char **envp);
 void		builtin_echo(char **cmd_array, char **envp);
+
 // builtin_unset_export.c
 void		builtin_unset(char **cmd_array, char **envp);
 char		**builtin_export(char *envar, char **envp);

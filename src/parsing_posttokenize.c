@@ -30,24 +30,31 @@ void	delete_quotes(char *str)
 
 // Checks for quotes and expandables
 // Exits inside when malloc fail
-void	check_cmd(t_shell *shell, char **cmd)
+void	format_element_str(t_shell *shell, char **cmd)
 {
 	char	*line;
 	char	quote;
+	size_t	i;
 
 	line = *cmd;
 	quote = 0;
-	if (line[0] == '\'' || line[0] == '\"')
+	i = 0;
+	while (line[i])
 	{
-		quote = line[0];
-		delete_quotes(line);
+		if (line[i] == '\'' || line[i] == '\"')
+			quote = line[i];
+		else if (line[i] == quote)
+			quote = 0;
+		else if (line[i] == '$' && quote != '\'')
+		{
+			line = insert_envp_in_str(shell, line, i);
+			if (!line)
+				exit_clean(shell, errno, "50: check_cmd(): malloc fail");
+		}
+		++i;
 	}
-	if (quote != '\'')
-	{
-		*cmd = expand_env_in_str(shell, line);
-		if (!(*cmd))
-			exit_clean(shell, errno, "check_cmd(): malloc fail");
-	}
+	delete_quotes(line);
+	*cmd = line;
 }
 
 void	parse_post(t_shell *shell)
@@ -61,7 +68,7 @@ void	parse_post(t_shell *shell)
 		i = 0;
 		while (tmp->cmd_array[i])
 		{
-			check_cmd(shell, &tmp->cmd_array[i]);
+			format_element_str(shell, &tmp->cmd_array[i]);
 			++i;
 		}
 		tmp = tmp->next;
