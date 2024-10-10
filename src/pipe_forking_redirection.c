@@ -24,15 +24,18 @@ void	open_files(t_shell *shell, t_token *token) // << heredoc
 	i = 0;
 	while (token->redirect[i])
 	{
-		// if (!ft_strncmp(token->redirect[i], "<<", 2))
-		//  	heredoc(shell, token->redirect[i] + 2);
-		// else
-		if (!ft_strncmp(token->redirect[i], "<", 1))
-			set_infile(shell, token->redirect[i] + 1);
-		if (!ft_strncmp(token->redirect[i], ">>", 2))
-			set_outfile_append(shell, token->redirect[i] + 2);
+		if (!ft_strncmp(token->redirect[i], "<<", 2))
+			here_doc(shell, \
+			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
+		else if (!ft_strncmp(token->redirect[i], "<", 1))
+			set_infile(shell, \
+			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
+		else if (!ft_strncmp(token->redirect[i], ">>", 2))
+			set_outfile_append(shell, \
+			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
 		else if (!ft_strncmp(token->redirect[i], ">", 1))
-			set_outfile_trunc(shell, token->redirect[i] + 1);
+			set_outfile_trunc(shell, \
+			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
 		i++;
 	}
 }

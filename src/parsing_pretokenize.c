@@ -31,9 +31,41 @@ static size_t	add_element_node(t_shell *shell, size_t end, size_t start)
 		line = ft_substr(shell->line, start, end - start);
 		if (!line)
 			exit_clean(shell, errno, "add_element_node");
+		if (line[0] == '<' || line[0] == '>')
+			ft_onlyspace(line);
 		new_element(shell, line);
 	}
 	return (end + 1);
+}
+
+// NEEDS TESTING!! LEFTOFF
+static size_t	token_element_node(
+	t_shell *shell, char *line, size_t i, size_t start)
+{
+	char	*sub_line;
+	size_t	len;
+
+	add_element_node(shell, i, start);
+	if (line[i] == '|' && !line[i + 1])
+		return (new_element(shell, ft_strdup("<<")), i + 1);// good idea to use heredoc?
+	if (line[i] == '|')
+	{
+		sub_line = ft_substr(line, i, 1);
+		if (!sub_line)
+			exit_clean(shell, errno, "token_element_node");
+		new_element(shell, sub_line);
+		while (ft_iswhitespace(line[i + 1]))
+			++i;
+		return (i + 1);
+	}
+	len = skip_redir_whitespace(line + i);
+	while (!ft_iswhitespace(line[i + len]) && !istoken(line[i + len])
+			&& line[i + len])
+		++len;
+	new_element(shell, ft_substr(line, i, len));
+	while (ft_iswhitespace(line[i + len]))
+		++len;
+	return (i + len);
 }
 
 // Parse form input line to elent list (t_list)
@@ -54,9 +86,13 @@ void	parse_pre(t_shell *shell, char *line)
 			quote = 0;
 		if (ft_iswhitespace(line[i]) && !quote)
 			start = add_element_node(shell, i, start);
-		if (line[i] == '<' || line[i] == '>')
-			i += skip_redir_whitespace(line + i);
-		++i;
+		if (istoken(line[i]) && !quote)
+		{
+			i = token_element_node(shell, shell->line, i, start);
+			start = i;
+		}
+		else
+			++i;
 	}
 	add_element_node(shell, i, start);
 }

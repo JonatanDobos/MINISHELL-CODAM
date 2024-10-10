@@ -94,7 +94,7 @@ void	TEST_print_pointer_arr(
 }
 
 // Prints out line_element list
-void	TEST_print_elem_list(t_shell *shell, char *accent_col, bool thick_line,  char *name)
+void	TEST_print_elem_list(t_shell *shell, char *accent_col, bool thick_line, char *name)
 {
 	printf("\n");
 	TEST_print_t_list(&shell->line_element_head, NULL, NULL, thick_line, accent_col, name);

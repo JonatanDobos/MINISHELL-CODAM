@@ -25,7 +25,7 @@ static bool	check_token_folowup(const char *line)
 {
 	size_t		i;
 	size_t		j;
-	const char	not_allowed[4] = "\''\";";
+	const char	not_allowed[2] = ";";
 
 	i = 0;
 	while (istoken(line[i]))
@@ -45,10 +45,21 @@ static bool	check_token_folowup(const char *line)
 	return (true);
 }
 
+static bool	check_for_pipe_continue(const char *line, size_t i)
+{
+	if (line[i++] == '|')
+	{
+		while (ft_iswhitespace(line[i]))
+			++i;
+		if (!line[i])
+			return (true);
+	}
+	return (false);
+}
+
 static bool	token_check(const char *line)
 {
 	size_t	i;
-	bool	ret;
 
 	i = 0;
 	while (line[i])
@@ -57,11 +68,14 @@ static bool	token_check(const char *line)
 			return (printf("%s\'|\'\n", TOKEN_ERR), false);
 		if (line[i] == '>' && line[i + 1] == '<')
 			return (printf("%s\'<\'\n", TOKEN_ERR), false);
+		if (line[i] == '|' && (line[i + 1] == '<' || line[i + 1] == '>'))
+			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i + 1]), false);
 		if (istoken(line[i]))
 		{
-			ret = check_token_folowup(line + i);
-			if (!ret)
-				return (ret);
+			if (check_for_pipe_continue(line, i))
+				return (true);
+			if (!check_token_folowup(line + i))
+				return (false);
 			while (istoken(line[i]))
 				++i;
 		}

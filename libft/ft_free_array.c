@@ -19,9 +19,11 @@ void
 {
 	int	i;
 
-	i = 0;
 	if (array)
+	{
+		i = 0;
 		while (array[i] != NULL)
 			free(array[i++]);
-	free(array);
+		free(array);
+	}
 }

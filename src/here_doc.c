@@ -1,22 +1,30 @@
 #include "../minishell.h"
 
 // IMPLEMENT: should react to signals!
-bool	here_doc(t_shell *shell, char *delim, int fd)
+// On failure shell_heredoc is freed in exit clean
+void	here_doc(t_shell *shell, char *delim)
 {
 	char	*line;
+	char	*dup_line;
 
+	ft_free_array(shell->heredoc);
+	shell->heredoc = NULL;
 	while (1)
 	{
-		rl_on_new_line();
-		line = readline("> ");
+		write(STDOUT_FILENO, "> ", 2);
+		line = get_next_line_heredoc(STDIN_FILENO);
 		if (!line)
-			return (false);
-		if (ft_strncmp(line, delim, ft_strlen(line)))
+			exit_clean(shell, errno, "here_doc: malloc failure");
+		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
-		write(fd, line, ft_strlen(line));
-		write(fd, "\n", 1);
-		ft_free_null(line);
+		dup_line = ft_strdup(line);
+		ft_free_null(&line);
+		if (!dup_line)
+			exit_clean(shell, errno, "here_doc: malloc failure");
+		shell->heredoc = ft_array_append(shell->heredoc, dup_line);
+		if (!shell->heredoc)
+			exit_clean(shell, errno, "here_doc: malloc failure");
 	}
-	free(line);
-	return (true);
+	ft_free_null(&line);
+	// TEST_print_pointer_arr(shell->heredoc, NULL, C_BLUE, true, C_BLUE, "Here_doc check");// TEST
 }

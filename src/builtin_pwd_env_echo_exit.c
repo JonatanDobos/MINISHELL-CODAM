@@ -54,7 +54,7 @@ int		builtin_exit(t_shell *shell, char **cmd_array, char **envp)
 	char			*code;
 	size_t			i;
 
-	code = cmd_array[1];
+	code = cmd_array[1];// segfault bij enkel "exit", is dat de bedoeling?
 	if (cmd_array[1] && cmd_array[2])
 	{
 		ft_putstr_fd("minishell: exit: too many arguments", STDERR_FILENO);

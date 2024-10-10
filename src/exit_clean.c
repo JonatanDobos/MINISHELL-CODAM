@@ -20,6 +20,7 @@ void	exit_clean(t_shell *shell, int num, char *message)
 		}
 	}
 	clean_lists(shell);
+	ft_free_array(shell->heredoc);
 	ft_free_array(shell->envp);
 	ft_free_null(&shell->history);
 	rl_clear_history();

@@ -22,6 +22,7 @@ void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 	shell->history = NULL;
 	shell->line = NULL;
 	shell->last_errno = 0;
+	shell->heredoc = NULL;
 	shell->envp = create_envp(envp);
 	if (shell->envp == NULL)
 		exit_clean(shell, errno, NULL);

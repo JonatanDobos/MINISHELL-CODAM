@@ -50,7 +50,11 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp);
 
 // here_doc.c
-bool		here_doc(t_shell *shell, char *delim, int fd);
+void		here_doc(t_shell *shell, char *delim);
+
+// exit_clean.c
+void		exit_clean(t_shell *shell, int num, char *message);
+// void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
 
 // UTILS
 // utils_builtin.c
@@ -63,13 +67,12 @@ char		*ft_onlyspace(char *str);
 char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
 void		str_pre_format(char *str);
 
-// utils_exit.c
-void		exit_clean(t_shell *shell, int num, char *message);
-// void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
-
 // utils_free.c
 void		free_va(int amount, ...);
 void		clean_lists(t_shell *shell);
+
+// utils_mod_gnl.c
+char		*get_next_line_heredoc(int fd);
 
 // utils_parsing.c
 bool		istoken(char c);
