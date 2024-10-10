@@ -21,7 +21,9 @@ void
 
 	i = 0;
 	if (array)
+	{
 		while (array[i] != NULL)
 			free(array[i++]);
-	free(array);
+		free(array);
+	}
 }

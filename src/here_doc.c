@@ -1,7 +1,7 @@
 #include "../minishell.h"
 
 // IMPLEMENT: should react to signals!
-// doesn't free shell->heredoc on fail (should be done in exit_clean)
+// On failure shell_heredoc is freed in exit clean
 void	here_doc(t_shell *shell, char *delim)
 {
 	char	*line;
@@ -26,5 +26,5 @@ void	here_doc(t_shell *shell, char *delim)
 			exit_clean(shell, errno, "here_doc: malloc failure");
 	}
 	ft_free_null(&line);
-	TEST_print_pointer_arr(shell->heredoc, NULL, C_BLUE, true, C_BLUE, "Here_doc check");// TEST
+	// TEST_print_pointer_arr(shell->heredoc, NULL, C_BLUE, true, C_BLUE, "Here_doc check");// TEST
 }
