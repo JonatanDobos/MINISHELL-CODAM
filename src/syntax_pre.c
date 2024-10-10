@@ -25,7 +25,7 @@ static bool	check_token_folowup(const char *line)
 {
 	size_t		i;
 	size_t		j;
-	const char	not_allowed[4] = "\'\";";
+	const char	not_allowed[2] = ";";
 
 	i = 0;
 	while (istoken(line[i]))
@@ -68,6 +68,8 @@ static bool	token_check(const char *line)
 			return (printf("%s\'|\'\n", TOKEN_ERR), false);
 		if (line[i] == '>' && line[i + 1] == '<')
 			return (printf("%s\'<\'\n", TOKEN_ERR), false);
+		if (line[i] == '|' && (line[i + 1] == '<' || line[i + 1] == '>'))
+			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i + 1]), false);
 		if (istoken(line[i]))
 		{
 			if (check_for_pipe_continue(line, i))

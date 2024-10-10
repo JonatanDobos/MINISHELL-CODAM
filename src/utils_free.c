@@ -22,6 +22,7 @@ void	clean_lists(t_shell *shell)
 	// ft_lstclear(&shell->line_element_head, free);
 	// pointers are shared with tokens
 	ft_free_null(&shell->line);
+	ft_free_array(shell->heredoc);
 	shell->token_head = NULL;
 	shell->line_element_head = NULL;
 }

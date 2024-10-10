@@ -49,7 +49,7 @@ void		builtin_unset(char **cmd_array, char **envp);
 char		**builtin_export(char *envar, char **envp);
 
 // here_doc.c
-bool		here_doc(t_shell *shell, char *delim, int fd);
+void		here_doc(t_shell *shell, char *delim);
 
 // UTILS
 // utils_builtin.c
@@ -69,6 +69,9 @@ void		exit_clean(t_shell *shell, int num, char *message);
 // utils_free.c
 void		free_va(int amount, ...);
 void		clean_lists(t_shell *shell);
+
+// utils_mod_gnl.c
+char		*get_next_line_heredoc(int fd);
 
 // utils_parsing.c
 bool		istoken(char c);

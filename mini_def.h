@@ -15,8 +15,9 @@
 # include <stdbool.h>
 # include <termios.h>
 
-# define PROMPT		"\033[0;33mminishell \033[0;31m> \033[0m"
-# define TOKEN_ERR	"minishell: syntax error near unexpected token "
+# define PROMPT			"\033[0;33mminishell \033[0;31m> \033[0m"
+# define TOKEN_ERR		"minishell: syntax error near unexpected token "
+# define BUFFER_SIZE	42
 
 extern int g_signal;
 
@@ -50,6 +51,7 @@ typedef struct s_shell
 	char		*history;
 	char		*line;
 	char		**envp;
+	char		**heredoc;
 	short		last_errno;
 	bool		print_info;// TEST
 }	t_shell;
