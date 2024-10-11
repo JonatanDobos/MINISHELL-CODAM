@@ -50,29 +50,27 @@ int		builtin_echo(char **cmd_array, char **envp)
 
 int		builtin_exit(t_shell *shell, char **cmd_array, char **envp)
 {
-	unsigned char	num;
-	char			*code;
-	size_t			i;
+	size_t	i;
 
-	code = cmd_array[1];// segfault bij enkel "exit", is dat de bedoeling?
-	if (cmd_array[1] && cmd_array[2])
+	if (cmd_array[1])
 	{
-		ft_putstr_fd("minishell: exit: too many arguments", STDERR_FILENO);
-		return (EXIT_FAILURE);
-	}
-	i = 0;
-	while (code[i])
-	{
-		if (!ft_isdigit(code[i])
-			&& code[i] != '"' && code[i] != '+' && code[i] != '-')
+		if (cmd_array[2])
+			return (ft_putstr_fd("minishell: exit: too many arguments\n", \
+					STDERR_FILENO), EXIT_FAILURE);
+		i = 0;
+		while (cmd_array[1][i])
 		{
-			ft_putstr_fd("minishell: exit: numeric argument required",
-				STDERR_FILENO);
-			return (2);
+			if (!ft_isdigit(cmd_array[1][i]) && cmd_array[1][i] != '"'
+			&& cmd_array[1][i] != '+' && cmd_array[1][i] != '-')
+			{
+				ft_putstr_fd("minishell: exit: numeric argument required\n",
+							STDERR_FILENO);
+				return (2);
+			}
+			i++;
 		}
-		i++;
+		exit_clean(shell, (unsigned char)ft_atoi(cmd_array[1]), NULL);
 	}
-	num = (unsigned char)ft_atoi(code);
-	exit_clean(shell, num, NULL);
+	exit_clean(shell, errno, NULL);
 	return (38);
 }
