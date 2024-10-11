@@ -69,7 +69,11 @@ int	execute_builtin(t_shell *shell, char **cmd_array, char ***envp)
 	else if (!ft_strncmp(cmd_array[0], "unset", 6))
 		errno = builtin_unset(cmd_array[1], *envp);
 	else if (!ft_strncmp(cmd_array[0], "export", 7))
-		while (cmd_array[index])
-			errno = builtin_export(cmd_array[index++], envp);
+		while (cmd_array[++index])
+		{
+			errno = builtin_export(cmd_array[index], envp);
+			if (errno)
+				break ;
+		}
 	return (errno);
 }

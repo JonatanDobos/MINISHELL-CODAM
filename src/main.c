@@ -97,7 +97,6 @@ int	main(int argc, char **argv, char **envp)
 }
 
 // TEST FUNCTIONS:
-// INP: "print [gets printed on stdout]"
 // INP: "info [gets run with additional info]"
 void	TEST_printline(t_shell *shell)
 {

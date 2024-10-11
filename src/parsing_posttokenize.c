@@ -49,7 +49,7 @@ void	format_element_str(t_shell *shell, char **cmd)
 		{
 			line = insert_envp_in_str(shell, line, i);
 			if (!line)
-				exit_clean(shell, errno, "50: check_cmd(): malloc fail");
+				exit_clean(shell, errno, "format_element_str(): malloc fail");
 		}
 		++i;
 	}
@@ -57,6 +57,7 @@ void	format_element_str(t_shell *shell, char **cmd)
 	*cmd = line;
 }
 
+// This funct formats all cmd_arrays in all tokens!
 void	parse_post(t_shell *shell)
 {
 	size_t	i;
