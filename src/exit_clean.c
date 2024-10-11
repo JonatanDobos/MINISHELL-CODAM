@@ -1,5 +1,20 @@
 #include "../minishell.h"
 
+void	syntax_error(int num, char *message)
+{
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	if (message)
+	{
+		ft_putstr_fd(message, STDERR_FILENO);
+		ft_putstr_fd(": ", STDERR_FILENO);
+	}
+	if (num == 127)
+		ft_putstr_fd("command not found\n", STDERR_FILENO);
+	else
+		ft_putstr_fd(strerror(num), STDERR_FILENO);
+	ft_putchar_fd('\n', STDERR_FILENO);
+}
+
 // attempts to free everything known to shell, then exits
 void	exit_clean(t_shell *shell, int num, char *message)
 {
@@ -8,16 +23,9 @@ void	exit_clean(t_shell *shell, int num, char *message)
 	exit_code = errno;
 	if (num != SUCCESS)
 	{
-		exit_code = num;
 		if (message)
-		{
-			dup2(STDERR_FILENO, STDOUT_FILENO);
-			printf("minishell: %s: ", message);
-			if (exit_code == 127)
-				printf("command not found\n");
-			else
-				printf("%s\n", strerror(exit_code));
-		}
+			syntax_error(num, message);
+		exit_code = num;
 	}
 	clean_lists(shell);
 	ft_free_array(shell->heredoc);

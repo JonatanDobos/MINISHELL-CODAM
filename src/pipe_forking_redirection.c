@@ -17,11 +17,14 @@ static void	determine_output(t_shell *shell,
 	}
 }
 
-void	open_files(t_shell *shell, t_token *token) // << heredoc
+void	open_files(t_shell *shell, t_token *token)
 {
 	int	i;
 
 	i = 0;
+	errno = 0;
+	if (token->redirect == NULL)
+		return ;
 	while (token->redirect[i])
 	{
 		if (!ft_strncmp(token->redirect[i], "<<", 2))
@@ -36,6 +39,8 @@ void	open_files(t_shell *shell, t_token *token) // << heredoc
 		else if (!ft_strncmp(token->redirect[i], ">", 1))
 			set_outfile_trunc(shell, \
 			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
+		if (errno)
+			break ;
 		i++;
 	}
 }
@@ -82,9 +87,11 @@ static int
 	exceptionweee(t_shell *shell, t_token *token, int *standup)
 {
 	int	status;
-	if (token->redirect)
-		open_files(shell, token);
-	status = execute_builtin(shell, token->cmd_array, &shell->envp);
+	open_files(shell, token);
+	if (errno)
+		status = EXIT_FAILURE;
+	else
+		status = execute_builtin(shell, token->cmd_array, &shell->envp);
 	set_input(shell, standup[0]);
 	set_output(shell, standup[1]);
 	return (status);

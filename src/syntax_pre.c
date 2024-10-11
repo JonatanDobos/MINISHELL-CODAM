@@ -60,6 +60,7 @@ static bool	check_for_pipe_continue(const char *line, size_t i)
 static bool	token_check(const char *line)
 {
 	size_t	i;
+	char	quote;
 
 	i = 0;
 	while (line[i])
@@ -79,6 +80,8 @@ static bool	token_check(const char *line)
 			while (istoken(line[i]))
 				++i;
 		}
+		if (line[i] == '\'' || line[i] == '\"')
+			i = skip_to_next_quote(line, i);
 		++i;
 	}
 	return (true);

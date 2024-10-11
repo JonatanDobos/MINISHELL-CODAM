@@ -73,7 +73,7 @@ static char	*cd_create_path(char *path, const char *operand, char **envp)
 
 static int	cd_print_error(const char *operand)
 {
-	ft_putstr_fd("cd: ", STDERR_FILENO);
+	ft_putstr_fd("minishell: cd: ", STDERR_FILENO);
 	if (operand == NULL || !ft_strncmp(operand, "~", 2))
 	{
 		ft_putstr_fd("HOME not set\n", STDERR_FILENO);

@@ -9,7 +9,7 @@ bool	istoken(char c)
 size_t	skip_redir_whitespace(char *line)
 {
 	size_t	i;
-	
+
 	i = 0;
 	while (istoken(line[i]))
 		++i;

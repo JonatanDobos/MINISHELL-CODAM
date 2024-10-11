@@ -53,6 +53,7 @@ int			builtin_export(char *envar, char ***envp);
 void		here_doc(t_shell *shell, char *delim);
 
 // exit_clean.c
+void		syntax_error(int num, char *message);
 void		exit_clean(t_shell *shell, int num, char *message);
 // void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
 

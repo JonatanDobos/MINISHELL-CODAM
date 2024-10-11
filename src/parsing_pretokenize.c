@@ -61,13 +61,19 @@ static size_t	token_element_node(
 	len = skip_redir_whitespace(line + i);
 	while (!ft_iswhitespace(line[i + len]) && !istoken(line[i + len])
 			&& line[i + len])
-		++len;
+	{
+		if (line[i + len] == '\'' || line[i + len] == '\"')
+			len = skip_to_next_quote(line, i + len) - i;
+		if (line[i + len])
+			++len;
+	}
 	new_element(shell, ft_substr(line, i, len));
 	while (ft_iswhitespace(line[i + len]))
 		++len;
 	return (i + len);
 }
 
+// MAYBE USE SKIP_QUOTES
 // Parse form input line to elent list (t_list)
 void	parse_pre(t_shell *shell, char *line)
 {

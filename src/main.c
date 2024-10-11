@@ -93,7 +93,7 @@ int	main(int argc, char **argv, char **envp)
 
 	init_shell(&shell, argc, argv, envp);
 	read_loop(&shell);
-	return (SUCCESS);
+	return (shell.last_errno);
 }
 
 // TEST FUNCTIONS:

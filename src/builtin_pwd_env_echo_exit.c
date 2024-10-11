@@ -69,6 +69,7 @@ int		builtin_exit(t_shell *shell, char **cmd_array, char **envp)
 			}
 			i++;
 		}
+		printf("exit\n");
 		exit_clean(shell, (unsigned char)ft_atoi(cmd_array[1]), NULL);
 	}
 	exit_clean(shell, errno, NULL);

@@ -72,6 +72,15 @@ void	parse_post(t_shell *shell)
 			format_element_str(shell, &tmp->cmd_array[i]);
 			++i;
 		}
+		i = 0;
+		if (tmp->redirect)
+		{
+			while (tmp->redirect[i])
+			{
+				format_element_str(shell, &tmp->redirect[i]);
+				++i;
+			}
+		}
 		tmp = tmp->next;
 	}
 }
