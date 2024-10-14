@@ -14,6 +14,8 @@ SRC		=	ft_abs.c \
 			ft_intlen_base.c \
 			ft_intlen.c \
 			ft_isalnum.c \
+			ft_isupper.c \
+			ft_islower.c \
 			ft_isalpha.c \
 			ft_isascii.c \
 			ft_isdigit.c \

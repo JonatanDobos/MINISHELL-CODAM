@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 16:53:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/10/08 21:12:34 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   libft.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/10/03 16:53:50 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/10/14 19:57:37 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ int			ft_isdigit(int c);
 int			ft_isprint(int c);
 int			ft_iswhitespace(char c);
 int			ft_stris(const char *string, int (*func)(int c));
+int			ft_isupper(unsigned char c);
+int			ft_islower(unsigned char c);
 
 int			ft_tolower(int c);
 int			ft_toupper(int c);

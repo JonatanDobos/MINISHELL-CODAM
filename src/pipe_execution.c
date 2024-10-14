@@ -50,14 +50,41 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 		errno = 127;
 }
 
-int	execute_builtin(t_shell *shell, char **cmd_array, char ***envp)
+static void	export_loop(char **cmd_array, char ***envp, char ***envp_sorted)
 {
 	size_t	index;
 
 	index = 0;
+	while (cmd_array[++index])
+	{
+		errno = builtin_export(cmd_array[index], envp, envp_sorted);
+		if (errno)
+			break ;
+	}
+	if (index == 1 && !errno)
+		print_export_list(*envp_sorted);
+}
+
+static void	unset_loop(char **cmd_array, char **envp, char **envp_sorted)
+{
+	size_t	index;
+
+	index = 0;
+	while (cmd_array[++index])
+	{
+		errno = builtin_unset(cmd_array[index], envp);
+		if (!errno)
+			errno = builtin_unset(cmd_array[index], envp_sorted);
+		if (errno)
+			break ;
+	}
+}
+
+int	execute_builtin(t_shell *shell, char **cmd_array, char ***envp)
+{
 	errno = 0;
 	if (!ft_strncmp(cmd_array[0], "cd", 3))
-		errno = builtin_cd(cmd_array, envp);
+		errno = builtin_cd(cmd_array, envp, &shell->envp_sorted);
 	else if (!ft_strncmp(cmd_array[0], "pwd", 4))
 		errno = builtin_pwd(*envp);
 	else if (!ft_strncmp(cmd_array[0], "env", 4))
@@ -67,13 +94,8 @@ int	execute_builtin(t_shell *shell, char **cmd_array, char ***envp)
 	else if (!ft_strncmp(cmd_array[0], "exit", 5))
 		errno = builtin_exit(shell, cmd_array, *envp);
 	else if (!ft_strncmp(cmd_array[0], "unset", 6))
-		errno = builtin_unset(cmd_array[1], *envp);
+		unset_loop(cmd_array, *envp, shell->envp_sorted);
 	else if (!ft_strncmp(cmd_array[0], "export", 7))
-		while (cmd_array[++index])
-		{
-			errno = builtin_export(cmd_array[index], envp);
-			if (errno)
-				break ;
-		}
+		export_loop(cmd_array, envp, &shell->envp_sorted);
 	return (errno);
 }

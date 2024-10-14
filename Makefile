@@ -25,6 +25,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/builtin_cd.c \
 			$(SRCDIR)/builtin_pwd_env_echo_exit.c \
 			$(SRCDIR)/envp_init.c \
+			$(SRCDIR)/envp_export_sort.c \
 			$(SRCDIR)/here_doc.c \
 			$(SRCDIR)/exit_clean.c \
 			$(SRCDIR)/parse_expandable.c \
@@ -37,6 +38,8 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_builtin.c \
+			$(SRCDIR)/utils_envp_sort.c \
+			$(SRCDIR)/utils_error_print.c \
 			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_mod_gnl.c \

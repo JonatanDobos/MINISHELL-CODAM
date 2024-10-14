@@ -3,9 +3,9 @@
 // replicates bash's syntax for valid envp KEYs/identifiers
 int	export_syntax(const char *envar)
 {
-	int		i;
+	int	i;
 
-	if (envar == NULL)
+	if (envar == NULL || !envar[0])
 		return (false);
 	i = 0;
 	if (!ft_isalpha(envar[i]) && envar[i] != '_')
@@ -17,7 +17,28 @@ int	export_syntax(const char *envar)
 			return (false);
 		++i;
 	}
-	if (i < 1)
+	if (i <= 1)
+		return (false);
+	if (envar[i] != '=')
+		return (false);
+	return (true);
+}
+
+int	unset_syntax(const char *envar)
+{
+	int	i;
+
+	i = 0;
+	if (!ft_isalpha(envar[i]) && envar[i] != '_')
+		return (false);
+	++i;
+	while (envar[i] && envar[i] != '=')
+	{
+		if (!ft_isalnum(envar[i]) && envar[i] != '_')
+			return (false);
+		++i;
+	}
+	if (envar[i] == '=')
 		return (false);
 	return (true);
 }
@@ -36,4 +57,18 @@ char	*get_env(char **envp, const char *key)
 		while (*ret++ != '=')
 			;
 	return (ret);
+}
+
+// Prints the sorted envp list
+int		print_export_list(char **envp)
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		printf("declare -x %s\n", envp[i]);
+		i++;
+	}
+	return (EXIT_SUCCESS);
 }

@@ -7,6 +7,11 @@
 // envp_init.c
 char		**create_envp(char **envp);
 
+// envp_sorting.c
+void		sort_envp(char **array);
+char		**create_envp_sorted(char **envp);
+int			export_envar_to_sorted_array(char *envar, char ***envp);
+
 // syntax_pre.c
 bool		syntax_pre(const char *line);
 
@@ -33,13 +38,13 @@ int			tokenize(t_shell *shell);
 // pipe_execution.c
 int			execute_builtin(t_shell *shell, char **cmd_array, char ***envp);
 void		execute_sys_cmd(char **cmd_array, char **envp);
+
 // pipe_forking_redirection.c
 int			execution(t_shell *shell);
-// heredoc.c
 
 // BUILTINS
 // builtin_pwd_cd_env_echo_exit.c
-int			builtin_cd(char **cmd_array, char ***envp);
+int			builtin_cd(char **cmd_array, char ***envp, char ***envp_sorted);
 int			builtin_pwd(char **envp);
 int			builtin_env(char **envp);
 int			builtin_echo(char **cmd_array, char **envp);
@@ -47,7 +52,7 @@ int			builtin_exit(t_shell *shell, char **cmd_array, char **envp);
 
 // builtin_unset_export.c
 int			builtin_unset(char *envar, char **envp);
-int			builtin_export(char *envar, char ***envp);
+int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
 void		here_doc(t_shell *shell, char *delim);
@@ -60,7 +65,20 @@ void		exit_clean(t_shell *shell, int num, char *message);
 // UTILS
 // utils_builtin.c
 int			export_syntax(const char *envar);
+int			unset_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
+int			print_export_list(char **envp);
+
+// utils_error_print.c
+void		export_error(char *envar);
+void		unset_error(char *envar);
+
+// utils_envp_sort.c
+bool		export_sorted_syntax(char *envar);
+void		ptr_switch(char **src_index, char **dest_index);
+char		*strdup_export_format(const char *str);
+short		cmp_export_sort(char *relevant, char *compared_to);
+int			envp_key_index(char **envp, char *key);
 
 // utils_string.c
 char		*strdup_index(char *str, size_t	start, size_t end);

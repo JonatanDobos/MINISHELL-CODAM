@@ -26,6 +26,9 @@ void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
 	shell->envp = create_envp(envp);
 	if (shell->envp == NULL)
 		exit_clean(shell, errno, NULL);
+	shell->envp_sorted = create_envp_sorted(envp);
+	if (shell->envp_sorted == NULL)
+		exit_clean(shell, errno, NULL);
 	(void)envp;
 }
 
@@ -84,9 +87,6 @@ void	read_loop(t_shell *shell)
 	rl_clear_history();
 }
 
-// Contains the readline() loop.
-// FOR TESTING: to print the input of readline() input:
-// "print [this will be printed]"
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;

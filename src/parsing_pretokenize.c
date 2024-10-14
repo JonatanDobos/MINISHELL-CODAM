@@ -47,7 +47,7 @@ static size_t	token_element_node(
 
 	add_element_node(shell, i, start);
 	if (line[i] == '|' && !line[i + 1])
-		return (new_element(shell, ft_strdup("<<")), i + 1);// good idea to use heredoc?
+		return (new_element(shell, ft_strdup("<< \n")), i + 1);// good idea to use heredoc?
 	if (line[i] == '|')
 	{
 		sub_line = ft_substr(line, i, 1);

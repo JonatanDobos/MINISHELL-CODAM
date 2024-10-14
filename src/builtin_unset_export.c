@@ -7,17 +7,17 @@ int	builtin_unset(char *envar, char **envp)
 
 	if (envar == NULL)
 		return (EXIT_SUCCESS);
-	key = ft_strdup_d(envar, '=');
+	if (unset_syntax(envar) == false)
+		return (unset_error(envar), EXIT_FAILURE);
+	if (ft_strchr(envar, '='))
+		key = ft_strdup_d(envar, '=');
+	else
+		key = ft_strdup(envar);
 	if (key == NULL)
 		return (errno);
-	i = 0;
-	while (envp[i] && ft_strncmp(envp[i], key, ft_strlen(key)))
-		i++;
+	i = envp_key_index(envp, key);
 	if (envp[i] == NULL)
-	{
-		free(key);
-		return (EXIT_SUCCESS);
-	}
+		return (free(key), EXIT_SUCCESS);
 	free(envp[i]);
 	while (envp[i + 1] != NULL)
 	{
@@ -55,19 +55,19 @@ static int	export_update_key(const char *envar, int i, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_export(char *envar, char ***envp)
+int	builtin_export(char *envar, char ***envp, char ***sorted)
 {
 	char	*key;
 	int		i;
 	short	exit_code;
 
+	exit_code = export_envar_to_sorted_array(envar, sorted);
+	if (exit_code == EXIT_FAILURE)
+		return (export_error(envar), print_export_list(*sorted), EXIT_FAILURE);
+	if (exit_code)
+		return (exit_code);
 	if (export_syntax(envar) == false)
-	{
-		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
-		ft_putstr_fd(envar, STDERR_FILENO);
-		ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 		return (EXIT_FAILURE);
-	}
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		return (EXIT_FAILURE);

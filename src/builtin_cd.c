@@ -96,7 +96,7 @@ static int	cd_print_error(const char *operand)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_cd(char **cmd_array, char ***envp)
+int	builtin_cd(char **cmd_array, char ***envp, char ***envp_sorted)
 {
 	const char	*operand = cmd_array[1];
 	const char	*cwd = getcwd(NULL, 0);
@@ -116,8 +116,8 @@ int	builtin_cd(char **cmd_array, char ***envp)
 		exit_code = cd_print_error(operand);
 	else
 	{
-		builtin_export(ft_strjoin("PWD=", path), envp);
-		builtin_export(ft_strjoin("OLDPWD=", cwd), envp);
+		builtin_export(ft_strjoin("PWD=", path), envp, envp_sorted);
+		builtin_export(ft_strjoin("OLDPWD=", cwd), envp, envp_sorted);
 	}
 	free((char *)cwd);
 	free(path);

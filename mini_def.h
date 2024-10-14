@@ -51,6 +51,7 @@ typedef struct s_shell
 	char		*history;
 	char		*line;
 	char		**envp;
+	char		**envp_sorted;
 	char		**heredoc;
 	short		last_errno;
 	bool		print_info;// TEST
