@@ -24,6 +24,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/builtin_unset_export.c \
 			$(SRCDIR)/builtin_cd.c \
 			$(SRCDIR)/builtin_pwd_env_echo_exit.c \
+			$(SRCDIR)/builtin_sort.c \
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/envp_export_sort.c \
 			$(SRCDIR)/here_doc.c \
