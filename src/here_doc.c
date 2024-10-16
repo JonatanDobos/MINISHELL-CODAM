@@ -2,7 +2,7 @@
 
 // SHOULD IMPLEMENT PIPE!!!!!!
 
-// IMPLEMENT: should react to signals!
+// IMPLEMENT: should react to signals! (make it run as child!)
 // On failure shell_heredoc is freed in exit clean
 void	here_doc(t_shell *shell, char *delim)
 {
