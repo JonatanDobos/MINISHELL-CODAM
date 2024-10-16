@@ -71,7 +71,8 @@ short	cmp_export_sort(char *relevant, char *compared_to)
 		return (0);
 	if ((compared_to[i] == '=' || compared_to[i] == '\0')
 	|| (ft_islower(relevant[i]) && ft_isupper(compared_to[i]))
-	|| (!ft_isalpha(relevant[i]) && ft_isupper(compared_to[i]))
+	|| (!ft_isalpha(relevant[i]) && ft_isupper(compared_to[i])
+	&& relevant[i] != '=')
 	|| (!ft_isalpha(compared_to[i]) && ft_islower(relevant[i])))
 		return (1);
 	if ((relevant[i] == '=' || relevant[i] == '\0')

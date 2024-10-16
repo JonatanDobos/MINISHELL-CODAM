@@ -63,11 +63,11 @@ int	builtin_export(char *envar, char ***envp, char ***sorted)
 
 	exit_code = export_envar_to_sorted_array(envar, sorted);
 	if (exit_code == EXIT_FAILURE)
-		return (export_error(envar), print_export_list(*sorted), EXIT_FAILURE);
+		return (export_error(envar), EXIT_FAILURE);
 	if (exit_code)
 		return (exit_code);
 	if (export_syntax(envar) == false)
-		return (EXIT_FAILURE);
+		return (EXIT_SUCCESS);
 	key = ft_strdup_d(envar, '=');
 	if (key == NULL)
 		return (EXIT_FAILURE);

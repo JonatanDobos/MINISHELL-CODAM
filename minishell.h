@@ -54,9 +54,6 @@ int			builtin_exit(t_shell *shell, char **cmd_array, char **envp);
 int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
-// builtin_sort.c
-int		builtin_sort(char **array);
-
 // here_doc.c
 void		here_doc(t_shell *shell, char *delim);
 
