@@ -93,9 +93,12 @@ void		clean_lists(t_shell *shell);
 // utils_mod_gnl.c
 char		*get_next_line_heredoc(int fd);
 
+// utils_open_files.c
+void		open_files(t_shell *shell, t_token *token);
+
 // utils_parsing.c
 bool		istoken(char c);
-size_t		skip_redir_whitespace(char *line);
+size_t		skip_redir_ws(char *line);
 size_t		skip_to_next_quote(const char *line, size_t i);
 size_t		skip_to_end_quote(const char *line, size_t i);
 

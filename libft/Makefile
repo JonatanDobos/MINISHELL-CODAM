@@ -4,6 +4,8 @@ CFLAGS	=	-Wall -Wextra -Werror
 
 SRC		=	ft_abs.c \
 			ft_array_append.c \
+			ft_array_index_ins.c \
+			ft_array_size.c \
 			ft_arrdup.c \
 			ft_atoi.c \
 			ft_bzero.c \

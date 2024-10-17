@@ -17,34 +17,6 @@ static void	determine_output(t_shell *shell,
 	}
 }
 
-void	open_files(t_shell *shell, t_token *token)
-{
-	int	i;
-
-	i = 0;
-	errno = 0;
-	if (token->redirect == NULL)
-		return ;
-	while (token->redirect[i])
-	{
-		if (!ft_strncmp(token->redirect[i], "<<", 2))
-			here_doc(shell, \
-			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
-		else if (!ft_strncmp(token->redirect[i], "<", 1))
-			set_infile(shell, \
-			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
-		else if (!ft_strncmp(token->redirect[i], ">>", 2))
-			set_outfile_append(shell, \
-			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
-		else if (!ft_strncmp(token->redirect[i], ">", 1))
-			set_outfile_trunc(shell, \
-			token->redirect[i] + skip_redir_whitespace(token->redirect[i]));
-		if (errno)
-			break ;
-		i++;
-	}
-}
-
 static pid_t	kiddo(t_shell *shell,
 	t_token *token, int *standup, int *pipe_fds)
 {

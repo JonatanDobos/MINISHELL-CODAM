@@ -58,7 +58,7 @@ static size_t	token_element_node(
 			++i;
 		return (i + 1);
 	}
-	len = skip_redir_whitespace(line + i);
+	len = skip_redir_ws(line + i);
 	while (!ft_iswhitespace(line[i + len]) && !istoken(line[i + len])
 			&& line[i + len])
 	{

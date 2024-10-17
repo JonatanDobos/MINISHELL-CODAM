@@ -28,53 +28,13 @@ static void	next_node(t_list **ref_current, short *type)
 		*type = get_element_type((*ref_current)->content);
 }
 
-// also move this to libft
-size_t	array_size(char **array)
-{
-	size_t	size;
-
-	size = 0;
-	while (array[size])
-		++size;
-	return (size);
-}
-
-// LEFTOFF SEGFAULT!!
-
-// maybe move this to utils of libft
-char	**ft_array_index_ins(char **array, char *insert, size_t index)
-{
-	size_t	size;
-	size_t	i;
-	char	**new_array;
-
-	size = 0;
-	size = array_size(array);
-	new_array = (char **)malloc(sizeof(char *) * ++size);
-	if (!new_array)
-		return (NULL);
-	new_array[size] = NULL;
-	i = size - 1;
-	while (size--)
-	{
-		printf("new: %s[%zu] %s[%zu] index: %zu\n", new_array[size], size, array[i], i, index);//test
-		if (size == index)
-		{
-			new_array[index] = insert;
-			--size;
-		}
-		else
-			new_array[size] = array[--i];
-	}
-	free(array);
-	return (new_array);
-}
+//LEFTOFF! DOES NOT MAKE A SINGLE TOKEN???
 
 static int	add_redirect(char ***array, char *new)
 {
 	size_t	i;
 
-	if (ft_strncmp(new, "<<", 2) == 0)
+	if (*array == NULL || ft_strncmp(new, "<<", 2) == 0)
 	{
 		*array = ft_array_append(*array, new);
 		return (*array == NULL);
@@ -82,20 +42,23 @@ static int	add_redirect(char ***array, char *new)
 	i = 0;
 	while ((*array)[i] && ft_strncmp((*array)[i], "<<", 2))
 		++i;
-	if (i != array_size(*array))
+	if (i != ft_array_size(*array))
 		*array = ft_array_index_ins(*array, new, i);
 	else
 		*array = ft_array_append(*array, new);
 	return (*array == NULL);
 }
 
-static bool	fill_new_token(t_token *new_token, t_list **current, short *type)
+static bool	fill_new_token(
+	t_shell *shell, t_token *new_token, t_list **current, short *type)
 {
+	t_list	*last;
+
 	while (*type != T_PIPE && *current)
 	{
 		if (*type == T_REDIRECT)
 		{
-			if (add_redirect(&new_token->cmd_array, (*current)->content))
+			if (add_redirect(&new_token->redirect, (*current)->content))
 				return (EXIT_FAILURE);
 		}
 		else
@@ -105,15 +68,19 @@ static bool	fill_new_token(t_token *new_token, t_list **current, short *type)
 			return (EXIT_FAILURE);
 		if (new_token->type == T_REDIRECT)
 			new_token->type = *type;
+		last = *current;
 		next_node(current, type);
-		// free line_element node here?
+		free(last);
+		shell->line_element_head = *current;
 	}
 	return (EXIT_SUCCESS);
 }
 
+// Check for leaks?
 int	tokenize(t_shell *shell)
 {
 	t_list	*current;
+	t_list	*last;
 	t_token	*new_token;
 	short	type;
 
@@ -123,16 +90,18 @@ int	tokenize(t_shell *shell)
 	{
 		while (type == T_PIPE && current)
 		{
+			last = current;
 			next_node(&current, &type);
-			// free line_element node here?
+			free(last);
+			shell->line_element_head = current;
 		}
 		new_token = token_new(NULL, NULL, type);
 		if (new_token == NULL)
 			exit_clean(shell, errno, NULL);
-		if (fill_new_token(new_token, &current, &type))
+		if (fill_new_token(shell, new_token, &current, &type))
 			exit_clean(shell, errno, NULL);
 		token_add_back(&shell->token_head, new_token);
 	}
-	// probably free line_element_head here?
+	ft_free_null((char **)&shell->line_element_head);
 	return (SUCCESS);
 }

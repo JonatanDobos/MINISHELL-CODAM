@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/03 16:53:50 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/10/14 19:57:37 by joni          ########   odam.nl         */
+/*   Updated: 2024/10/17 11:07:21 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ enum	e_return
 size_t		ft_strlcat(char *dst, const char *src, size_t l);
 size_t		ft_strlcpy(char *dst, const char *src, size_t l);
 size_t		ft_strlen(const char *c);
+size_t		ft_array_size(char **array);
 int			ft_strlen_null(const char *str);
 int			ft_strcat(char *dest, const char *src);
 int			ft_intlen(int n);
@@ -89,6 +90,7 @@ int			ft_intlen_base(int n, char *base);
 int			ft_putnbr_base(long n, char *base);
 
 char		**ft_array_append(char **array, char *add);
+char		**ft_array_index_ins(char **array, char *insert, size_t index);
 char		**ft_arrdup(char **arr);
 char		**ft_split(const char *str, char c);
 char		*ft_strchr(const char *str, int c);

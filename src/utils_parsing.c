@@ -6,7 +6,7 @@ bool	istoken(char c)
 }
 
 // Returns: skip amount
-size_t	skip_redir_whitespace(char *line)
+size_t	skip_redir_ws(char *line)
 {
 	size_t	i;
 
