@@ -40,6 +40,7 @@ SRC		=	ft_abs.c \
 			ft_memmove.c \
 			ft_memset.c \
 			ft_printf.c \
+			ft_putarray.c \
 			ft_putchar_fd.c \
 			ft_putchar.c \
 			ft_putendl_fd.c \

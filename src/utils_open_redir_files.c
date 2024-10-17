@@ -58,7 +58,7 @@ static void	open_with_heredoc(t_shell *shell, char **redir)
 			set_outfile_trunc(shell, redir[i] + skip_redir_ws(redir[i]));
 		++i;
 	}
-	while (redir[i] && !errno)
+	while (redir[i] && errno != ENOMEM)
 	{
 		here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
 		++i;

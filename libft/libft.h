@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/10/03 16:53:50 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/10/17 11:07:21 by joni          ########   odam.nl         */
+/*   Updated: 2024/10/17 17:50:21 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,6 +85,7 @@ int			ft_putnbr(long n);
 int			ft_putchar(char c);
 int			ft_putpointer(unsigned long p);
 int			ft_putstr(char *str);
+int			ft_putarray(char **array, bool debugmode);
 
 int			ft_intlen_base(int n, char *base);
 int			ft_putnbr_base(long n, char *base);
