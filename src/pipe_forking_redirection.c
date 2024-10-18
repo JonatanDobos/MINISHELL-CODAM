@@ -59,11 +59,11 @@ static int
 	exceptionweee(t_shell *shell, t_token *token, int *standup)
 {
 	int	status;
+
 	open_files(shell, token);
 	if (errno)
-		status = EXIT_FAILURE;
-	else
-		status = execute_builtin(shell, token->cmd_array, &shell->envp);
+		return (EXIT_FAILURE);
+	status = execute_builtin(shell, token->cmd_array, &shell->envp);
 	set_input(shell, standup[0]);
 	set_output(shell, standup[1]);
 	return (status);

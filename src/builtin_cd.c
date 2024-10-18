@@ -109,7 +109,7 @@ int	builtin_cd(char **cmd_array, char ***envp, char ***envp_sorted)
 		return (EXIT_FAILURE);
 	}
 	exit_code = EXIT_SUCCESS;
-		path = cd_create_path(ft_strdup(cwd), operand, *envp);
+	path = cd_create_path(ft_strdup(cwd), operand, *envp);
 	if (path == NULL)
 		exit_code = errno;
 	if (chdir(path) == ERROR && ft_strncmp(path, cwd, ft_strlen(path)))
