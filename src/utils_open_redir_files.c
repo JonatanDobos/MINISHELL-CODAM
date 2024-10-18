@@ -1,75 +1,61 @@
 #include "../minishell.h"
 
-static bool	check_for_heredoc(char **redir)
-{
-	int	i;
-
-	i = 0;
-	while (redir[i] && ft_strncmp(redir[i], "<<", 2))
-		++i;
-	return (i != ft_array_size(redir));
-}
-
 static void	check_infile(char *infile)
 {
-	int	tmp_errno;
-
 	if (access(infile, R_OK))
 	{
-		tmp_errno = errno;
 		syntax_error(errno, infile);
-		errno = tmp_errno;
+		errno = 2;
 	}
 }
 
-static void	open_no_heredoc(t_shell *shell, char **redir)
+static void	open_others(t_shell *shell, char **redir, bool has_heredoc)
 {
 	int	i;
 
 	i = 0;
-	while (redir[i])
+	while (redir[i] && !errno)
 	{
-		if (!ft_strncmp(redir[i], "<", 1))
-			set_infile(shell, redir[i] + skip_redir_ws(redir[i]));
-		else if (!ft_strncmp(redir[i], ">>", 2))
-			set_outfile_append(shell, redir[i] + skip_redir_ws(redir[i]));
-		else if (!ft_strncmp(redir[i], ">", 1))
-			set_outfile_trunc(shell, redir[i] + skip_redir_ws(redir[i]));
-		if (errno)
-			break ;
-		i++;
-	}
-}
-
-static void	open_with_heredoc(t_shell *shell, char **redir)
-{
-	int	i;
-
-	i = 0;
-	while (redir[i] && ft_strncmp(redir[i], "<<", 2) && !errno)
-	{
-		if (!ft_strncmp(redir[i], "<", 1))
-			check_infile(redir[i] + skip_redir_ws(redir[i]));
+		if (!ft_strncmp(redir[i], "<<", 2))
+		{
+			++i;
+			continue ;
+		}
+		if (!ft_strncmp(redir[i], "<", 1)){
+			if (has_heredoc)
+				check_infile(redir[i] + skip_redir_ws(redir[i]));
+			else
+				set_infile(shell, redir[i] + skip_redir_ws(redir[i]));}
 		else if (!ft_strncmp(redir[i], ">>", 2))
 			set_outfile_append(shell, redir[i] + skip_redir_ws(redir[i]));
 		else if (!ft_strncmp(redir[i], ">", 1))
 			set_outfile_trunc(shell, redir[i] + skip_redir_ws(redir[i]));
 		++i;
 	}
+}
+
+void	open_files(t_shell *shell, char **redir)
+{
+	bool	has_heredoc;
+	int		i;
+
+	if (redir == NULL)
+		return ;
+	has_heredoc = false;
+	i = 0;
+	while (redir[i] && has_heredoc == false)
+	{
+		if (ft_strncmp(redir[i], "<<", 2))
+			has_heredoc = true;
+		++i;
+	}
+	errno = 0;
+	i = 0;
 	while (redir[i] && errno != ENOMEM)
 	{
-		here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
+		if (!ft_strncmp(redir[i], "<<", 2))
+			here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
 		++i;
 	}
-}
-
-void	open_files(t_shell *shell, t_token *token)
-{
-	if (token->redirect == NULL)
-		return ;
-	errno = 0;
-	if (check_for_heredoc(token->redirect))
-		return (open_with_heredoc(shell, token->redirect));
-	else
-		return (open_no_heredoc(shell, token->redirect));
+	open_others(shell, redir, has_heredoc);
 }

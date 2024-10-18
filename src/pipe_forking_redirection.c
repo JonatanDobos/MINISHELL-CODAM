@@ -29,7 +29,12 @@ static pid_t	kiddo(t_shell *shell,
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
 		if (token->redirect)
-			open_files(shell, token);
+			open_files(shell, token->redirect);
+		if (errno)
+		{
+			close(STDOUT_FILENO);
+			exit_clean(shell, 0, NULL);
+		}
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
@@ -60,10 +65,11 @@ static int
 {
 	int	status;
 
-	open_files(shell, token);
+	open_files(shell, token->redirect);
 	if (errno)
-		return (EXIT_FAILURE);
-	status = execute_builtin(shell, token->cmd_array, &shell->envp);
+		status = EXIT_FAILURE;
+	else
+		status = execute_builtin(shell, token->cmd_array, &shell->envp);
 	set_input(shell, standup[0]);
 	set_output(shell, standup[1]);
 	return (status);

@@ -94,7 +94,7 @@ void		clean_lists(t_shell *shell);
 char		*get_next_line_heredoc(int fd);
 
 // utils_open_files.c
-void		open_files(t_shell *shell, t_token *token);
+void		open_files(t_shell *shell, char **redirect);
 
 // utils_parsing.c
 bool		istoken(char c);

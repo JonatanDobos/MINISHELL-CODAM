@@ -14,6 +14,7 @@ void	here_doc(t_shell *shell, char *delim)
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
+		write(STDOUT_FILENO, delim, ft_strlen(delim));
 		line = get_next_line_heredoc(STDIN_FILENO);
 		if (!line)
 			exit_clean(shell, errno, "here_doc: malloc failure");
