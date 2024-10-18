@@ -7,14 +7,28 @@ static void	determine_output(t_shell *shell,
 	{
 		set_output(shell, standup[1]);
 		if (close(pipe_fds[1]) == -1)
-			exit_clean(shell, errno, "set_output()");
+			exit_clean(shell, errno, "determine_output()");
 	}
 	else
 	{
 		set_output(shell, pipe_fds[1]);
 		if (close(standup[1]) == -1)
-			exit_clean(shell, errno, "set_output()");
+			exit_clean(shell, errno, "determine_output()");
 	}
+}
+
+void	run_heredoc(t_shell *shell, t_token *token, int *pipe_fds)
+{
+	int	i;
+	
+	i = 0;
+	while (token->redirect[i] && errno != ENOMEM)
+	{
+		builtin_heredoc(shell, token->redirect[i] \
+			+ skip_redir_ws(token->redirect[i]), token->heredoc);
+		++i;
+	}
+	ft_putstr_fd(token->heredoc, pipe_fds[1]);
 }
 
 static pid_t	kiddo(t_shell *shell,
@@ -25,6 +39,8 @@ static pid_t	kiddo(t_shell *shell,
 	pid = fork();
 	if (pid == 0)
 	{
+		if (token->redirect && check_for_heredoc(token->redirect))
+			run_heredoc(shell, token, pipe_fds);
 		close(standup[0]);
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);

@@ -41,6 +41,7 @@ typedef struct s_token
 	char		**cmd_array;
 	char		**redirect;
 	short		type;
+	char		*heredoc;
 	void		*next;
 }	t_token;
 
@@ -52,7 +53,6 @@ typedef struct s_shell
 	char		*line;
 	char		**envp;
 	char		**envp_sorted;
-	char		**heredoc;
 	short		last_errno;
 	bool		print_info;// TEST
 }	t_shell;

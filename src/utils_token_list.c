@@ -7,6 +7,7 @@ void	token_delone(t_token *node)
 		return ;
 	ft_free_array(node->cmd_array);
 	ft_free_array(node->redirect);
+	ft_free_null(&node->heredoc);
 	free(node);
 }
 
@@ -34,6 +35,7 @@ t_token	*token_new(char **cmd_array, char **redirect, short type)
 	new->cmd_array = cmd_array;
 	new->redirect = redirect;
 	new->type = type;
+	new->heredoc = NULL;
 	new->next = NULL;
 	return (new);
 }

@@ -1,9 +1,11 @@
 #include "../minishell.h"
 
-static bool	check_for_heredoc(char **redir)
+bool	check_for_heredoc(char **redir)
 {
 	int	i;
 
+	if (!redir)
+		return (false);
 	i = 0;
 	while (redir[i] && ft_strncmp(redir[i], "<<", 2))
 		++i;
@@ -54,11 +56,6 @@ static void	open_with_heredoc(t_shell *shell, char **redir)
 			set_outfile_append(shell, redir[i] + skip_redir_ws(redir[i]));
 		else if (!ft_strncmp(redir[i], ">", 1))
 			set_outfile_trunc(shell, redir[i] + skip_redir_ws(redir[i]));
-		++i;
-	}
-	while (redir[i] && errno != ENOMEM)
-	{
-		here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
 		++i;
 	}
 }
