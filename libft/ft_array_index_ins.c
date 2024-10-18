@@ -6,7 +6,7 @@
 /*   By: joni <joni@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/10/17 11:06:20 by joni          #+#    #+#                 */
-/*   Updated: 2024/10/17 11:07:06 by joni          ########   odam.nl         */
+/*   Updated: 2024/10/18 13:05:05 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**ft_array_index_ins(char **array, char *insert, size_t index)
 
 	size = 0;
 	size = ft_array_size(array);
-	new_array = (char **)malloc(sizeof(char *) * ++size);
+	new_array = (char **)malloc(sizeof(char *) * (++size + 1));
 	if (!new_array)
 		return (NULL);
 	new_array[size] = NULL;

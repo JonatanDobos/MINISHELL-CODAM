@@ -28,18 +28,13 @@ static void	next_node(t_list **ref_current, short *type)
 		*type = get_element_type((*ref_current)->content);
 }
 
-//LEFTOFF! DOES NOT MAKE A SINGLE TOKEN??? DOUBLE FREE (in index_ins() ??)
-
 static int	add_redirect(char ***array, char *new)
 {
 	size_t	i;
 
-	printf("\n");//test
-	ft_putarray(*array, true);//t
 	if (*array == NULL || ft_strncmp(new, "<<", 2) == 0)
 	{
 		*array = ft_array_append(*array, new);
-		ft_putarray(*array, true);//t
 		return (*array == NULL);
 	}
 	i = 0;
@@ -49,7 +44,6 @@ static int	add_redirect(char ***array, char *new)
 		*array = ft_array_index_ins(*array, new, i);
 	else
 		*array = ft_array_append(*array, new);
-	ft_putarray(*array, true);//t
 	return (*array == NULL);
 }
 

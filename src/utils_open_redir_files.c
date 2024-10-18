@@ -29,9 +29,7 @@ static void	open_no_heredoc(t_shell *shell, char **redir)
 	i = 0;
 	while (redir[i])
 	{
-		if (!ft_strncmp(redir[i], "<<", 2))
-			here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
-		else if (!ft_strncmp(redir[i], "<", 1))
+		if (!ft_strncmp(redir[i], "<", 1))
 			set_infile(shell, redir[i] + skip_redir_ws(redir[i]));
 		else if (!ft_strncmp(redir[i], ">>", 2))
 			set_outfile_append(shell, redir[i] + skip_redir_ws(redir[i]));

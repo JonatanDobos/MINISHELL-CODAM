@@ -80,14 +80,14 @@ int	execution(t_shell *shell)
 	standup[1] = dup(STDOUT_FILENO);
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
-	{
 		return (exceptionweee(shell, token, standup));
-	}
 	while (token != NULL)
 	{
 		if (pipe(pipe_fds) == -1)
 			exit_clean(shell, errno, "pipe()");
 		pid = kiddo(shell, token, standup, pipe_fds);
+		if (pid == -1)
+			exit_clean(shell, errno, "fork()");
 		set_input(shell, pipe_fds[0]);
 		close(pipe_fds[1]);
 		token = token->next;
