@@ -25,32 +25,18 @@ static char	*line_append(char *line, char *add)
 	return (new);
 }
 
-static void	write_out(t_shell *shell, char *heredoc, int *pipe)
-{
-	if (!pipe)
-		ft_putstr_fd(heredoc, STDIN_FILENO);
-	else
-	{
-		set_input(shell, pipe[0]);
-		set_output(shell, pipe[1]);
-		ft_putstr_fd(heredoc, STDIN_FILENO);
-	}
-	ft_free_null(&heredoc);
-	close(pipe[0]);
-}
-
 void	builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe)
 {
 	char	*line;
 	char	*heredoc;
 
 	heredoc = NULL;
-	printf("WERKT NOG NIET, GEZEIK MET FDS en dup2\n");
+	// printf("WERKT NOG NIET, GEZEIK MET FDS en dup2\n");
 	// if (pipe)
 	// 	printf("pipe[0]: %d, pipe[1]: %d\n", pipe[0], pipe[1]);
 	// printf("std[0]: %d, std[1]: %d\n", standup[0], standup[1]);
 	set_input(shell, standup[0]);
-	set_output(shell, standup[1]);
+	// set_output(shell, standup[1]);
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
@@ -67,6 +53,6 @@ void	builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe)
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	write_out(shell, heredoc, pipe);
-	close(standup[0]);
+	ft_putstr_fd(heredoc, STDIN_FILENO);
+	close(STDIN_FILENO);
 }

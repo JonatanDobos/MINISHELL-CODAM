@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static void	determine_output(t_shell *shell,
+void	determine_output(t_shell *shell,
 	t_list *next, int *standup, int *pipe_fds)
 {
 	if (next == NULL)
@@ -25,16 +25,8 @@ static pid_t	kiddo(t_shell *shell,
 	pid = fork();
 	if (pid == 0)
 	{
-		close(standup[0]);
-		close(pipe_fds[0]);
-		determine_output(shell, token->next, standup, pipe_fds);
-		if (token->redirect)
-			open_files(shell, token->redirect, standup, pipe_fds);
-		if (errno)
-		{
-			close(STDOUT_FILENO);
-			exit_clean(shell, 0, NULL);
-		}
+		if (inp_outp_manager(shell, token, standup, pipe_fds))
+			return (close(STDOUT_FILENO), exit_clean(shell, 0, NULL), pid);
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
@@ -65,7 +57,8 @@ static int
 {
 	int	status;
 
-	open_files(shell, token->redirect, standup, NULL);
+	// should do heredocs here (in child (for signal management))
+	open_files(shell, token->redirect);
 	if (errno)
 		status = EXIT_FAILURE;
 	else

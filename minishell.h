@@ -41,6 +41,8 @@ void		execute_sys_cmd(char **cmd_array, char **envp);
 
 // pipe_forking_redirection.c
 int			execution(t_shell *shell);
+void		determine_output(t_shell *shell,
+	t_list *next, int *standup, int *pipe_fds);
 
 // BUILTINS
 // builtin_pwd_cd_env_echo_exit.c
@@ -94,7 +96,9 @@ void		clean_lists(t_shell *shell);
 char		*get_next_line_heredoc(int fd);
 
 // utils_open_redir_files.c
-void		open_files(t_shell *shell, char **redirect, int *standup, int *pipe);
+void		open_files(t_shell *shell, char **redir);
+void		open_heredocs(t_shell *shell, char **redir, int *standup, int *pipe);
+int			inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe);
 
 // utils_parsing.c
 bool		istoken(char c);
