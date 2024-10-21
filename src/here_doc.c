@@ -4,7 +4,6 @@
 
 // IMPLEMENT: should react to signals! (make it run as child!)
 // On failure shell_heredoc is freed in exit clean
-
 static char	*line_append(char *line, char *add)
 {
 	size_t	i;
@@ -26,28 +25,48 @@ static char	*line_append(char *line, char *add)
 	return (new);
 }
 
-void	builtin_heredoc(t_shell *shell, char *delim, char *heredoc)
+static void	write_out(t_shell *shell, char *heredoc, int *pipe)
+{
+	if (!pipe)
+		ft_putstr_fd(heredoc, STDIN_FILENO);
+	else
+	{
+		set_input(shell, pipe[0]);
+		set_output(shell, pipe[1]);
+		ft_putstr_fd(heredoc, STDIN_FILENO);
+	}
+	ft_free_null(&heredoc);
+	close(pipe[0]);
+}
+
+void	builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe)
 {
 	char	*line;
+	char	*heredoc;
 
-	ft_free_null(&heredoc);
+	heredoc = NULL;
+	printf("WERKT NOG NIET, GEZEIK MET FDS en dup2\n");
+	// if (pipe)
+	// 	printf("pipe[0]: %d, pipe[1]: %d\n", pipe[0], pipe[1]);
+	// printf("std[0]: %d, std[1]: %d\n", standup[0], standup[1]);
+	set_input(shell, standup[0]);
+	set_output(shell, standup[1]);
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line_heredoc(STDIN_FILENO);
 		if (!line)
-			exit_clean(shell, errno, "heredoc()");
+			return (ft_free_null(&heredoc), exit_clean(shell, errno, "heredoc(1)"));
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
 		heredoc = line_append(heredoc, line);
 		if (!heredoc)
-		{
-			ft_free_null(&line);
-			exit_clean(shell, errno, "heredoc()");
-		}
+			return (ft_free_null(&line), exit_clean(shell, errno, "heredoc(2)"));
 		if (!ft_strncmp(delim, "\n", 2))
 			break ;
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
+	write_out(shell, heredoc, pipe);
+	close(standup[0]);
 }

@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-int		builtin_pwd(char **envp)
+int	builtin_pwd(char **envp)
 {
 	char	*cwd;
 
@@ -12,7 +12,7 @@ int		builtin_pwd(char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int		builtin_env(char **envp)
+int	builtin_env(char **envp)
 {
 	int	i;
 
@@ -25,7 +25,7 @@ int		builtin_env(char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int		builtin_echo(char **cmd_array, char **envp)
+int	builtin_echo(char **cmd_array, char **envp)
 {
 	int		i;
 	bool	n_flag;
@@ -48,7 +48,7 @@ int		builtin_echo(char **cmd_array, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int		builtin_exit(t_shell *shell, char **cmd_array, char **envp)
+int	builtin_exit(t_shell *shell, char **cmd_array, char **envp)
 {
 	size_t	i;
 
@@ -64,7 +64,7 @@ int		builtin_exit(t_shell *shell, char **cmd_array, char **envp)
 			&& cmd_array[1][i] != '+' && cmd_array[1][i] != '-')
 			{
 				ft_putstr_fd("minishell: exit: numeric argument required\n",
-							STDERR_FILENO);
+					STDERR_FILENO);
 				return (2);
 			}
 			i++;

@@ -17,7 +17,7 @@ void	sort_envp(char **array)
 		while (i < size)
 		{
 			if (i == size -1 && cmp_export_sort(array[0], array[i]) > 0
-			|| (i < size - 1 && cmp_export_sort(array[i], array[i + 1]) > 0))
+				|| (i < size - 1 && cmp_export_sort(array[i], array[i + 1]) > 0))
 			{
 				ptr_switch(&array[i], &array[i + 1]);
 				sorted = false;

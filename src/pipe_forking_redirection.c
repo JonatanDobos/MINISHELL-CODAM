@@ -17,20 +17,6 @@ static void	determine_output(t_shell *shell,
 	}
 }
 
-void	run_heredoc(t_shell *shell, t_token *token, int *pipe_fds)
-{
-	int	i;
-	
-	i = 0;
-	while (token->redirect[i] && errno != ENOMEM)
-	{
-		builtin_heredoc(shell, token->redirect[i] \
-			+ skip_redir_ws(token->redirect[i]), token->heredoc);
-		++i;
-	}
-	ft_putstr_fd(token->heredoc, pipe_fds[1]);
-}
-
 static pid_t	kiddo(t_shell *shell,
 	t_token *token, int *standup, int *pipe_fds)
 {
@@ -39,13 +25,16 @@ static pid_t	kiddo(t_shell *shell,
 	pid = fork();
 	if (pid == 0)
 	{
-		if (token->redirect && check_for_heredoc(token->redirect))
-			run_heredoc(shell, token, pipe_fds);
 		close(standup[0]);
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
 		if (token->redirect)
-			open_files(shell, token);
+			open_files(shell, token->redirect, standup, pipe_fds);
+		if (errno)
+		{
+			close(STDOUT_FILENO);
+			exit_clean(shell, 0, NULL);
+		}
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
@@ -75,7 +64,8 @@ static int
 	exceptionweee(t_shell *shell, t_token *token, int *standup)
 {
 	int	status;
-	open_files(shell, token);
+
+	open_files(shell, token->redirect, standup, NULL);
 	if (errno)
 		status = EXIT_FAILURE;
 	else

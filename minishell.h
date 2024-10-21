@@ -54,8 +54,8 @@ int			builtin_exit(t_shell *shell, char **cmd_array, char **envp);
 int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
-// builtin_heredoc.c
-void		builtin_heredoc(t_shell *shell, char *delim, char *heredoc);
+// here_doc.c
+void		builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe);
 
 // exit_clean.c
 void		syntax_error(int num, char *message);
@@ -94,8 +94,7 @@ void		clean_lists(t_shell *shell);
 char		*get_next_line_heredoc(int fd);
 
 // utils_open_redir_files.c
-void		open_files(t_shell *shell, t_token *token);
-bool		check_for_heredoc(char **redir);
+void		open_files(t_shell *shell, char **redirect, int *standup, int *pipe);
 
 // utils_parsing.c
 bool		istoken(char c);

@@ -60,7 +60,7 @@ char	*get_env(char **envp, const char *key)
 }
 
 // Prints the sorted envp list
-int		print_export_list(char **envp)
+int	print_export_list(char **envp)
 {
 	int	i;
 

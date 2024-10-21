@@ -64,21 +64,21 @@ short	cmp_export_sort(char *relevant, char *compared_to)
 
 	i = 0;
 	while (relevant[i] && relevant[i] == compared_to[i]
-	&& relevant[i] != '=' && compared_to[i] != '=')
+		&& relevant[i] != '=' && compared_to[i] != '=')
 		i++;
 	if ((relevant[i] == '=' || relevant[i] == '\0')
-	&& (compared_to[i] == '=' || compared_to[i] == '\0'))
+		&& (compared_to[i] == '=' || compared_to[i] == '\0'))
 		return (0);
 	if ((compared_to[i] == '=' || compared_to[i] == '\0')
-	|| (ft_islower(relevant[i]) && ft_isupper(compared_to[i]))
-	|| (!ft_isalpha(relevant[i]) && ft_isupper(compared_to[i])
-	&& relevant[i] != '=')
-	|| (!ft_isalpha(compared_to[i]) && ft_islower(relevant[i])))
+		|| (ft_islower(relevant[i]) && ft_isupper(compared_to[i]))
+		|| (!ft_isalpha(relevant[i]) && ft_isupper(compared_to[i])
+			&& relevant[i] != '=')
+		|| (!ft_isalpha(compared_to[i]) && ft_islower(relevant[i])))
 		return (1);
 	if ((relevant[i] == '=' || relevant[i] == '\0')
-	|| (ft_isupper(relevant[i]) && ft_islower(compared_to[i]))
-	|| (ft_isupper(relevant[i]) && !ft_isalpha(compared_to[i]))
-	|| (ft_islower(compared_to[i]) && !ft_isalpha(relevant[i])))
+		|| (ft_isupper(relevant[i]) && ft_islower(compared_to[i]))
+		|| (ft_isupper(relevant[i]) && !ft_isalpha(compared_to[i]))
+		|| (ft_islower(compared_to[i]) && !ft_isalpha(relevant[i])))
 		return (-1);
 	return (relevant[i] - compared_to[i]);
 }
@@ -95,7 +95,7 @@ int	envp_key_index(char **envp, char *key)
 		while (key[j] && envp[i][j] == key[j])
 			++j;
 		if ((!key[j] && (envp[i][j] == '=' || envp[i][j] == '\0'))
-		|| (key[j] == '=' && envp[i][j] == '\0'))
+			|| (key[j] == '=' && envp[i][j] == '\0'))
 			break ;
 		i++;
 	}

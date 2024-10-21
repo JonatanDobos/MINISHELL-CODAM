@@ -60,7 +60,7 @@ static size_t	token_element_node(
 	}
 	len = skip_redir_ws(line + i);
 	while (!ft_iswhitespace(line[i + len]) && !istoken(line[i + len])
-			&& line[i + len])
+		&& line[i + len])
 	{
 		if (line[i + len] == '\'' || line[i + len] == '\"')
 			len = skip_to_next_quote(line, i + len) - i;
@@ -86,7 +86,7 @@ void	parse_pre(t_shell *shell, char *line)
 	quote = 0;
 	while (line[i])
 	{
-		if (!quote && (line[i] == '\'' || line[i] =='\"'))
+		if (!quote && (line[i] == '\'' || line[i] == '\"'))
 			quote = line[i];
 		else if (line[i] == quote)
 			quote = 0;
