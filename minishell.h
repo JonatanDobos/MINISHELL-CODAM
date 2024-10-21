@@ -55,7 +55,7 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
-void		here_doc(t_shell *shell, char *delim);
+void		builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe);
 
 // exit_clean.c
 void		syntax_error(int num, char *message);
@@ -93,8 +93,8 @@ void		clean_lists(t_shell *shell);
 // utils_mod_gnl.c
 char		*get_next_line_heredoc(int fd);
 
-// utils_open_files.c
-void		open_files(t_shell *shell, char **redirect);
+// utils_open_redir_files.c
+void		open_files(t_shell *shell, char **redirect, int *standup, int *pipe);
 
 // utils_parsing.c
 bool		istoken(char c);

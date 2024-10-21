@@ -29,7 +29,7 @@ static pid_t	kiddo(t_shell *shell,
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
 		if (token->redirect)
-			open_files(shell, token->redirect);
+			open_files(shell, token->redirect, standup, pipe_fds);
 		if (errno)
 		{
 			close(STDOUT_FILENO);
@@ -65,7 +65,7 @@ static int
 {
 	int	status;
 
-	open_files(shell, token->redirect);
+	open_files(shell, token->redirect, standup, NULL);
 	if (errno)
 		status = EXIT_FAILURE;
 	else

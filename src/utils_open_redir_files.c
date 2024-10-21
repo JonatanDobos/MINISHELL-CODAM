@@ -34,10 +34,10 @@ static void	open_others(t_shell *shell, char **redir, bool has_heredoc)
 	}
 }
 
-void	open_files(t_shell *shell, char **redir)
+void	open_files(t_shell *shell, char **redir, int *standup, int *pipe)
 {
-	bool	has_heredoc;
-	int		i;
+	bool		has_heredoc;
+	int			i;
 
 	if (redir == NULL)
 		return ;
@@ -54,7 +54,7 @@ void	open_files(t_shell *shell, char **redir)
 	while (redir[i] && errno != ENOMEM)
 	{
 		if (!ft_strncmp(redir[i], "<<", 2))
-			here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
+			builtin_heredoc(shell, redir[i] + skip_redir_ws(redir[i]), standup, pipe);
 		++i;
 	}
 	open_others(shell, redir, has_heredoc);

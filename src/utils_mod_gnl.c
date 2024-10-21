@@ -84,6 +84,6 @@ char	*get_next_line_heredoc(int fd)
 		if (!line)
 			return (NULL);
 	}
-	line[ft_strlen(line) - 1] = '\0';
+	// line[ft_strlen(line) - 1] = '\0';
 	return (line);
 }

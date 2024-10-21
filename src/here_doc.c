@@ -4,32 +4,69 @@
 
 // IMPLEMENT: should react to signals! (make it run as child!)
 // On failure shell_heredoc is freed in exit clean
-void	here_doc(t_shell *shell, char *delim)
+static char	*line_append(char *line, char *add)
+{
+	size_t	i;
+	size_t	j;
+	char	*new;
+
+	new = (char *)malloc(ft_strlen_null(line) + ft_strlen_null(add) + 1);
+	if (!new)
+		return (ft_free_null(&line), NULL);
+	i = 0;
+	j = 0;
+	while (line && line[j])
+		new[i++] = line[j++];
+	j = 0;
+	while (add && add[j])
+		new[i++] = add[j++];
+	new[i] = '\0';
+	ft_free_null(&line);
+	return (new);
+}
+
+static void	write_out(t_shell *shell, char *heredoc, int *pipe)
+{
+	if (!pipe)
+		ft_putstr_fd(heredoc, STDIN_FILENO);
+	else
+	{
+		set_input(shell, pipe[0]);
+		set_output(shell, pipe[1]);
+		ft_putstr_fd(heredoc, STDIN_FILENO);
+	}
+	ft_free_null(&heredoc);
+	close(pipe[0]);
+}
+
+void	builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe)
 {
 	char	*line;
-	char	*dup_line;
+	char	*heredoc;
 
-	ft_free_array(shell->heredoc);
-	shell->heredoc = NULL;
+	heredoc = NULL;
+	printf("WERKT NOG NIET, GEZEIK MET FDS en dup2\n");
+	// if (pipe)
+	// 	printf("pipe[0]: %d, pipe[1]: %d\n", pipe[0], pipe[1]);
+	// printf("std[0]: %d, std[1]: %d\n", standup[0], standup[1]);
+	set_input(shell, standup[0]);
+	set_output(shell, standup[1]);
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
-		write(STDOUT_FILENO, delim, ft_strlen(delim));
 		line = get_next_line_heredoc(STDIN_FILENO);
 		if (!line)
-			exit_clean(shell, errno, "here_doc: malloc failure");
+			return (ft_free_null(&heredoc), exit_clean(shell, errno, "heredoc(1)"));
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
-		dup_line = ft_strdup(line);
-		ft_free_null(&line);
-		if (!dup_line)
-			exit_clean(shell, errno, "here_doc: malloc failure");
-		shell->heredoc = ft_array_append(shell->heredoc, dup_line);
-		if (!shell->heredoc)
-			exit_clean(shell, errno, "here_doc: malloc failure");
+		heredoc = line_append(heredoc, line);
+		if (!heredoc)
+			return (ft_free_null(&line), exit_clean(shell, errno, "heredoc(2)"));
 		if (!ft_strncmp(delim, "\n", 2))
 			break ;
+		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	// TEST_print_pointer_arr(shell->heredoc, NULL, C_BLUE, true, C_BLUE, "Here_doc check");// TEST
+	write_out(shell, heredoc, pipe);
+	close(standup[0]);
 }
