@@ -41,8 +41,6 @@ void		execute_sys_cmd(char **cmd_array, char **envp);
 
 // pipe_forking_redirection.c
 int			execution(t_shell *shell);
-void		determine_output(t_shell *shell,
-	t_list *next, int *standup, int *pipe_fds);
 
 // BUILTINS
 // builtin_pwd_cd_env_echo_exit.c
@@ -57,7 +55,7 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
-void		builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe);
+void		builtin_heredoc(t_shell *shell, char *delim, int *standup);
 
 // exit_clean.c
 void		syntax_error(int num, char *message);
@@ -70,6 +68,7 @@ int			export_syntax(const char *envar);
 int			unset_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
 int			print_export_list(char **envp);
+bool		check_for_heredoc(char **redirects);
 
 // utils_error_print.c
 void		export_error(char *envar);
@@ -97,7 +96,7 @@ char		*get_next_line_heredoc(int fd);
 
 // utils_open_redir_files.c
 void		open_files(t_shell *shell, char **redir);
-void		open_heredocs(t_shell *shell, char **redir, int *standup, int *pipe);
+void		open_heredocs(t_shell *shell, char **redir, int *standup);
 int			inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe);
 
 // utils_parsing.c

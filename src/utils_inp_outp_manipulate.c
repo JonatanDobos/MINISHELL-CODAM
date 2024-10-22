@@ -9,18 +9,21 @@ static void	check_infile(char *infile)
 	}
 }
 
-static bool	check_for_heredoc(char **redirects)
+static void	determine_output(t_shell *shell,
+	t_list *next, int *standup, int *pipe_fds)
 {
-	int	i;
-
-	i = 0;
-	while (redirects && redirects[i])
+	if (next == NULL)
 	{
-		if (ft_strncmp(redirects[i], "<<", 2))
-			return (true);
-		++i;
+		set_output(shell, standup[1]);
+		if (close(pipe_fds[1]) == -1)
+			exit_clean(shell, errno, "determine_output()");
 	}
-	return (false);
+	else
+	{
+		set_output(shell, pipe_fds[1]);
+		if (close(standup[1]) == -1)
+			exit_clean(shell, errno, "determine_output()");
+	}
 }
 
 void	open_files(t_shell *shell, char **redir)
@@ -51,7 +54,7 @@ void	open_files(t_shell *shell, char **redir)
 	}
 }
 
-void	open_heredocs(t_shell *shell, char **redir, int *standup, int *pipe)
+void	open_heredocs(t_shell *shell, char **redir, int *standup)
 {
 	bool		has_heredoc;
 	int			i;
@@ -62,7 +65,7 @@ void	open_heredocs(t_shell *shell, char **redir, int *standup, int *pipe)
 	while (redir[i] && errno != ENOMEM)
 	{
 		if (!ft_strncmp(redir[i], "<<", 2))
-			builtin_heredoc(shell, redir[i] + skip_redir_ws(redir[i]), standup, pipe);
+			builtin_heredoc(shell, redir[i] + skip_redir_ws(redir[i]), standup);
 		++i;
 	}
 }
@@ -73,7 +76,7 @@ int	inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe)
 	if (close(pipe[0]) ==  -1)
 		return (errno);
 	if (token->redirect)
-		open_heredocs(shell, token->redirect, standup, pipe);
+		open_heredocs(shell, token->redirect, standup);
 	if (errno)
 		return (errno);
 	if (close(standup[0]) == -1)

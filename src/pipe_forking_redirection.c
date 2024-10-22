@@ -1,22 +1,5 @@
 #include "../minishell.h"
 
-void	determine_output(t_shell *shell,
-	t_list *next, int *standup, int *pipe_fds)
-{
-	if (next == NULL)
-	{
-		set_output(shell, standup[1]);
-		if (close(pipe_fds[1]) == -1)
-			exit_clean(shell, errno, "determine_output()");
-	}
-	else
-	{
-		set_output(shell, pipe_fds[1]);
-		if (close(standup[1]) == -1)
-			exit_clean(shell, errno, "determine_output()");
-	}
-}
-
 static pid_t	kiddo(t_shell *shell,
 	t_token *token, int *standup, int *pipe_fds)
 {
@@ -52,19 +35,48 @@ static int	zombie_prevention_protocol(int pid)
 	return (errno);
 }
 
+// DOES NOT WORK AT ALL
+static int	exceptionweee_heredoc(t_shell *shell, t_token *token, int *standup)
+{
+	int		status;
+	pid_t	pid;
+
+	pid = fork();
+	if (pid == -1)
+		return (errno);
+	if (pid == 0)
+	{
+		open_heredocs(shell, token->redirect, standup);
+		exit_clean(shell, errno, NULL);
+	}
+	if (waitpid(pid, &status, 0) == -1)
+		return (errno);
+	if (WIFEXITED(status))
+		return (WEXITSTATUS(status));
+	if (WIFSIGNALED(status))
+		return (WTERMSIG(status));
+	if (WIFSTOPPED(status))
+		return (WSTOPSIG(status));
+	return (errno);
+}
+
 static int
 	exceptionweee(t_shell *shell, t_token *token, int *standup)
 {
-	int	status;
+	int		status;
 
-	// should do heredocs here (in child (for signal management))
+	errno = 0;
+	if (check_for_heredoc(token->redirect) == true)
+	{
+		status = exceptionweee_heredoc(shell, token, standup);
+		if (status)
+			return (status);
+	}
 	open_files(shell, token->redirect);
 	if (errno)
 		status = EXIT_FAILURE;
 	else
 		status = execute_builtin(shell, token->cmd_array, &shell->envp);
-	set_input(shell, standup[0]);
-	set_output(shell, standup[1]);
 	return (status);
 }
 

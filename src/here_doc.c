@@ -25,18 +25,13 @@ static char	*line_append(char *line, char *add)
 	return (new);
 }
 
-void	builtin_heredoc(t_shell *shell, char *delim, int *standup, int *pipe)
+void	builtin_heredoc(t_shell *shell, char *delim, int *standup)
 {
 	char	*line;
 	char	*heredoc;
 
 	heredoc = NULL;
-	// printf("WERKT NOG NIET, GEZEIK MET FDS en dup2\n");
-	// if (pipe)
-	// 	printf("pipe[0]: %d, pipe[1]: %d\n", pipe[0], pipe[1]);
-	// printf("std[0]: %d, std[1]: %d\n", standup[0], standup[1]);
 	set_input(shell, standup[0]);
-	// set_output(shell, standup[1]);
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
