@@ -76,16 +76,16 @@ void	open_heredocs(t_shell *shell, char **redir, int *standup)
 int	inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe)
 {
 	errno = 0;
+	if (close(pipe[0]) ==  -1)
+		return (errno);
+	if (token->redirect && check_for_heredoc(token->redirect))
+		open_heredocs(shell, token->redirect, standup);
+	if (close(standup[0]) == -1)
+		return (errno);
+	if (errno)
+		return (errno);
 	determine_output(shell, token->next, standup, pipe);
 	if (token->redirect)
 		open_files(shell, token->redirect);
-	if (token->redirect && check_for_heredoc(token->redirect))
-		open_heredocs(shell, token->redirect, standup);
-	if (errno)
-		return (errno);
-	if (close(pipe[0]) ==  -1)
-		return (errno);
-	if (close(standup[0]) == -1)
-		return (errno);
 	return (errno);
 }
