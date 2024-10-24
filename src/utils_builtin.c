@@ -72,17 +72,3 @@ int	print_export_list(char **envp)
 	}
 	return (EXIT_SUCCESS);
 }
-
-bool	check_for_heredoc(char **redirects)
-{
-	int	i;
-
-	i = 0;
-	while (redirects && redirects[i])
-	{
-		if (ft_strncmp(redirects[i], "<<", 2))
-			return (true);
-		++i;
-	}
-	return (false);
-}

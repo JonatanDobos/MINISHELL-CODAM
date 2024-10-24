@@ -55,7 +55,7 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
-void		builtin_heredoc(t_shell *shell, char *delim, int *standup);
+char		*builtin_heredoc(t_shell *shell, char *delim);
 
 // exit_clean.c
 void		syntax_error(int num, char *message);
@@ -68,7 +68,6 @@ int			export_syntax(const char *envar);
 int			unset_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
 int			print_export_list(char **envp);
-bool		check_for_heredoc(char **redirects);
 
 // utils_error_print.c
 void		export_error(char *envar);
@@ -94,10 +93,15 @@ void		clean_lists(t_shell *shell);
 // utils_mod_gnl.c
 char		*get_next_line_heredoc(int fd);
 
-// utils_open_redir_files.c
+// utils_inp_outp_manipulate.c
 void		open_files(t_shell *shell, char **redir);
 void		open_heredocs(t_shell *shell, char **redir, int *standup);
 int			inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe);
+
+// utils_inp_outp_utils.c
+void		check_infile(char *infile);
+void		save_standard_fds(t_shell *shell, int *standup);
+bool		check_for_heredoc(char **redirects);
 
 // utils_parsing.c
 bool		istoken(char c);

@@ -58,7 +58,7 @@ char	*insert_envp_in_str(t_shell *shell, char *str, size_t i)
 
 // Expands envp inside string
 // used in double quotes
-// *str can be freed inside function
+// *str freed inside function
 // Exit inside on malloc failure
 char	*expand_env_in_str(t_shell *shell, char *str)
 {

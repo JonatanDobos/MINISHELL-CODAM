@@ -15,4 +15,5 @@ OPTIONAL
 
 HEREDOC:
 - fix pipes
-- fix unlimited loop when several heredocs
+- fix fds!
+- fix expands!!

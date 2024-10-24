@@ -1,14 +1,5 @@
 #include "../minishell.h"
 
-static void	check_infile(char *infile)
-{
-	if (access(infile, R_OK))
-	{
-		syntax_error(errno, infile);
-		errno = 2;
-	}
-}
-
 static void	determine_output(t_shell *shell,
 	t_list *next, int *standup, int *pipe_fds)
 {
@@ -57,32 +48,44 @@ void	open_files(t_shell *shell, char **redir)
 void	open_heredocs(t_shell *shell, char **redir, int *standup)
 {
 	bool		has_heredoc;
+	char		*inp;
 	int			i;
 
 	if (redir == NULL)
 		return ;
 	i = 0;
+	inp = NULL;
+	set_input(shell, standup[0]);
 	while (redir[i] && errno != ENOMEM)
 	{
+		
 		if (!ft_strncmp(redir[i], "<<", 2))
-			builtin_heredoc(shell, redir[i] + skip_redir_ws(redir[i]), standup);
+		{
+			ft_free_null(&inp);
+			inp = builtin_heredoc(shell, redir[i] + skip_redir_ws(redir[i]));
+			if (inp == NULL)
+				exit_clean(shell, errno, "builtin_heredoc()");
+		}
 		++i;
 	}
+	ft_putstr_fd(inp, STDIN_FILENO);
+	ft_free_null(&inp);
+	close(STDIN_FILENO);
 }
 
 int	inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe)
 {
 	errno = 0;
-	if (close(pipe[0]) ==  -1)
-		return (errno);
-	if (token->redirect)
-		open_heredocs(shell, token->redirect, standup);
-	if (errno)
-		return (errno);
-	if (close(standup[0]) == -1)
-		return (errno);
 	determine_output(shell, token->next, standup, pipe);
 	if (token->redirect)
 		open_files(shell, token->redirect);
+	if (token->redirect && check_for_heredoc(token->redirect))
+		open_heredocs(shell, token->redirect, standup);
+	if (errno)
+		return (errno);
+	if (close(pipe[0]) ==  -1)
+		return (errno);
+	if (close(standup[0]) == -1)
+		return (errno);
 	return (errno);
 }

@@ -44,6 +44,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_mod_gnl.c \
 			$(SRCDIR)/utils_inp_outp_manipulate.c \
+			$(SRCDIR)/utils_inp_outp_utils.c \
 			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
 			$(SRCDIR)/utils_token_list.c

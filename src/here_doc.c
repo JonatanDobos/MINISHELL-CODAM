@@ -1,15 +1,41 @@
 #include "../minishell.h"
 
-// SHOULD IMPLEMENT PIPE!!!!!!
+// Expands envp inside string
+// *str freed inside function
+static char	*expand_in_line(t_shell *shell, char *str)
+{
+	size_t	i;
+	bool	double_quote;
 
-// IMPLEMENT: should react to signals! (make it run as child!)
-// On failure shell_heredoc is freed in exit clean
+	i = 0;
+	double_quote = false;
+	while (str[i])
+	{
+		if (str[i] == '\"' && double_quote == true)
+			double_quote = false;
+		else if (str[i] == '\"' && double_quote == false)
+			double_quote = true;
+		else if (str[i] == '\'' && double_quote == false)
+			i = skip_to_next_quote(str, i);
+		else if (str[i] == '$')
+		{
+			str = insert_envp_in_str(shell, str, i);
+			if (!str)
+				return (NULL);
+		}
+		++i;
+	}
+	return (str);
+}
+
 static char	*line_append(char *line, char *add)
 {
 	size_t	i;
 	size_t	j;
 	char	*new;
 
+	if (!add)
+		return (NULL);
 	new = (char *)malloc(ft_strlen_null(line) + ft_strlen_null(add) + 1);
 	if (!new)
 		return (ft_free_null(&line), NULL);
@@ -25,29 +51,27 @@ static char	*line_append(char *line, char *add)
 	return (new);
 }
 
-void	builtin_heredoc(t_shell *shell, char *delim, int *standup)
+char	*builtin_heredoc(t_shell *shell, char *delim)
 {
 	char	*line;
-	char	*heredoc;
+	char	*inp;
 
-	heredoc = NULL;
-	set_input(shell, standup[0]);
+	inp = NULL;
 	while (1)
 	{
 		write(STDOUT_FILENO, "> ", 2);
 		line = get_next_line_heredoc(STDIN_FILENO);
 		if (!line)
-			return (ft_free_null(&heredoc), exit_clean(shell, errno, "heredoc(1)"));
+			return (ft_free_null(&inp), NULL);
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
-		heredoc = line_append(heredoc, line);
-		if (!heredoc)
-			return (ft_free_null(&line), exit_clean(shell, errno, "heredoc(2)"));
+		inp = line_append(inp, expand_in_line(shell, line));
+		if (!inp)
+			return (ft_free_null(&line), NULL);
 		if (!ft_strncmp(delim, "\n", 2))
 			break ;
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	ft_putstr_fd(heredoc, STDIN_FILENO);
-	close(STDIN_FILENO);
+	return (inp);
 }

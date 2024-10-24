@@ -35,43 +35,12 @@ static int	zombie_prevention_protocol(int pid)
 	return (errno);
 }
 
-// DOES NOT WORK AT ALL
-static int	exceptionweee_heredoc(t_shell *shell, t_token *token, int *standup)
-{
-	int		status;
-	pid_t	pid;
-
-	pid = fork();
-	if (pid == -1)
-		return (errno);
-	if (pid == 0)
-	{
-		open_heredocs(shell, token->redirect, standup);
-		exit_clean(shell, errno, NULL);
-	}
-	if (waitpid(pid, &status, 0) == -1)
-		return (errno);
-	if (WIFEXITED(status))
-		return (WEXITSTATUS(status));
-	if (WIFSIGNALED(status))
-		return (WTERMSIG(status));
-	if (WIFSTOPPED(status))
-		return (WSTOPSIG(status));
-	return (errno);
-}
-
 static int
 	exceptionweee(t_shell *shell, t_token *token, int *standup)
 {
 	int		status;
 
 	errno = 0;
-	if (check_for_heredoc(token->redirect) == true)
-	{
-		status = exceptionweee_heredoc(shell, token, standup);
-		if (status)
-			return (status);
-	}
 	open_files(shell, token->redirect);
 	if (errno)
 		status = EXIT_FAILURE;
@@ -87,8 +56,7 @@ int	execution(t_shell *shell)
 	int		pipe_fds[2];
 	int		standup[2];
 
-	standup[0] = dup(STDIN_FILENO);
-	standup[1] = dup(STDOUT_FILENO);
+	save_standard_fds(shell, standup);
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
 		return (exceptionweee(shell, token, standup));
