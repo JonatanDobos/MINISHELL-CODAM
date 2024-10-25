@@ -1,20 +1,38 @@
 #include "../minishell.h"
 
-static pid_t	kiddo(t_shell *shell,
-	t_token *token, int *standup, int *pipe_fds)
+static bool	close_all_fds(t_fds *fds)
+{
+	if (close_fd(&fds->pipe[0]) == -1)
+		return (false);
+	if (close_fd(&fds->pipe[1]) == -1)
+		return (false);
+	if (close_fd(&fds->stdup[0]) == -1)
+		return (false);
+	if (close_fd(&fds->stdup[1]) == -1)
+		return (false);
+	if (close(STDOUT_FILENO) == -1)
+		return (false);
+	return (true);
+}
+
+static pid_t	kiddo(t_shell *shell, t_token *token, t_fds *fds)
 {
 	pid_t	pid;
 
 	pid = fork();
 	if (pid == 0)
 	{
-		if (inp_outp_manager(shell, token, standup, pipe_fds))
-			return (close(STDOUT_FILENO), exit_clean(shell, 0, NULL), pid);
+		if (inp_outp_manager(shell, token, fds))
+		{
+			close_all_fds(fds);
+			exit_clean(shell, EXIT_SUCCESS, NULL);
+			return (pid);
+		}
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
 			execute_sys_cmd(token->cmd_array, shell->envp);
-		close(STDOUT_FILENO);
+		close_all_fds(fds);
 		exit_clean(shell, errno, token->cmd_array[0]);
 	}
 	return (pid);
@@ -41,6 +59,7 @@ static int
 	int		status;
 
 	errno = 0;
+	open_dummy_heredocs(shell, token->redirect);
 	open_files(shell, token->redirect);
 	if (errno)
 		status = EXIT_FAILURE;
@@ -53,25 +72,23 @@ int	execution(t_shell *shell)
 {
 	t_token	*token;
 	pid_t	pid;
-	int		pipe_fds[2];
-	int		standup[2];
+	t_fds	fds;
 
-	save_standard_fds(shell, standup);
+	save_standard_fds(shell, fds.stdup);
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
-		return (exceptionweee(shell, token, standup));
+		return (exceptionweee(shell, token, fds.stdup));
 	while (token != NULL)
 	{
-		if (pipe(pipe_fds) == -1)
+		if (pipe(fds.pipe) == -1)
 			exit_clean(shell, errno, "pipe()");
-		pid = kiddo(shell, token, standup, pipe_fds);
+		pid = kiddo(shell, token, &fds);
 		if (pid == -1)
 			exit_clean(shell, errno, "fork()");
-		set_input(shell, pipe_fds[0]);
-		close(pipe_fds[1]);
+		set_input(shell, fds.pipe[0]);
+		close(fds.pipe[1]);
 		token = token->next;
 	}
-	set_input(shell, standup[0]);
-	set_output(shell, standup[1]);
+	reset_fds(shell, fds.stdup);
 	return (zombie_prevention_protocol(pid));
 }

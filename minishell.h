@@ -96,11 +96,14 @@ char		*get_next_line_heredoc(int fd);
 // utils_inp_outp_manipulate.c
 void		open_files(t_shell *shell, char **redir);
 void		open_heredocs(t_shell *shell, char **redir, int *standup);
-int			inp_outp_manager(t_shell *shell, t_token *token, int *standup, int *pipe);
+int			inp_outp_manager(t_shell *shell, t_token *token, t_fds *fds);
+void		open_dummy_heredocs(t_shell *shell, char **redir);
 
 // utils_inp_outp_utils.c
 void		check_infile(char *infile);
 void		save_standard_fds(t_shell *shell, int *standup);
+void		reset_fds(t_shell *shell, int *standup);
+int			close_fd(int *fd);
 bool		check_for_heredoc(char **redirects);
 
 // utils_parsing.c

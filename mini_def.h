@@ -44,6 +44,12 @@ typedef struct s_token
 	void		*next;
 }	t_token;
 
+typedef struct s_fds
+{
+	int	pipe[2];
+	int	stdup[2];
+}	t_fds;
+
 typedef struct s_shell
 {
 	t_token		*token_head;

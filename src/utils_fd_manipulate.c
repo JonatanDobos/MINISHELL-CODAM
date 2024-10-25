@@ -4,7 +4,7 @@ void	set_input(t_shell *shell, int input_fd)
 {
 	if (dup2(input_fd, STDIN_FILENO) == -1)
 		exit_clean(shell, errno, "set_input(): dup2 failed");
-	if (close(input_fd) == -1)
+	if (close_fd(&input_fd) == -1)
 		exit_clean(shell, errno, "set_input(): close failed");
 }
 
@@ -12,7 +12,7 @@ void	set_output(t_shell *shell, int output_fd)
 {
 	if (dup2(output_fd, STDOUT_FILENO) == -1)
 		exit_clean(shell, errno, "set_output(): dup2 failed");
-	if (close(output_fd) == -1)
+	if (close_fd(&output_fd) == -1)
 		exit_clean(shell, errno, "set_output(): close failed");
 }
 

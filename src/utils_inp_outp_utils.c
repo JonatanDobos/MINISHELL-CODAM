@@ -19,6 +19,27 @@ void	save_standard_fds(t_shell *shell, int *standup)
 		exit_clean(shell, errno, "standup[1]");
 }
 
+void	reset_fds(t_shell *shell, int *standup)
+{
+	set_input(shell, standup[0]);
+	set_output(shell, standup[1]);
+}
+
+// closes fd and sets value to -1
+// (to prevent use after close)
+int	close_fd(int *fd)
+{
+	if (fd >= 0)
+	{
+		if (close(*fd) == -1)
+			return (-1);
+		*fd = -1;
+	}
+	else
+		ft_putendl_fd("fd = -1", STDERR_FILENO);//test
+	return (0);
+}
+
 bool	check_for_heredoc(char **redirects)
 {
 	int	i;
