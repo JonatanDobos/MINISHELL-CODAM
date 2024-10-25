@@ -75,15 +75,18 @@ int	inp_outp_manager(t_shell *shell, t_token *token, t_fds *fds)
 	errno = 0;
 	if (close_fd(&fds->pipe[0]) ==  -1)
 		return (errno);
-	if (token->redirect)
-		open_files(shell, token->redirect);
 	if (token->redirect && check_for_heredoc(token->redirect))
-		open_heredocs(shell, token->redirect, fds->stdup);
+	{
+		if (token->type == T_BUILTIN)
+			open_dummy_heredocs(shell, token->redirect);
+		else
+			open_heredocs(shell, token->redirect, fds->stdup);
+	}
 	if (close_fd(&fds->stdup[0]) == -1)
 		return (errno);
-	if (errno)
-		return (errno);
 	determine_output(shell, token->next, fds);
+	if (token->redirect)
+		open_files(shell, token->redirect);
 	return (errno);
 }
 

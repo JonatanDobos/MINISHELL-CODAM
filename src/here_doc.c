@@ -2,6 +2,24 @@
 
 // Expands envp inside string
 // *str freed inside function
+static char	*insert_env(t_shell *shell, char *str, size_t i)
+{
+	const char	*check = str;
+	size_t		j;
+
+	if (!str)
+		return (NULL);
+	str = insert_envp_in_str(shell, str, i);
+	if (str == check)
+	{
+		j = i;
+		while (!ft_iswhitespace(str[j]))
+			++j;
+		str = str_insert(str, "", i, j - i);
+	}
+	return (str);
+}
+
 static char	*expand_in_line(t_shell *shell, char *str)
 {
 	size_t	i;
@@ -19,7 +37,7 @@ static char	*expand_in_line(t_shell *shell, char *str)
 			i = skip_to_next_quote(str, i);
 		else if (str[i] == '$')
 		{
-			str = insert_envp_in_str(shell, str, i);
+			str = insert_env(shell, str, i);
 			if (!str)
 				return (NULL);
 		}
@@ -34,8 +52,6 @@ static char	*line_append(char *line, char *add)
 	size_t	j;
 	char	*new;
 
-	if (!add)
-		return (NULL);
 	new = (char *)malloc(ft_strlen_null(line) + ft_strlen_null(add) + 1);
 	if (!new)
 		return (ft_free_null(&line), NULL);
@@ -65,7 +81,10 @@ char	*builtin_heredoc(t_shell *shell, char *delim)
 			return (ft_free_null(&inp), NULL);
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
-		inp = line_append(inp, expand_in_line(shell, line));
+		line = expand_in_line(shell, line);
+		if (!line)
+			return (ft_free_null(&inp), NULL);
+		inp = line_append(inp, line);
 		if (!inp)
 			return (ft_free_null(&line), NULL);
 		if (!ft_strncmp(delim, "\n", 2))

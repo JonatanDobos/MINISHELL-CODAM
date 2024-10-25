@@ -47,7 +47,7 @@ bool	check_for_heredoc(char **redirects)
 	i = 0;
 	while (redirects && redirects[i])
 	{
-		if (ft_strncmp(redirects[i], "<<", 2))
+		if (!ft_strncmp(redirects[i], "<<", 2))
 			return (true);
 		++i;
 	}

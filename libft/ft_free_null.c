@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/03/23 20:24:45 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/10/18 21:00:47 by joni          ########   odam.nl         */
+/*   Updated: 2024/10/25 13:04:24 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	*ft_free_null(char **pp)
 {
-	if (pp && *pp)
+	if (pp != NULL && *pp != NULL)
 	{
 		free(*pp);
 		*pp = NULL;

@@ -17,3 +17,10 @@ HEREDOC:
 - fix pipes
 - fix fds!
 - fix expands!!
+
+FIX[!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!]
+->
+	minishell > echo <<l | cat
+	> hallo
+	> l
+	minishell: echo: Bad file descriptor
