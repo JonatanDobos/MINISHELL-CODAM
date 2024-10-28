@@ -49,7 +49,12 @@ static int	zombie_prevention_protocol(int pid)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == SIGINT)
+			sig_reset_prompt(SIGINT);
+		printf("SIGNALED\n");//test (does not work yet)
 		return (WTERMSIG(status));
+	}
 	return (errno);
 }
 

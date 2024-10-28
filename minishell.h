@@ -31,8 +31,13 @@ char		*parse_envp(char **envp, char *str, size_t i);
 char		*expand_env_in_str(t_shell *shell, char *str);
 char		*insert_envp_in_str(t_shell *shell, char *str, size_t i);
 
-//tokenize.c
+// tokenize.c
 int			tokenize(t_shell *shell);
+
+// signals.c
+void		sig_interactive(void);
+void		sig_noninteractive(void);
+void		sig_child(void);
 
 // EXECUTION
 // pipe_execution.c
@@ -111,6 +116,11 @@ bool		istoken(char c);
 size_t		skip_redir_ws(char *line);
 size_t		skip_to_next_quote(const char *line, size_t i);
 size_t		skip_to_end_quote(const char *line, size_t i);
+
+// utils_signals.c
+void		sig_print_newline(int signal);
+void		sig_reset_prompt(int signo);
+void		sig_child_exit(int signal);
 
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);

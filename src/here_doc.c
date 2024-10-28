@@ -67,6 +67,19 @@ static char	*line_append(char *line, char *add)
 	return (new);
 }
 
+static char	*read_next_line(void)
+{
+	char	*line;
+
+	write(STDOUT_FILENO, "> ", 2);
+	sig_child();
+	line = get_next_line_heredoc(STDIN_FILENO);
+	sig_noninteractive();
+	if (!line)
+		return (NULL);
+	return (line);
+}
+
 char	*builtin_heredoc(t_shell *shell, char *delim)
 {
 	char	*line;
@@ -75,8 +88,7 @@ char	*builtin_heredoc(t_shell *shell, char *delim)
 	inp = NULL;
 	while (1)
 	{
-		write(STDOUT_FILENO, "> ", 2);
-		line = get_next_line_heredoc(STDIN_FILENO);
+		line = read_next_line();
 		if (!line)
 			return (ft_free_null(&inp), NULL);
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
