@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-static bool	close_all_fds(t_fds *fds)
+bool	close_all_fds(t_fds *fds)
 {
 	if (close_fd(&fds->pipe[0]) == -1)
 		return (false);
@@ -22,6 +22,7 @@ static pid_t	kiddo(t_shell *shell, t_token *token, t_fds *fds)
 	pid = fork();
 	if (pid == 0)
 	{
+		heredoc_fork(shell, token->redirect, fds, HERE_DOC);
 		if (inp_outp_manager(shell, token, fds))
 		{
 			close_all_fds(fds);
@@ -38,7 +39,7 @@ static pid_t	kiddo(t_shell *shell, t_token *token, t_fds *fds)
 	return (pid);
 }
 
-static int	zombie_prevention_protocol(int pid)
+int	zombie_prevention_protocol(int pid)
 {
 	int	status;
 
@@ -49,23 +50,18 @@ static int	zombie_prevention_protocol(int pid)
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
-	{
-		if (WTERMSIG(status) == SIGINT)
-			sig_reset_prompt(SIGINT);
-		printf("SIGNALED\n");//test (does not work yet)
 		return (WTERMSIG(status));
-	}
 	return (errno);
 }
 
 static int
-	exceptionweee(t_shell *shell, t_token *token, int *standup)
+	exceptionweee(t_shell *shell, t_token *token, t_fds *fds)
 {
-	int		status;
+	int	status;
 
 	errno = 0;
-	open_dummy_heredocs(shell, token->redirect);
-	open_files(shell, token->redirect);
+	heredoc_fork(shell, token->redirect, fds, HERE_DUMMY);
+	open_files(shell, token->redirect, check_for_heredoc(token->redirect));
 	if (errno)
 		status = EXIT_FAILURE;
 	else
@@ -82,7 +78,7 @@ int	execution(t_shell *shell)
 	save_standard_fds(shell, fds.stdup);
 	token = shell->token_head;
 	if (token->next == NULL && token->type == T_BUILTIN)
-		return (exceptionweee(shell, token, fds.stdup));
+		return (exceptionweee(shell, token, &fds));
 	while (token != NULL)
 	{
 		if (pipe(fds.pipe) == -1)

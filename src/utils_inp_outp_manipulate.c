@@ -16,15 +16,12 @@ static void	determine_output(t_shell *shell, t_list *next, t_fds *fds)
 	}
 }
 
-void	open_files(t_shell *shell, char **redir)
+void	open_files(t_shell *shell, char **redir, bool has_heredoc)
 {
-	int			i;
-	const bool	has_heredoc = check_for_heredoc(redir);
+	int	i;
 
-	if (redir == NULL)
-		return ;
 	i = 0;
-	while (redir[i] && !errno)
+	while (redir && redir[i] && !errno)
 	{
 		if (!ft_strncmp(redir[i], "<<", 2))
 		{
@@ -67,26 +64,42 @@ void	open_heredocs(t_shell *shell, char **redir, int *standup)
 	}
 	ft_putstr_fd(inp, STDIN_FILENO);
 	ft_free_null(&inp);
-	close(STDIN_FILENO);
+	close(STDIN_FILENO);// ?
+}
+
+int	heredoc_fork(t_shell *shell, char **redir, t_fds *fds, bool type)
+{
+	pid_t	pid;
+	int		status;
+	
+	pid = fork();
+	if (pid == -1)
+		return (errno);
+	if (pid == 0)
+	{
+		errno = 0;
+		if (type == HERE_DOC)
+			open_heredocs(shell, redir, fds->stdup);
+		else if (type == HERE_DUMMY)
+			open_dummy_heredocs(shell, redir);
+		//all fds closed?
+		exit_clean(shell, errno, NULL);
+	}
+	return (zombie_prevention_protocol(pid));
 }
 
 int	inp_outp_manager(t_shell *shell, t_token *token, t_fds *fds)
 {
+	const bool	has_heredoc = check_for_heredoc(token->redirect);
+
 	errno = 0;
 	if (close_fd(&fds->pipe[0]) ==  -1)
 		return (errno);
-	if (token->redirect && check_for_heredoc(token->redirect))
-	{
-		if (token->type == T_BUILTIN)
-			open_dummy_heredocs(shell, token->redirect);
-		else
-			open_heredocs(shell, token->redirect, fds->stdup);
-	}
 	if (close_fd(&fds->stdup[0]) == -1)
 		return (errno);
 	determine_output(shell, token->next, fds);
 	if (token->redirect)
-		open_files(shell, token->redirect);
+		open_files(shell, token->redirect, has_heredoc);
 	return (errno);
 }
 
@@ -107,7 +120,7 @@ void	open_dummy_heredocs(t_shell *shell, char **redir)
 			ft_free_null(&inp);
 			inp = builtin_heredoc(shell, redir[i] + skip_redir_ws(redir[i]));
 			if (inp == NULL)
-				exit_clean(shell, errno, "dummy_heredoc()");
+				exit_clean(shell, errno, "builtin_heredoc()");
 		}
 		++i;
 	}

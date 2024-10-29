@@ -36,6 +36,12 @@ enum	e_token_type
 	T_REDIRECT
 };
 
+enum	e_heredoc_type
+{
+	HERE_DOC = 0,
+	HERE_DUMMY = 1
+};
+
 typedef struct s_token
 {
 	char		**cmd_array;

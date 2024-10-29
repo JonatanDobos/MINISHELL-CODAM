@@ -104,5 +104,7 @@ char	*builtin_heredoc(t_shell *shell, char *delim)
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
+	if (inp == NULL)
+		inp = ft_strdup("\0");
 	return (inp);
 }

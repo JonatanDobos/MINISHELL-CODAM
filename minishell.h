@@ -46,6 +46,8 @@ void		execute_sys_cmd(char **cmd_array, char **envp);
 
 // pipe_forking_redirection.c
 int			execution(t_shell *shell);
+int			zombie_prevention_protocol(int pid);
+bool		close_all_fds(t_fds *fds);
 
 // BUILTINS
 // builtin_pwd_cd_env_echo_exit.c
@@ -99,10 +101,11 @@ void		clean_lists(t_shell *shell);
 char		*get_next_line_heredoc(int fd);
 
 // utils_inp_outp_manipulate.c
-void		open_files(t_shell *shell, char **redir);
+void		open_files(t_shell *shell, char **redir, bool has_heredoc);
 void		open_heredocs(t_shell *shell, char **redir, int *standup);
 int			inp_outp_manager(t_shell *shell, t_token *token, t_fds *fds);
 void		open_dummy_heredocs(t_shell *shell, char **redir);
+int			heredoc_fork(t_shell *shell, char **redir, t_fds *fds, bool type);
 
 // utils_inp_outp_utils.c
 void		check_infile(char *infile);

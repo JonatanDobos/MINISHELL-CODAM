@@ -41,7 +41,7 @@ void	format_element_str(t_shell *shell, char **cmd)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' || line[i] == '\"')
+		if (quote == 0 && (line[i] == '\'' || line[i] == '\"'))
 			quote = line[i];
 		else if (line[i] == quote)
 			quote = 0;
