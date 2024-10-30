@@ -34,12 +34,23 @@ char		*insert_envp_in_str(t_shell *shell, char *str, size_t i);
 //tokenize.c
 int			tokenize(t_shell *shell);
 
+// signals.c
+void		sig_interactive(void);
+void		sig_noninteractive(void);
+void		sig_child(void);
+
+// utils_signals.c
+void		sig_print_newline(int signal);
+void		sig_reset_prompt(int signo);
+void		sig_child_exit(int signal);
+
 // EXECUTION
 // pipe_execution.c
 int			execute_builtin(t_shell *shell, char **cmd_array, char ***envp);
 void		execute_sys_cmd(char **cmd_array, char **envp);
 
 // pipe_forking_redirection.c
+int			zombie_prevention_protocol(int pid);
 int			execution(t_shell *shell);
 
 // BUILTINS
@@ -56,6 +67,9 @@ int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
 void		here_doc(t_shell *shell, char *delim);
+
+// open_files.c
+int			open_files(t_shell *shell, char **redirect);
 
 // exit_clean.c
 void		syntax_error(int num, char *message);
@@ -92,9 +106,6 @@ void		clean_lists(t_shell *shell);
 
 // utils_mod_gnl.c
 char		*get_next_line_heredoc(int fd);
-
-// utils_open_files.c
-void		open_files(t_shell *shell, char **redirect);
 
 // utils_parsing.c
 bool		istoken(char c);

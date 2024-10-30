@@ -34,28 +34,53 @@ static void	open_others(t_shell *shell, char **redir, bool has_heredoc)
 	}
 }
 
-void	open_files(t_shell *shell, char **redir)
+static	pid_t	heredoc_forking(t_shell *shell, char **redir)
 {
+	pid_t	pid;
+	int		here_pipe[2];
+	int		i;
+
+	pipe(here_pipe);
+	pid = fork();
+	if (pid == 0)
+	{
+		i = 0;
+		while (redir[i] && errno != ENOMEM)
+		{
+			if (!ft_strncmp(redir[i], "<<", 2))
+			{
+				close(here_pipe[0]);
+				// set_output(shell, here_pipe[1]);
+				here_doc(shell, redir[i] + skip_redir_ws(redir[i]), here_pipe[1]);
+			}
+			++i;
+		}
+	}
+	else
+	{
+		close(here_pipe[1]);
+		set_input(shell, here_pipe[0]);
+	}
+}
+
+int	open_files(t_shell *shell, char **redir)
+{
+	pid_t	pid;
 	bool	has_heredoc;
 	int		i;
 
 	if (redir == NULL)
 		return ;
+	errno = 0;
 	has_heredoc = false;
 	i = 0;
 	while (redir[i] && has_heredoc == false)
 	{
-		if (ft_strncmp(redir[i], "<<", 2))
+		if (!ft_strncmp(redir[i], "<<", 2))
 			has_heredoc = true;
 		++i;
 	}
-	errno = 0;
-	i = 0;
-	while (redir[i] && errno != ENOMEM)
-	{
-		if (!ft_strncmp(redir[i], "<<", 2))
-			here_doc(shell, redir[i] + skip_redir_ws(redir[i]));
-		++i;
-	}
+	pid = heredoc_forking(shell, redir);
 	open_others(shell, redir, has_heredoc);
+	return (zombie_prevention_protocol(pid));
 }

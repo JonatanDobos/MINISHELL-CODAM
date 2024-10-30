@@ -27,6 +27,7 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/envp_export_sort.c \
 			$(SRCDIR)/here_doc.c \
+			$(SRCDIR)/open_files.c \
 			$(SRCDIR)/exit_clean.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
@@ -43,7 +44,6 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_mod_gnl.c \
-			$(SRCDIR)/utils_open_redir_files.c \
 			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
 			$(SRCDIR)/utils_token_list.c

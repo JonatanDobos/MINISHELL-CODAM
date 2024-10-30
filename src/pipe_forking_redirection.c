@@ -45,7 +45,7 @@ static pid_t	kiddo(t_shell *shell,
 	return (pid);
 }
 
-static int	zombie_prevention_protocol(int pid)
+int	zombie_prevention_protocol(int pid)
 {
 	int	status;
 
