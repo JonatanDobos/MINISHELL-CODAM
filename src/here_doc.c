@@ -72,39 +72,37 @@ static char	*read_next_line(void)
 	char	*line;
 
 	write(STDOUT_FILENO, "> ", 2);
-	sig_child();
+	// sig_child();
 	line = get_next_line_heredoc(STDIN_FILENO);
-	sig_noninteractive();
+	// sig_noninteractive();
 	if (!line)
 		return (NULL);
 	return (line);
 }
 
-char	*builtin_heredoc(t_shell *shell, char *delim)
+int	here_doc(t_shell *shell, char *delim, int fd_out)
 {
 	char	*line;
-	char	*inp;
+	size_t	bytes_written;
 
-	inp = NULL;
+	bytes_written = 0;
 	while (1)
 	{
 		line = read_next_line();
 		if (!line)
-			return (ft_free_null(&inp), NULL);
+			return (EXIT_FAILURE);
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
 		line = expand_in_line(shell, line);
 		if (!line)
-			return (ft_free_null(&inp), NULL);
-		inp = line_append(inp, line);
-		if (!inp)
-			return (ft_free_null(&line), NULL);
-		if (!ft_strncmp(delim, "\n", 2))
+			return (EXIT_FAILURE);
+		bytes_written += write(fd_out, line, ft_strlen_null(line));
+		if (!ft_strncmp(delim, "\n", 2))//late?
 			break ;
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	if (inp == NULL)
-		inp = ft_strdup("\0");
-	return (inp);
+	if (bytes_written == 0)
+		write(fd_out, "\0", 1);
+	return (EXIT_SUCCESS);
 }

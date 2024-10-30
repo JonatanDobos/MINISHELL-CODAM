@@ -9,6 +9,7 @@
 # include <readline/history.h>
 # include <limits.h>
 # include <sys/wait.h>
+# define _GNU_SOURCE
 # include <signal.h>
 # include <errno.h>
 # include <fcntl.h>

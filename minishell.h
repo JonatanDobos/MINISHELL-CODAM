@@ -66,7 +66,7 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
-void		here_doc(t_shell *shell, char *delim);
+int			here_doc(t_shell *shell, char *delim, int fd_out);
 
 // open_files.c
 int			open_files(t_shell *shell, char **redirect);

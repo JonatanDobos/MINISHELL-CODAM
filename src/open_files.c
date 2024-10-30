@@ -50,8 +50,9 @@ static	pid_t	heredoc_forking(t_shell *shell, char **redir)
 			if (!ft_strncmp(redir[i], "<<", 2))
 			{
 				close(here_pipe[0]);
-				// set_output(shell, here_pipe[1]);
-				here_doc(shell, redir[i] + skip_redir_ws(redir[i]), here_pipe[1]);
+				if (here_doc(shell, redir[i] + skip_redir_ws(redir[i]),
+					here_pipe[1]) == EXIT_FAILURE)
+					exit_clean(shell, errno, redir[i]);
 			}
 			++i;
 		}
@@ -61,6 +62,7 @@ static	pid_t	heredoc_forking(t_shell *shell, char **redir)
 		close(here_pipe[1]);
 		set_input(shell, here_pipe[0]);
 	}
+	return (pid);
 }
 
 int	open_files(t_shell *shell, char **redir)
@@ -70,7 +72,7 @@ int	open_files(t_shell *shell, char **redir)
 	int		i;
 
 	if (redir == NULL)
-		return ;
+		return (EXIT_SUCCESS);
 	errno = 0;
 	has_heredoc = false;
 	i = 0;
