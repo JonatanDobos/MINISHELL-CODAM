@@ -73,10 +73,12 @@ static char	*read_next_line(void)
 
 	write(STDOUT_FILENO, "> ", 2);
 	// sig_child();
+	fprintf(stderr, "\nreading heredoc...\n");
 	line = get_next_line_heredoc(STDIN_FILENO);
 	// sig_noninteractive();
 	if (!line)
 		return (NULL);
+	fprintf(stderr, "\nread from heredoc: %s\n", line);
 	return (line);
 }
 
@@ -91,18 +93,19 @@ int	here_doc(t_shell *shell, char *delim, int fd_out)
 		line = read_next_line();
 		if (!line)
 			return (EXIT_FAILURE);
+		if (!ft_strncmp(delim, "\n", 2))//late?
+			break ;
 		if (!ft_strncmp(line, delim, ft_strlen(delim)))
 			break ;
 		line = expand_in_line(shell, line);
 		if (!line)
 			return (EXIT_FAILURE);
 		bytes_written += write(fd_out, line, ft_strlen_null(line));
-		if (!ft_strncmp(delim, "\n", 2))//late?
-			break ;
+		// write(STDERR_FILENO, line, ft_strlen_null(line));
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	if (bytes_written == 0)
-		write(fd_out, "\0", 1);
+	// if (bytes_written == 0)
+	// 	write(fd_out, "\0", 1);
 	return (EXIT_SUCCESS);
 }

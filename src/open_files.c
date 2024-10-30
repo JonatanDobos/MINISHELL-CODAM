@@ -34,35 +34,60 @@ static void	open_others(t_shell *shell, char **redir, bool has_heredoc)
 	}
 }
 
-static	pid_t	heredoc_forking(t_shell *shell, char **redir)
+static pid_t heredoc_forking(t_shell *shell, char **redir)
 {
-	pid_t	pid;
-	int		here_pipe[2];
-	int		i;
+	pid_t pid;
+	int here_pipe[2];
+	int prev_pipe = -1;
+	int i = 0;
 
-	pipe(here_pipe);
-	pid = fork();
-	if (pid == 0)
+	while (redir[i])
 	{
-		i = 0;
-		while (redir[i] && errno != ENOMEM)
+		if (!ft_strncmp(redir[i], "<<", 2))
 		{
-			if (!ft_strncmp(redir[i], "<<", 2))
-			{
-				close(here_pipe[0]);
-				if (here_doc(shell, redir[i] + skip_redir_ws(redir[i]),
-					here_pipe[1]) == EXIT_FAILURE)
-					exit_clean(shell, errno, redir[i]);
+			// Create a pipe for each heredoc
+			if (pipe(here_pipe) == -1) {
+				perror("pipe");
+				exit(EXIT_FAILURE);
 			}
-			++i;
+
+			// Fork a process to handle the heredoc
+			pid = fork();
+			if (pid == -1) {
+				perror("fork");
+				exit(EXIT_FAILURE);
+			}
+			else if (pid == 0) {
+				// Child process writes to heredoc pipe
+				close(here_pipe[0]); // Close read end in child
+
+				// Call heredoc to write data to pipe
+				if (here_doc(shell, redir[i] + skip_redir_ws(redir[i]), here_pipe[1]) == EXIT_FAILURE)
+					exit_clean(shell, errno, redir[i]);
+
+				close(here_pipe[1]); // Close write end after writing
+				close(STDOUT_FILENO);
+				exit_clean(shell, errno, "here_doc child");
+			}
+			else {
+				// Parent process: Manage pipes and save last pipe read end
+				if (prev_pipe != -1)
+					close(prev_pipe); // Close previous pipe read end if exists
+
+				close(here_pipe[1]); // Close write end in parent
+				prev_pipe = here_pipe[0]; // Save current read end for input
+			}
 		}
+		i++;
 	}
-	else
-	{
-		close(here_pipe[1]);
-		set_input(shell, here_pipe[0]);
-	}
-	return (pid);
+//
+			char *check = get_next_line(here_pipe[0]);
+			fprintf(stderr, "\ntotal heredoc output: %s\n", check);
+			free(check);
+//
+	// Set last heredoc's read end as input for the parent process
+	set_input(shell, prev_pipe);
+	return pid;
 }
 
 int	open_files(t_shell *shell, char **redir)
@@ -82,7 +107,12 @@ int	open_files(t_shell *shell, char **redir)
 			has_heredoc = true;
 		++i;
 	}
-	pid = heredoc_forking(shell, redir);
+	if (has_heredoc)
+	{
+		pid = heredoc_forking(shell, redir);
+		open_others(shell, redir, has_heredoc);
+		return (zombie_prevention_protocol(pid));
+	}
 	open_others(shell, redir, has_heredoc);
-	return (zombie_prevention_protocol(pid));
+	return (errno);
 }
