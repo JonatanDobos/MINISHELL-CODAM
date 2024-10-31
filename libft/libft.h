@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/10/03 16:53:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/10/30 22:18:50 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/10/31 16:50:56 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,15 +54,15 @@ char		*ft_itoa(int n);
 void		ft_swap_ints(int *a, int *b);
 void		ft_swap(void *a, void *b, size_t size);
 
-int			ft_isalnum(int c);
-int			ft_isalpha(int c);
-int			ft_isascii(int c);
-int			ft_isdigit(int c);
-int			ft_isprint(int c);
-int			ft_iswhitespace(char c);
+int			ft_isalnum(const int c);
+int			ft_isalpha(const int c);
+int			ft_isascii(const int c);
+int			ft_isdigit(const int c);
+int			ft_isprint(const int c);
+int			ft_iswhitespace(const int c);
 int			ft_stris(const char *string, int (*func)(int c));
-int			ft_isupper(unsigned char c);
-int			ft_islower(unsigned char c);
+int			ft_isupper(const int c);
+int			ft_islower(const int c);
 
 int			ft_tolower(int c);
 int			ft_toupper(int c);

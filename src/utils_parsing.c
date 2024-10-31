@@ -1,12 +1,12 @@
 #include "../minishell.h"
 
-bool	istoken(char c)
+bool	istoken(const int c)
 {
 	return (c == '|' || c == '<' || c == '>');
 }
 
 // Returns: skip amount
-size_t	skip_redir_ws(char *line)
+size_t	skip_redir_ws(const char *line)
 {
 	size_t	i;
 

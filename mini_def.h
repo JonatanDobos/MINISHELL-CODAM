@@ -41,6 +41,7 @@ typedef struct s_token
 {
 	char		**cmd_array;
 	char		**redirect;
+	int			heredoc_pipe[2];
 	short		type;
 	void		*next;
 }	t_token;

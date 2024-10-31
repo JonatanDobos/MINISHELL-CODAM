@@ -1,18 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   ft_isupper.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: joni <joni@student.codam.nl>                 +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/10/14 19:55:53 by joni          #+#    #+#                 */
-/*   Updated: 2024/10/14 19:56:45 by joni          ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   ft_isupper.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/10/14 19:55:53 by joni              #+#    #+#             */
+/*   Updated: 2024/10/31 16:51:20 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_isupper(unsigned char c)
+int	ft_isupper(const int c)
 {
 	return (c >= 'A' && c <= 'Z');
 }

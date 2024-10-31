@@ -69,7 +69,7 @@ int			builtin_export(char *envar, char ***envp, char ***sorted);
 int			here_doc(t_shell *shell, char *delim, int fd_out);
 
 // open_files.c
-int			open_files(t_shell *shell, char **redirect);
+int			open_files(t_shell *shell, t_token *token);
 
 // exit_clean.c
 void		syntax_error(int num, char *message);
@@ -108,8 +108,8 @@ void		clean_lists(t_shell *shell);
 char		*get_next_line_heredoc(int fd);
 
 // utils_parsing.c
-bool		istoken(char c);
-size_t		skip_redir_ws(char *line);
+bool		istoken(const char c);
+size_t		skip_redir_ws(const char *line);
 size_t		skip_to_next_quote(const char *line, size_t i);
 size_t		skip_to_end_quote(const char *line, size_t i);
 
