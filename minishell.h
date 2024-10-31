@@ -35,6 +35,7 @@ char		*insert_envp_in_str(t_shell *shell, char *str, size_t i);
 int			tokenize(t_shell *shell);
 
 // signals.c
+void		ignore_sigquit(void);
 void		sig_interactive(void);
 void		sig_noninteractive(void);
 void		sig_child(void);
@@ -66,14 +67,15 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
-int			here_doc(t_shell *shell, char *delim, int fd_out);
+int			all_heredocs(t_shell *shell);
+// int			here_doc(t_shell *shell, char *delim, int fd_out);
 
 // open_files.c
 int			open_files(t_shell *shell, t_token *token);
 
 // exit_clean.c
-void		syntax_error(int num, char *message);
-void		exit_clean(t_shell *shell, int num, char *message);
+void		syntax_error(int num, const char *message);
+void		exit_clean(t_shell *shell, int num, const char *message);
 // void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
 
 // UTILS
@@ -108,7 +110,7 @@ void		clean_lists(t_shell *shell);
 char		*get_next_line_heredoc(int fd);
 
 // utils_parsing.c
-bool		istoken(const char c);
+bool		istoken(const int c);
 size_t		skip_redir_ws(const char *line);
 size_t		skip_to_next_quote(const char *line, size_t i);
 size_t		skip_to_end_quote(const char *line, size_t i);
@@ -123,9 +125,9 @@ void		token_delone(t_token *node);
 // utils_fd_manipulate.c
 void		set_input(t_shell *shell, int input_fd);
 void		set_output(t_shell *shell, int output_fd);
-void		set_infile(t_shell *shell, char *infile);
-void		set_outfile_append(t_shell *shell, char *outfile);
-void		set_outfile_trunc(t_shell *shell, char *outfile);
+void		set_infile(t_shell *shell, const char *infile);
+void		set_outfile_append(t_shell *shell, const char *outfile);
+void		set_outfile_trunc(t_shell *shell, const char *outfile);
 
 // _TEST.c
 void		TEST_print_token_lst(

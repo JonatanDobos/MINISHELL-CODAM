@@ -16,7 +16,7 @@ void	set_output(t_shell *shell, int output_fd)
 		exit_clean(shell, errno, "set_output(): close failed");
 }
 
-void	set_infile(t_shell *shell, char *infile)
+void	set_infile(t_shell *shell, const char *infile)
 {
 	int	fd;
 
@@ -32,7 +32,7 @@ void	set_infile(t_shell *shell, char *infile)
 		set_input(shell, fd);
 }
 
-void	set_outfile_append(t_shell *shell, char *outfile)
+void	set_outfile_append(t_shell *shell, const char *outfile)
 {
 	int	fd;
 
@@ -48,7 +48,7 @@ void	set_outfile_append(t_shell *shell, char *outfile)
 		set_output(shell, fd);
 }
 
-void	set_outfile_trunc(t_shell *shell, char *outfile)
+void	set_outfile_trunc(t_shell *shell, const char *outfile)
 {
 	int	fd;
 

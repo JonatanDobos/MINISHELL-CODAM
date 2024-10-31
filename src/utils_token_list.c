@@ -33,6 +33,8 @@ t_token	*token_new(char **cmd_array, char **redirect, short type)
 		return (NULL);
 	new->cmd_array = cmd_array;
 	new->redirect = redirect;
+	new->heredoc_pipe[0] = -1;
+	new->heredoc_pipe[1] = -1;
 	new->type = type;
 	new->next = NULL;
 	return (new);

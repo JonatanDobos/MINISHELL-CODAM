@@ -28,17 +28,17 @@ static pid_t	kiddo(t_shell *shell,
 		close(standup[0]);
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
-		if (token->redirect)
-			open_files(shell, token->redirect);
-		if (errno)
+		if (open_files(shell, token))// kan waarschijnlijk weg
 		{
 			close(STDOUT_FILENO);
 			exit_clean(shell, 0, NULL);
 		}
+		sig_interactive();
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
 			execute_sys_cmd(token->cmd_array, shell->envp);
+		sig_noninteractive();
 		close(STDOUT_FILENO);
 		exit_clean(shell, errno, token->cmd_array[0]);
 	}
@@ -65,7 +65,7 @@ static int
 {
 	int	status;
 
-	open_files(shell, token->redirect);
+	open_files(shell, token);
 	if (errno)
 		status = EXIT_FAILURE;
 	else

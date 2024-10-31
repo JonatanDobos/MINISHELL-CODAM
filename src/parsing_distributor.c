@@ -9,5 +9,6 @@ bool	parsing_distributor(t_shell *shell)
 		return (false);
 	tokenize(shell);
 	parse_post(shell);
+	all_heredocs(shell);
 	return (true);
 }

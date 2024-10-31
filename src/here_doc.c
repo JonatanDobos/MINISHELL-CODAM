@@ -46,64 +46,19 @@ static char	*expand_in_line(t_shell *shell, char *str)
 	return (str);
 }
 
-static char	*line_append(char *line, char *add)
-{
-	size_t	i;
-	size_t	j;
-	char	*new;
-
-	new = (char *)malloc(ft_strlen_null(line) + ft_strlen_null(add) + 1);
-	if (!new)
-		return (ft_free_null(&line), NULL);
-	i = 0;
-	j = 0;
-	while (line && line[j])
-		new[i++] = line[j++];
-	j = 0;
-	while (add && add[j])
-		new[i++] = add[j++];
-	new[i] = '\0';
-	ft_free_null(&line);
-	return (new);
-}
-
 static char	*read_next_line(void)
 {
 	char	*line;
 
 	write(STDOUT_FILENO, "> ", 2);
-	// sig_child();
+	sig_child();
 	fprintf(stderr, "\nreading heredoc...\n");
 	line = get_next_line_heredoc(STDIN_FILENO);
-	// sig_noninteractive();
+	sig_noninteractive();
 	if (!line)
 		return (NULL);
 	fprintf(stderr, "\nread from heredoc: %s\n", line);
 	return (line);
-}
-
-int	here_doc(t_shell *shell, char *delim, int fd_out)
-{
-	char	*line;
-
-	while (1)
-	{
-		line = read_next_line();
-		if (!line)
-		if (!ft_strncmp(line, delim, ft_strlen(delim)))
-			break ;
-		line = expand_in_line(shell, line);
-		if (!line)
-			return (EXIT_FAILURE);
-		ft_putendl_fd(line, fd_out);
-		// write(STDERR_FILENO, line, ft_strlen_null(line));
-			return (EXIT_FAILURE);
-		if (!ft_strncmp(delim, "\n", 2))
-			break ;
-		ft_free_null(&line);
-	}
-	ft_free_null(&line);
-	return (EXIT_SUCCESS);
 }
 
 static void	close_heredoc_pipes(t_token *token)
@@ -118,108 +73,74 @@ static void	close_heredoc_pipes(t_token *token)
 
 static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
-	char	*input;
-	int		limiter_len;
+	char	*line;
+	int		d_len;
 
 	rl_clear_history();
-	limiter_len = ft_strlen(delimiter);
+	d_len = ft_strlen(delimiter);
 	while (1)
 	{
-		input = readline("> ");
-		if (input == NULL)
-		{
-			write_heredoc_error(delimiter);
+		line = readline("> ");
+		if (line == NULL)
+			exit_clean(shell, errno, "run_heredoc() readline()") ;
+		if (!ft_strncmp(line, delimiter, d_len + 1))
 			break ;
-		}
-		if (ft_strncmp(input, delimiter, limiter_len) == 0
-			&& input[limiter_len] == '\0')
-		{
-			free(input);
+		ft_putendl_fd(line, token->heredoc_pipe[1]);
+		if (!ft_strncmp(delimiter, "\n", 2))
 			break ;
-		}
-		input = add_newline(shell, input);
-		write(token->heredoc_pipe[1], input, ft_strlen(input));
-		free(input);
+		ft_free_null(&line);
 	}
+	ft_free_null(&line);
 	// shell->pid = 1;
 	close_heredoc_pipes(token);
 }
 
 static pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
-	pid_t	hd_pid;
+	pid_t	pid;
 
 	close_heredoc_pipes(token);
 	if (pipe(token->heredoc_pipe) == -1)
-		kill_program(shell, "Failed creating pipe", errno);
-	g_signal = -1;
-	hd_pid = fork();
-	if (hd_pid == -1)
-		kill_program(shell, NULL, errno);
-	if (hd_pid == 0)
+		exit_clean(shell, errno, "set_heredoc() pipe()");
+	// g_signal = -1;
+	pid = fork();
+	if (pid == -1)
+		return (pid);
+	if (pid == 0)
 	{
-		init_signals(shell, 3);
 		run_heredoc(shell, token, delimiter);
-		kill_program(shell, NULL, 0);
+		exit_clean(shell, errno, "set_heredoc() child");
 	}
 	if (close(token->heredoc_pipe[1]) == -1)
-		perror("token->heredoc_pipe[1]");
+		exit_clean(shell, errno, "set_heredoc() close()");
 	token->heredoc_pipe[1] = -1;
-	return (hd_pid);
+	return (pid);
 }
 
-int	check_heredoc(t_shell *shell)
+int	all_heredocs(t_shell *shell)
 {
-	t_ctable	*token;
-	t_file		*infiles;
-	pid_t		pid;
-	int			status;
-
-	token = shell->input->token;
-	while (token != NULL)
-	{
-		infiles = token->infiles;
-		while (infiles != NULL)
-		{
-			if (infiles->type == t_in_heredoc)
-			{
-				pid = set_heredoc(shell, token, infiles);
-				waitpid(pid, &status, 0);
-				if (WIFSIGNALED(status))
-					return (130);
-				else
-					shell->exit_code = 0;
-			}
-			infiles = infiles->next;
-		}
-		token = token->next;
-	}
-	return (0);
-}
-
-int	all_heredocs(t_shell *shell, char **redir)
-{
+	t_token	*token;
 	pid_t	pid;
-	bool	has_heredoc;
+	int		status;
 	int		i;
 
-	if (redir == NULL)
-		return (EXIT_SUCCESS);
-	errno = 0;
-	has_heredoc = false;
-	i = 0;
-	while (redir[i] && has_heredoc == false)
+	token = shell->token_head;
+	while (token)
 	{
-		if (!ft_strncmp(redir[i], "<<", 2))
-			has_heredoc = true;
-		++i;
-	}
-	open_others(shell, redir, has_heredoc);
-	if (has_heredoc)
-	{
-		pid = heredoc_forking(shell, redir);
-		open_others(shell, redir, has_heredoc);
-		return (zombie_prevention_protocol(pid));
+		i = 0;
+		while (token->redirect && token->redirect[i])
+		{
+			if (!ft_strncmp(token->redirect[i], "<<", 2))
+			{
+				pid = set_heredoc(shell, token,
+					token->redirect[i] + skip_redir_ws(token->redirect[i]));
+				if (pid == -1)
+					exit_clean(shell, errno, "all_heredocs() fork()");
+				shell->last_errno = zombie_prevention_protocol(pid);
+			}
+			i++;
+		}
+		token = token->next;
 	}
 	return (errno);
 }

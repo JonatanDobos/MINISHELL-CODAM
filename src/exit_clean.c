@@ -1,6 +1,6 @@
 #include "../minishell.h"
 
-void	syntax_error(int num, char *message)
+void	syntax_error(int num, const char *message)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (message)
@@ -16,7 +16,7 @@ void	syntax_error(int num, char *message)
 }
 
 // attempts to free everything known to shell, then exits
-void	exit_clean(t_shell *shell, int num, char *message)
+void	exit_clean(t_shell *shell, int num, const char *message)
 {
 	int	exit_code;
 

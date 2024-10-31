@@ -9,7 +9,7 @@ void	delete_quotes(char *str)
 
 	i = 0;
 	skip = 0;
-	quote = 0;
+	quote = false;
 	while (str[skip])
 	{
 		if (!quote && (str[skip] == '\'' || str[skip] == '\"'))
@@ -19,7 +19,7 @@ void	delete_quotes(char *str)
 		}
 		else if (quote && str[skip] == quote)
 		{
-			quote = 0;
+			quote = false;
 			++skip;
 		}
 		else
@@ -37,14 +37,14 @@ void	format_element_str(t_shell *shell, char **cmd)
 	size_t	i;
 
 	line = *cmd;
-	quote = 0;
+	quote = false;
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'' || line[i] == '\"')
+		if ((line[i] == '\'' || line[i] == '\"') && !quote)
 			quote = line[i];
 		else if (line[i] == quote)
-			quote = 0;
+			quote = false;
 		else if (line[i] == '$' && quote != '\'')
 		{
 			line = insert_envp_in_str(shell, line, i);
