@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:53 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:57 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/08 23:06:19 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ static pid_t	kiddo(t_shell *shell,
 	pid = fork();
 	if (pid == 0)
 	{
+		sig_child();
 		close(standup[0]);
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
@@ -45,12 +46,10 @@ static pid_t	kiddo(t_shell *shell,
 			close(STDOUT_FILENO);
 			exit_clean(shell, 0, NULL);
 		}
-		sig_interactive();
 		if (token->type == T_BUILTIN)
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
 			execute_sys_cmd(token->cmd_array, shell->envp);
-		sig_noninteractive();
 		close(STDOUT_FILENO);
 		exit_clean(shell, errno, token->cmd_array[0]);
 	}
@@ -60,16 +59,21 @@ static pid_t	kiddo(t_shell *shell,
 int	zombie_prevention_protocol(int pid)
 {
 	int	status;
+	int	exit_code;
 
 	if (waitpid(pid, &status, 0) == -1)
 		return (errno);
+	exit_code = errno;
 	while (wait(NULL) != -1)
-		;
+		if (errno == ENOMEM)
+			return (errno);
+	if (errno != 10)
+		exit_code = errno;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))
 		return (WTERMSIG(status));
-	return (errno);
+	return (exit_code);
 }
 
 static int

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:52:06 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/08 23:20:25 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,10 @@ void	read_loop(t_shell *shell)
 			exit_clean(shell, errno, NULL);
 		line_history_management(shell);
 		if (syntax_pre(shell->line) == false)
+		{
+			shell->last_errno = EINVAL;
 			continue ;
+		}
 		if (parsing_distributor(shell))
 		{
 			shell->last_errno = execution(shell);

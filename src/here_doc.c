@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:35 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/08 23:12:14 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,25 +58,6 @@ static char	*expand_in_line(t_shell *shell, char *str)
 	return (str);
 }
 
-// static char	*read_next_line(void)
-// {
-// 	char	*line;
-
-// 	write(STDOUT_FILENO, "> ", 2);
-// 	sig_child();
-// 	fprintf(stderr, "\nreading heredoc...\n");
-// 	line = get_next_line_heredoc(STDIN_FILENO);
-// 	sig_noninteractive();
-// 	if (!line)
-// 		return (NULL);
-// 	fprintf(stderr, "\nread from heredoc: %s\n", line);
-// 	return (line);
-// }
-
-// static void	close_heredoc_pipes(t_token *token)
-// {
-// }
-
 static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	char	*line;
@@ -122,6 +103,7 @@ static pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		return (pid);
 	if (pid == 0)
 	{
+		sig_heredoc_child();
 		if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
 			perror("token->heredoc_pipe[0]");
 		token->heredoc_pipe[0] = -1;
@@ -158,5 +140,5 @@ int	all_heredocs(t_shell *shell)
 		}
 		token = token->next;
 	}
-	return (errno);
+	return (shell->last_errno);
 }

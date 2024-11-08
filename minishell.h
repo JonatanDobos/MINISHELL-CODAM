@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:48:44 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/08 22:00:55 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,9 +50,12 @@ void		ignore_sigquit(void);
 void		sig_interactive(void);
 void		sig_noninteractive(void);
 void		sig_child(void);
+void		sig_heredoc_parent(void);
+void		sig_heredoc_child(void);
 
 // utils_signals.c
 void		sig_print_newline(int signal);
+void		sig_add_newline(int signal);
 void		sig_reset_prompt(int signo);
 void		sig_child_exit(int signal);
 
