@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:51 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:03:37 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@ static void	new_element(t_shell *shell, char *sub_line)
 	t_list	**head_elem;
 	t_list	*new_node;
 
-	head_elem = &shell->line_element_head;
 	if (!sub_line)
 		exit_clean(shell, errno, NULL);
+	head_elem = &shell->line_element_head;
 	new_node = ft_lstnew(sub_line);
 	if (!new_node)
 	{

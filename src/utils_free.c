@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:24 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:48:25 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/08 19:14:16 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,9 @@ void	free_va(int amount, ...)
 void	clean_lists(t_shell *shell)
 {
 	token_clear(&shell->token_head);
-	// ft_lstclear(&shell->line_element_head, free);
-	// pointers are shared with tokens
+	// if (shell->line_element_head);
+	// 	ft_lstclear(&shell->line_element_head, free);
+	// token_clear
 	ft_free_null(&shell->line);
 	shell->token_head = NULL;
 	shell->line_element_head = NULL;

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:12 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:48:13 by svan-hoo         ###   ########.fr       */
+/*   Created: 2024/11/08 19:22:27 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 19:22:28 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ int	tokenize(t_shell *shell)
 		{
 			last = current;
 			next_node(&current, &type);
-			free(last);
+			ft_lstdelone(last, free);
 			shell->line_element_head = current;
 		}
 		new_token = token_new(NULL, NULL, type);
