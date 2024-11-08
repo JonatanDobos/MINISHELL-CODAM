@@ -1,0 +1,146 @@
+#include "../minishell.h"
+
+// Expands envp inside string
+// *str freed inside function
+static char	*insert_env(t_shell *shell, char *str, size_t i)
+{
+	const char	*check = str;
+	size_t		j;
+
+	if (!str)
+		return (NULL);
+	str = insert_envp_in_str(shell, str, i);
+	if (str == check)
+	{
+		j = i;
+		while (!ft_iswhitespace(str[j]))
+			++j;
+		str = str_insert(str, "", i, j - i);
+	}
+	return (str);
+}
+
+static char	*expand_in_line(t_shell *shell, char *str)
+{
+	size_t	i;
+	bool	double_quote;
+
+	i = 0;
+	double_quote = false;
+	while (str[i])
+	{
+		if (str[i] == '\"' && double_quote == true)
+			double_quote = false;
+		else if (str[i] == '\"' && double_quote == false)
+			double_quote = true;
+		else if (str[i] == '\'' && double_quote == false)
+			i = skip_to_next_quote(str, i);
+		else if (str[i] == '$')
+		{
+			str = insert_env(shell, str, i);
+			if (!str)
+				return (NULL);
+		}
+		++i;
+	}
+	return (str);
+}
+
+static char	*read_next_line(void)
+{
+	char	*line;
+
+	write(STDOUT_FILENO, "> ", 2);
+	sig_child();
+	fprintf(stderr, "\nreading heredoc...\n");
+	line = get_next_line_heredoc(STDIN_FILENO);
+	sig_noninteractive();
+	if (!line)
+		return (NULL);
+	fprintf(stderr, "\nread from heredoc: %s\n", line);
+	return (line);
+}
+
+static void	close_heredoc_pipes(t_token *token)
+{
+	if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
+		perror("token->heredoc_pipe[0]");
+	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) == -1)
+		perror("token->heredoc_pipe[1]");
+	token->heredoc_pipe[0] = -1;
+	token->heredoc_pipe[1] = -1;
+}
+
+static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
+{
+	char	*line;
+	int		d_len;
+
+	rl_clear_history();
+	d_len = ft_strlen(delimiter);
+	while (1)
+	{
+		line = readline("> ");
+		if (line == NULL)
+			exit_clean(shell, errno, "run_heredoc() readline()") ;
+		if (!ft_strncmp(line, delimiter, d_len + 1))
+			break ;
+		ft_putendl_fd(line, token->heredoc_pipe[1]);
+		if (!ft_strncmp(delimiter, "\n", 2))
+			break ;
+		ft_free_null(&line);
+	}
+	ft_free_null(&line);
+	// shell->pid = 1;
+	close_heredoc_pipes(token);
+}
+
+static pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
+{
+	pid_t	pid;
+
+	close_heredoc_pipes(token);
+	if (pipe(token->heredoc_pipe) == -1)
+		exit_clean(shell, errno, "set_heredoc() pipe()");
+	// g_signal = -1;
+	pid = fork();
+	if (pid == -1)
+		return (pid);
+	if (pid == 0)
+	{
+		run_heredoc(shell, token, delimiter);
+		exit_clean(shell, errno, "set_heredoc() child");
+	}
+	if (close(token->heredoc_pipe[1]) == -1)
+		exit_clean(shell, errno, "set_heredoc() close()");
+	token->heredoc_pipe[1] = -1;
+	return (pid);
+}
+
+int	all_heredocs(t_shell *shell)
+{
+	t_token	*token;
+	pid_t	pid;
+	int		status;
+	int		i;
+
+	token = shell->token_head;
+	while (token)
+	{
+		i = 0;
+		while (token->redirect && token->redirect[i])
+		{
+			if (!ft_strncmp(token->redirect[i], "<<", 2))
+			{
+				pid = set_heredoc(shell, token,
+					token->redirect[i] + skip_redir_ws(token->redirect[i]));
+				if (pid == -1)
+					exit_clean(shell, errno, "all_heredocs() fork()");
+				shell->last_errno = zombie_prevention_protocol(pid);
+			}
+			i++;
+		}
+		token = token->next;
+	}
+	return (errno);
+}
