@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing_pretokenize.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:50 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:47:51 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 // PARSING: distributing the line over t_list line_element
@@ -23,7 +35,6 @@ static void	new_element(t_shell *shell, char *sub_line)
 // Creates element node of the part between index [start] and [i] on 
 static size_t	add_element_node(t_shell *shell, size_t end, size_t start)
 {
-	bool	expand_success;
 	char	*line;
 
 	if (start < end)
@@ -38,26 +49,30 @@ static size_t	add_element_node(t_shell *shell, size_t end, size_t start)
 	return (end + 1);
 }
 
+static size_t	pipe_sub_line(t_shell *shell, char *line, size_t i)
+{
+	char	*sub_line;
+
+	if (!line[i + 1])
+		return (new_element(shell, ft_strdup("<< \n")), i + 1);
+	sub_line = ft_substr(line, i, 1);
+	if (!sub_line)
+		exit_clean(shell, errno, "token_element_node");
+	new_element(shell, sub_line);
+	while (ft_iswhitespace(line[i + 1]))
+		++i;
+	return (i + 1);
+}
+
 // NEEDS TESTING!! LEFTOFF
 static size_t	token_element_node(
 	t_shell *shell, char *line, size_t i, size_t start)
 {
-	char	*sub_line;
 	size_t	len;
 
 	add_element_node(shell, i, start);
-	if (line[i] == '|' && !line[i + 1])
-		return (new_element(shell, ft_strdup("<< \n")), i + 1);// good idea to use heredoc?
 	if (line[i] == '|')
-	{
-		sub_line = ft_substr(line, i, 1);
-		if (!sub_line)
-			exit_clean(shell, errno, "token_element_node");
-		new_element(shell, sub_line);
-		while (ft_iswhitespace(line[i + 1]))
-			++i;
-		return (i + 1);
-	}
+		return (pipe_sub_line(shell, line, i));
 	len = skip_redir_ws(line + i);
 	while (!ft_iswhitespace(line[i + len]) && !istoken(line[i + len])
 		&& line[i + len])

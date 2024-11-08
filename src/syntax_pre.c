@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   syntax_pre.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:48:08 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:53:11 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 static bool	quote_check(const char *line)
@@ -89,7 +101,10 @@ static bool	token_check(const char *line)
 bool	syntax_pre(const char *line)
 {
 	if (!quote_check(line))
+	{
+		ft_putstr_fd("minishell: Function not implemented\n", STDERR_FILENO);
 		return (false);
+	}
 	if (!token_check(line))
 		return (false);
 	return (true);

@@ -2,7 +2,7 @@ NAME	=	minishell
 
 CC		=	cc -g
 
-# CFLAGS=		-Wall -Wextra -Werror
+CFLAGS=		-Wall -Wextra -Werror
 
 # Adding platform-specific settings for macOS and Ubuntu
 UNAME_S := $(shell uname -s)

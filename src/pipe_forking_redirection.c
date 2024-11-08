@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_forking_redirection.c                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:53 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:47:57 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 static void	determine_output(t_shell *shell,
@@ -28,7 +40,7 @@ static pid_t	kiddo(t_shell *shell,
 		close(standup[0]);
 		close(pipe_fds[0]);
 		determine_output(shell, token->next, standup, pipe_fds);
-		if (open_files(shell, token))// kan waarschijnlijk weg
+		if (open_files(shell, token))
 		{
 			close(STDOUT_FILENO);
 			exit_clean(shell, 0, NULL);
@@ -52,7 +64,7 @@ int	zombie_prevention_protocol(int pid)
 	if (waitpid(pid, &status, 0) == -1)
 		return (errno);
 	while (wait(NULL) != -1)
-		;//check status, if ENOMEM do not wait for the others, escape while you still can
+		;
 	if (WIFEXITED(status))
 		return (WEXITSTATUS(status));
 	if (WIFSIGNALED(status))

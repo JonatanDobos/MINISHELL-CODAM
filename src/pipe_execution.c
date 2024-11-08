@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipe_execution.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:52 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:47:52 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 static char	*find_path(char *command, char **envp)
@@ -86,13 +98,13 @@ int	execute_builtin(t_shell *shell, char **cmd_array, char ***envp)
 	if (!ft_strncmp(cmd_array[0], "cd", 3))
 		errno = builtin_cd(cmd_array, envp, &shell->envp_sorted);
 	else if (!ft_strncmp(cmd_array[0], "pwd", 4))
-		errno = builtin_pwd(*envp);
+		errno = builtin_pwd();
 	else if (!ft_strncmp(cmd_array[0], "env", 4))
 		errno = builtin_env(*envp);
 	else if (!ft_strncmp(cmd_array[0], "echo", 5))
-		errno = builtin_echo(cmd_array, *envp);
+		errno = builtin_echo(cmd_array);
 	else if (!ft_strncmp(cmd_array[0], "exit", 5))
-		errno = builtin_exit(shell, cmd_array, *envp);
+		errno = builtin_exit(shell, cmd_array);
 	else if (!ft_strncmp(cmd_array[0], "unset", 6))
 		unset_loop(cmd_array, *envp, shell->envp_sorted);
 	else if (!ft_strncmp(cmd_array[0], "export", 7))

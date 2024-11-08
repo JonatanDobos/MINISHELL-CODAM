@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:47:35 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 // Expands envp inside string
@@ -46,30 +58,24 @@ static char	*expand_in_line(t_shell *shell, char *str)
 	return (str);
 }
 
-static char	*read_next_line(void)
-{
-	char	*line;
+// static char	*read_next_line(void)
+// {
+// 	char	*line;
 
-	write(STDOUT_FILENO, "> ", 2);
-	sig_child();
-	fprintf(stderr, "\nreading heredoc...\n");
-	line = get_next_line_heredoc(STDIN_FILENO);
-	sig_noninteractive();
-	if (!line)
-		return (NULL);
-	fprintf(stderr, "\nread from heredoc: %s\n", line);
-	return (line);
-}
+// 	write(STDOUT_FILENO, "> ", 2);
+// 	sig_child();
+// 	fprintf(stderr, "\nreading heredoc...\n");
+// 	line = get_next_line_heredoc(STDIN_FILENO);
+// 	sig_noninteractive();
+// 	if (!line)
+// 		return (NULL);
+// 	fprintf(stderr, "\nread from heredoc: %s\n", line);
+// 	return (line);
+// }
 
-static void	close_heredoc_pipes(t_token *token)
-{
-	if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
-		perror("token->heredoc_pipe[0]");
-	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) == -1)
-		perror("token->heredoc_pipe[1]");
-	token->heredoc_pipe[0] = -1;
-	token->heredoc_pipe[1] = -1;
-}
+// static void	close_heredoc_pipes(t_token *token)
+// {
+// }
 
 static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
@@ -82,32 +88,43 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 	{
 		line = readline("> ");
 		if (line == NULL)
-			exit_clean(shell, errno, "run_heredoc() readline()") ;
+			exit_clean(shell, errno, "run_heredoc() readline()");
 		if (!ft_strncmp(line, delimiter, d_len + 1))
 			break ;
+		line = expand_in_line(shell, line);
+		if (line == NULL)
+			exit_clean(shell, 0, "run_heredoc() expand_in_line()");
 		ft_putendl_fd(line, token->heredoc_pipe[1]);
 		if (!ft_strncmp(delimiter, "\n", 2))
 			break ;
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	// shell->pid = 1;
-	close_heredoc_pipes(token);
+	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) == -1)
+		perror("token->heredoc_pipe[1]");
+	token->heredoc_pipe[1] = -1;
 }
 
 static pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	pid_t	pid;
 
-	close_heredoc_pipes(token);
+	if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
+		perror("token->heredoc_pipe[0]");
+	token->heredoc_pipe[0] = -1;
+	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) == -1)
+		perror("token->heredoc_pipe[1]");
+	token->heredoc_pipe[1] = -1;
 	if (pipe(token->heredoc_pipe) == -1)
 		exit_clean(shell, errno, "set_heredoc() pipe()");
-	// g_signal = -1;
 	pid = fork();
 	if (pid == -1)
 		return (pid);
 	if (pid == 0)
 	{
+		if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
+			perror("token->heredoc_pipe[0]");
+		token->heredoc_pipe[0] = -1;
 		run_heredoc(shell, token, delimiter);
 		exit_clean(shell, errno, "set_heredoc() child");
 	}
@@ -121,7 +138,6 @@ int	all_heredocs(t_shell *shell)
 {
 	t_token	*token;
 	pid_t	pid;
-	int		status;
 	int		i;
 
 	token = shell->token_head;
@@ -133,7 +149,7 @@ int	all_heredocs(t_shell *shell)
 			if (!ft_strncmp(token->redirect[i], "<<", 2))
 			{
 				pid = set_heredoc(shell, token,
-					token->redirect[i] + skip_redir_ws(token->redirect[i]));
+						token->redirect[i] + skip_redir_ws(token->redirect[i]));
 				if (pid == -1)
 					exit_clean(shell, errno, "all_heredocs() fork()");
 				shell->last_errno = zombie_prevention_protocol(pid);

@@ -1,16 +1,18 @@
-/*
-MINISHELL:
-
-	Part list:
-	- History management
-	- Cmd management
-	- File/ dir management
-	- Sig management
-*/
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:52:06 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	TEST_printline(t_shell *shell);// TEST
+// void	TEST_printline(t_shell *shell);// TEST
 
 // Initializes struct of all structs: t_shell.
 void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
@@ -61,24 +63,10 @@ void	read_loop(t_shell *shell)
 			exit_clean(shell, errno, NULL);
 		line_history_management(shell);
 		if (syntax_pre(shell->line) == false)
-		{
-			ft_putstr_fd("minishell: Function not implemented\n", STDERR_FILENO);
 			continue ;
-		}
-		// TEST
-		TEST_printline(shell);
-		// TEST
-		if (parsing_distributor(shell))// if return = false: reprompt
+		if (parsing_distributor(shell))
 		{
-			// TEST
-			if (shell->print_info)
-			{
-				TEST_print_token_lst(shell, C_GREEN, true, "Token");
-				TEST_print_elem_list(shell, C_RED, true, "Line Element lastcheck");
-				// TEST_print_pointer_arr(shell->envp, ">", C_BG_PURPLE, true, C_BG_YELLOW, "envp");
-			}
-			// TEST
-			shell->last_errno = execution(shell);// experimental?
+			shell->last_errno = execution(shell);
 			if (shell->last_errno == ENOMEM)
 				exit_clean(shell, errno, "malloc fail");
 		}

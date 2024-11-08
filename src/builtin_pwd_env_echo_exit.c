@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtin_pwd_env_echo_exit.c                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:46:08 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:46:10 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
-int	builtin_pwd(char **envp)
+int	builtin_pwd(void)
 {
 	char	*cwd;
 
@@ -25,7 +37,7 @@ int	builtin_env(char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_echo(char **cmd_array, char **envp)
+int	builtin_echo(char **cmd_array)
 {
 	int		i;
 	bool	n_flag;
@@ -48,7 +60,7 @@ int	builtin_echo(char **cmd_array, char **envp)
 	return (EXIT_SUCCESS);
 }
 
-int	builtin_exit(t_shell *shell, char **cmd_array, char **envp)
+int	builtin_exit(t_shell *shell, char **cmd_array)
 {
 	size_t	i;
 

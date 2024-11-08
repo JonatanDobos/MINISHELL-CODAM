@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minishell.h                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/08 18:48:44 by svan-hoo         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MINISHELL_H
 # define MINISHELL_H
-# include "libft/libft.h"
 # include "mini_def.h"
 
 // INIT / PARSING
@@ -57,10 +68,10 @@ int			execution(t_shell *shell);
 // BUILTINS
 // builtin_pwd_cd_env_echo_exit.c
 int			builtin_cd(char **cmd_array, char ***envp, char ***envp_sorted);
-int			builtin_pwd(char **envp);
+int			builtin_pwd(void);
 int			builtin_env(char **envp);
-int			builtin_echo(char **cmd_array, char **envp);
-int			builtin_exit(t_shell *shell, char **cmd_array, char **envp);
+int			builtin_echo(char **cmd_array);
+int			builtin_exit(t_shell *shell, char **cmd_array);
 
 // builtin_unset_export.c
 int			builtin_unset(char *envar, char **envp);
@@ -129,30 +140,30 @@ void		set_infile(t_shell *shell, const char *infile);
 void		set_outfile_append(t_shell *shell, const char *outfile);
 void		set_outfile_trunc(t_shell *shell, const char *outfile);
 
-// _TEST.c
-void		TEST_print_token_lst(
-			t_shell *shell,
-			char *accent_col,
-			bool thick_line,
-			char *name);
-void		TEST_print_elem_list(
-			t_shell *shell,
-			char *accent_col,
-			bool thick_line,
-			char *name);
-void		TEST_print_t_list(
-			t_list **head,
-			char *precursor,
-			char *pre_col,
-			bool background,
-			char *accent_col,
-			char *list_name);
-void		TEST_print_pointer_arr(
-			char **arr,
-			char *precursor,
-			char *pre_col,
-			bool background,
-			char *accent_col,
-			char *name);
+// // _TEST.c
+// void		TEST_print_token_lst(
+// 				t_shell *shell,
+// 				char *accent_col,
+// 				bool thick_line,
+// 				char *name);
+// void		TEST_print_elem_list(
+// 				t_shell *shell,
+// 				char *accent_col,
+// 				bool thick_line,
+// 				char *name);
+// void		TEST_print_t_list(
+// 				t_list **head,
+// 				char *precursor,
+// 				char *pre_col,
+// 				bool background,
+// 				char *accent_col,
+// 				char *list_name);
+// void		TEST_print_pointer_arr(
+// 				char **arr,
+// 				char *precursor,
+// 				char *pre_col,
+// 				bool background,
+// 				char *accent_col,
+// 				char *name);
 
 #endif
