@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 19:18:29 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:33:15 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ void	read_loop(t_shell *shell)
 	{
 		sig_interactive();
 		shell->line = readline(PROMPT);
-		sig_parent();
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
 		line_history_management(shell);
@@ -69,6 +68,7 @@ void	read_loop(t_shell *shell)
 			shell->last_errno = EINVAL;
 			continue ;
 		}
+			sig_parent();
 		if (parsing_distributor(shell) && !g_signal)
 		{
 			shell->last_errno = execution(shell);

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:59 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 19:20:59 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:00:31 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ void	sig_heredoc_child(void)
 	ft_memset(&sa, 0, sizeof(sa));
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	sa.sa_handler = SIG_IGN;
+	sa.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &sa, NULL);
 }
 

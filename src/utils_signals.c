@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:29 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 19:19:07 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 20:33:11 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@
 */
 void	sig_reset_prompt(int signal)
 {
-	(void)signal;
+	g_signal = signal;
+	rl_replace_line("", 0);
 	write(1, "\n", 1);
 	rl_on_new_line();
-	rl_replace_line("", 0);
 	rl_redisplay();
 }
 
@@ -42,7 +42,7 @@ void	sig_reset_prompt(int signal)
 
 void	sig_semiint_mini(int signal)
 {
-	write(1, "^c\n", 3);
+	write(1, "\n", 1);
 	g_signal = signal;
 }
 
