@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 22:00:55 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:10:56 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,15 +48,15 @@ int			tokenize(t_shell *shell);
 // signals.c
 void		ignore_sigquit(void);
 void		sig_interactive(void);
-void		sig_noninteractive(void);
+void		sig_parent(void);
 void		sig_child(void);
-void		sig_heredoc_parent(void);
+// void		sig_heredoc_parent(void);
 void		sig_heredoc_child(void);
 
 // utils_signals.c
-void		sig_print_newline(int signal);
-void		sig_add_newline(int signal);
 void		sig_reset_prompt(int signo);
+void		sig_newline(int signal);
+void		sig_semiint_mini(int signal);
 void		sig_child_exit(int signal);
 
 // EXECUTION
@@ -81,7 +81,8 @@ int			builtin_unset(char *envar, char **envp);
 int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
-int			all_heredocs(t_shell *shell);
+pid_t		set_heredoc(t_shell *shell, t_token *token, char *delimiter);
+// int			all_heredocs(t_shell *shell);
 // int			here_doc(t_shell *shell, char *delim, int fd_out);
 
 // open_files.c

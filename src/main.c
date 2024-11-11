@@ -6,11 +6,13 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 23:20:25 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:18:29 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	g_signal;
 
 // void	TEST_printline(t_shell *shell);// TEST
 
@@ -58,7 +60,7 @@ void	read_loop(t_shell *shell)
 	{
 		sig_interactive();
 		shell->line = readline(PROMPT);
-		sig_noninteractive();
+		sig_parent();
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
 		line_history_management(shell);
@@ -67,12 +69,13 @@ void	read_loop(t_shell *shell)
 			shell->last_errno = EINVAL;
 			continue ;
 		}
-		if (parsing_distributor(shell))
+		if (parsing_distributor(shell) && !g_signal)
 		{
 			shell->last_errno = execution(shell);
 			if (shell->last_errno == ENOMEM)
 				exit_clean(shell, errno, "malloc fail");
 		}
+		g_signal = 0;
 		clean_lists(shell);
 	}
 	free(shell->history);

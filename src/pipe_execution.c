@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:52 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:52 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 18:10:05 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ static char	*find_path(char *command, char **envp)
 
 void	execute_sys_cmd(char **cmd_array, char **envp)
 {
+	int		exit_code;
 	char	*path;
 
 	if (cmd_array[0][0] == '/'
@@ -58,8 +59,10 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 			return ;
 		execve(path, cmd_array, envp);
 	}
+	exit_code = errno;
 	if (access(cmd_array[0], X_OK) == -1)
-		errno = 127;
+		exit_code = 127;
+	errno = exit_code;
 }
 
 static void	export_loop(char **cmd_array, char ***envp, char ***envp_sorted)

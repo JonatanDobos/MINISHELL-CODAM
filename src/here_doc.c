@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 23:25:19 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:15:41 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ static char	*expand_in_line(t_shell *shell, char *str)
 	}
 	return (str);
 }
-
+// warning after EOF (before delimiter)
 static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	char	*line;
@@ -86,7 +86,7 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 	token->heredoc_pipe[1] = -1;
 }
 
-static pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
+pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	pid_t	pid;
 
@@ -114,33 +114,4 @@ static pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		exit_clean(shell, errno, "set_heredoc() close()");
 	token->heredoc_pipe[1] = -1;
 	return (pid);
-}
-
-int	all_heredocs(t_shell *shell)
-{
-	t_token	*token;
-	pid_t	pid;
-	int		i;
-
-	token = shell->token_head;
-	while (token)
-	{
-		i = 0;
-		while (token->redirect && token->redirect[i])
-		{
-			if (!ft_strncmp(token->redirect[i], "<<", 2))
-			{
-				pid = set_heredoc(shell, token,
-						token->redirect[i] + skip_redir_ws(token->redirect[i]));
-				if (pid == -1)
-					exit_clean(shell, errno, "all_heredocs() fork()");
-				shell->last_errno = zombie_prevention_protocol(pid);
-				if (shell->last_errno)
-					return (shell->last_errno);
-			}
-			i++;
-		}
-		token = token->next;
-	}
-	return (shell->last_errno);
 }

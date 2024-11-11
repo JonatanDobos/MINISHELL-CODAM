@@ -6,11 +6,13 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:29 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 23:13:40 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/11 19:19:07 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+// extern int	g_signal;
 
 // /* signal_print_newline:
 // *	Prints a newline for noninteractive signal handling.
@@ -33,14 +35,19 @@ void	sig_reset_prompt(int signal)
 	rl_redisplay();
 }
 
+// void	sig_newline(int signal)
+// {
+// 	(void)signal;
+// }
+
+void	sig_semiint_mini(int signal)
+{
+	write(1, "^c\n", 3);
+	g_signal = signal;
+}
+
 // void	sig_add_newline(int signal)
 // {
 // 	(void)signal;
 // 	write(1, "\n", 1);
 // }
-
-void	sig_child_exit(int signal)// does not work
-{
-	(void)signal;
-	exit(EXIT_FAILURE);
-}
