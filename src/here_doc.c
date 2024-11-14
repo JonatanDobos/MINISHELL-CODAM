@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:32:51 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:39:00 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,6 @@ static void	endoffile_warning(
 	}
 }
 
-// warning after EOF (before delimiter)
 static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	char	*line;

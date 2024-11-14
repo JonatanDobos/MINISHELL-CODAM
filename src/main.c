@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 20:33:15 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:40:23 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ void	read_loop(t_shell *shell)
 			shell->last_errno = EINVAL;
 			continue ;
 		}
-			sig_parent();
+		sig_parent();
 		if (parsing_distributor(shell) && !g_signal)
 		{
 			shell->last_errno = execution(shell);
@@ -91,21 +91,21 @@ int	main(int argc, char **argv, char **envp)
 	return (shell.last_errno);
 }
 
-// TEST FUNCTIONS:
-// INP: "info [gets run with additional info]"
-void	TEST_printline(t_shell *shell)
-{
-	char	*tmp_line;
+// // TEST FUNCTIONS:
+// // INP: "info [gets run with additional info]"
+// void	TEST_printline(t_shell *shell)
+// {
+// 	char	*tmp_line;
 
-	if (!ft_strncmp(shell->line, "info ", 5))
-	{
-		shell->print_info = true;
-		tmp_line = ft_strdup(shell->line + 5);
-		if (!tmp_line)
-			exit_clean(shell, errno, NULL);
-		free(shell->line);
-		shell->line = tmp_line;
-	}
-	else
-		shell->print_info = false;
-}
+// 	if (!ft_strncmp(shell->line, "info ", 5))
+// 	{
+// 		shell->print_info = true;
+// 		tmp_line = ft_strdup(shell->line + 5);
+// 		if (!tmp_line)
+// 			exit_clean(shell, errno, NULL);
+// 		free(shell->line);
+// 		shell->line = tmp_line;
+// 	}
+// 	else
+// 		shell->print_info = false;
+// }
