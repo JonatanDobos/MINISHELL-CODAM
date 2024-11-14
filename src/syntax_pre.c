@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:08 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 22:09:22 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:43:50 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,14 +98,18 @@ static bool	token_check(const char *line)
 	return (true);
 }
 
-bool	syntax_pre(const char *line)
+bool		syntax_pre(t_shell *shell, const char *line)
 {
 	if (!quote_check(line))
 	{
 		ft_putstr_fd("minishell: Function not implemented\n", STDERR_FILENO);
+		shell->last_errno = EINVAL;
 		return (false);
 	}
 	if (!token_check(line))
+	{
+		shell->last_errno = EINVAL;
 		return (false);
+	}
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:32 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:33 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 20:23:55 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	syntax_error(int num, const char *message)
 		ft_putstr_fd(": ", STDERR_FILENO);
 	}
 	if (num == 127)
-		ft_putstr_fd("command not found\n", STDERR_FILENO);
+		ft_putstr_fd("command not found", STDERR_FILENO);
 	else
 		ft_putstr_fd(strerror(num), STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);

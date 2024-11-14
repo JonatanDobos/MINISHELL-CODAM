@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:52 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 18:10:05 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 20:21:37 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,17 +51,18 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 		|| cmd_array[0][0] == '~')
 	{
 		execve(cmd_array[0], cmd_array, envp);
+		exit_code = errno;
 	}
 	else
 	{
 		path = find_path(cmd_array[0], envp);
-		if (path == NULL)
+		if (path == NULL && errno ==  ENOMEM)
 			return ;
 		execve(path, cmd_array, envp);
+		exit_code = errno;
+		if (access(cmd_array[0], X_OK) == -1)
+			exit_code = 127;
 	}
-	exit_code = errno;
-	if (access(cmd_array[0], X_OK) == -1)
-		exit_code = 127;
 	errno = exit_code;
 }
 

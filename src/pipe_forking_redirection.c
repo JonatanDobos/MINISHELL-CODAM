@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:53 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:18:30 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 20:19:36 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ static pid_t	kiddo(t_shell *shell,
 	t_token *token, int *standup, int *pipe_fds)
 {
 	pid_t	pid;
+	int		exit_code;
 
 	pid = fork();
 	if (pid == 0)
@@ -50,8 +51,9 @@ static pid_t	kiddo(t_shell *shell,
 			execute_builtin(shell, token->cmd_array, &shell->envp);
 		else
 			execute_sys_cmd(token->cmd_array, shell->envp);
+		exit_code = errno;
 		close(STDOUT_FILENO);
-		exit_clean(shell, errno, token->cmd_array[0]);
+		exit_clean(shell, exit_code, token->cmd_array[0]);
 	}
 	return (pid);
 }

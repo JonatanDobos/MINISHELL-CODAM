@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:40:23 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:44:07 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,8 @@ void	read_loop(t_shell *shell)
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
 		line_history_management(shell);
-		if (syntax_pre(shell->line) == false)
-		{
-			shell->last_errno = EINVAL;
+		if (syntax_pre(shell, shell->line) == false)
 			continue ;
-		}
 		sig_parent();
 		if (parsing_distributor(shell) && !g_signal)
 		{
@@ -75,6 +72,8 @@ void	read_loop(t_shell *shell)
 			if (shell->last_errno == ENOMEM)
 				exit_clean(shell, errno, "malloc fail");
 		}
+		if (g_signal)
+			shell->last_errno = g_signal;
 		g_signal = 0;
 		clean_lists(shell);
 	}

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:31:51 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:43:06 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char		**create_envp_sorted(char **envp);
 int			export_envar_to_sorted_array(char *envar, char ***envp);
 
 // syntax_pre.c
-bool		syntax_pre(const char *line);
+bool		syntax_pre(t_shell *shell, const char *line);
 
 // parsing_distributor.c
 bool		parsing_distributor(t_shell *d);
