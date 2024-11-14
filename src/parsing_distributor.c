@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_distributor.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:47 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:38:31 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 23:50:26 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,10 @@ static int	all_heredocs(t_shell *shell)
 					exit_clean(shell, errno, "all_heredocs() fork()");
 				shell->last_errno = zombie_prevention_protocol(pid);
 				if (shell->last_errno)
+				{
+					token->heredoc_pipe[0] = -1;
 					return (shell->last_errno);
+				}
 			}
 			i++;
 		}
@@ -51,8 +54,8 @@ bool	parsing_distributor(t_shell *shell)
 		return (false);
 	tokenize(shell);
 	parse_post(shell);
-	sig_heredoc_parent();
+	// sig_heredoc_parent();
 	all_heredocs(shell);
-	sig_parent();
+	// sig_parent();
 	return (true);
 }

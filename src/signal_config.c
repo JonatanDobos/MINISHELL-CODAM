@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_config.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:59 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:32:09 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 23:27:14 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,15 @@ void	sig_child(void)
 
 void	sig_heredoc_child(void)
 {
+	struct sigaction	sa;
+
 	ignore_signal(SIGQUIT);
-	default_signal(SIGINT);
+	ft_memset(&sa, 0, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = &sighandler_close_fds;
+	sigaction(SIGINT, &sa, NULL);
+	// default_signal(SIGINT);
 }
 
 void	sig_heredoc_parent(void)

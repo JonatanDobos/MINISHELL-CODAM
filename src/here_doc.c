@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:39:00 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 23:53:35 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,10 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 	char	*line;
 	int		i;
 
-	rl_clear_history();
 	i = 0;
 	while (1)
 	{
+		rl_clear_history();
 		line = readline("> ");
 		endoffile_warning(line, delimiter, ++i);
 		if (line == NULL)
@@ -95,9 +95,6 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
-	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) == -1)
-		perror("token->heredoc_pipe[1]");
-	token->heredoc_pipe[1] = -1;
 }
 // take out perror to save lines: if close(fd) != -1, fd = -1;
 pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
@@ -118,10 +115,13 @@ pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 	if (pid == 0)
 	{
 		sig_heredoc_child();
-		if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
+		if (close(token->heredoc_pipe[0]) == -1)
 			perror("token->heredoc_pipe[0]");
 		token->heredoc_pipe[0] = -1;
 		run_heredoc(shell, token, delimiter);
+		if (close(token->heredoc_pipe[1]) == -1)
+			perror("token->heredoc_pipe[1]");
+		token->heredoc_pipe[1] = -1;
 		exit_clean(shell, errno, "set_heredoc() child");
 	}
 	if (close(token->heredoc_pipe[1]) == -1)

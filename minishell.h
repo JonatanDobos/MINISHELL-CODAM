@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:43:06 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 23:27:36 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,10 @@ void		sig_heredoc_parent(void);
 void		sig_heredoc_child(void);
 
 // signal_handlers.c
-void		sighandler_reset_prompt(int signo);
-void		sighandler_semiint_mini(int signal);
-void		sighandler_quit_coredumped(int signal);
+void		sighandler_close_fds(int sig);
+void		sighandler_reset_prompt(int sig);
+void		sighandler_semiint_mini(int sig);
+void		sighandler_quit_coredumped(int sig);
 
 // signal_utils.c
 void		ignore_signal(int sig);

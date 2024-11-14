@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handlers.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:29 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:45:23 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/15 00:06:08 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,16 @@ void	sighandler_reset_prompt(int sig)
 
 void	sighandler_semiint_mini(int sig)
 {
-	write(1, "\n", 1);
 	g_signal = sig + 128;
+	write(1, "\n", 1);
+}
+
+void	sighandler_close_fds(int sig)
+{
+	g_signal = sig + 128;
+	//
+	signal(sig, SIG_DFL);
+	raise(sig);
 }
 
 void	sighandler_quit_coredumped(int sig)
