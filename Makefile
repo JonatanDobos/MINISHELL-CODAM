@@ -35,7 +35,9 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/parsing_pretokenize.c \
 			$(SRCDIR)/pipe_execution.c \
 			$(SRCDIR)/pipe_forking_redirection.c \
-			$(SRCDIR)/signals.c \
+			$(SRCDIR)/signal_config.c \
+			$(SRCDIR)/signal_handlers.c \
+			$(SRCDIR)/signal_utils.c \
 			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_builtin.c \
@@ -45,7 +47,6 @@ SRC		=	$(SRCDIR)/_TEST.c\
 			$(SRCDIR)/utils_free.c \
 			$(SRCDIR)/utils_mod_gnl.c \
 			$(SRCDIR)/utils_parsing.c \
-			$(SRCDIR)/utils_signals.c \
 			$(SRCDIR)/utils_string.c \
 			$(SRCDIR)/utils_token_list.c
 

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 19:10:56 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:31:51 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,21 @@ char		*insert_envp_in_str(t_shell *shell, char *str, size_t i);
 //tokenize.c
 int			tokenize(t_shell *shell);
 
-// signals.c
-void		ignore_sigquit(void);
+// signal_config.c
 void		sig_interactive(void);
 void		sig_parent(void);
 void		sig_child(void);
-// void		sig_heredoc_parent(void);
+void		sig_heredoc_parent(void);
 void		sig_heredoc_child(void);
 
-// utils_signals.c
-void		sig_reset_prompt(int signo);
-void		sig_newline(int signal);
-void		sig_semiint_mini(int signal);
-void		sig_child_exit(int signal);
+// signal_handlers.c
+void		sighandler_reset_prompt(int signo);
+void		sighandler_semiint_mini(int signal);
+void		sighandler_quit_coredumped(int signal);
+
+// signal_utils.c
+void		ignore_signal(int sig);
+void		default_signal(int sig);
 
 // EXECUTION
 // pipe_execution.c

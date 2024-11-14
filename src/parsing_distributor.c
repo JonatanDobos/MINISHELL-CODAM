@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:47 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 19:11:02 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 19:34:08 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,11 @@ static int	all_heredocs(t_shell *shell)
 						token->redirect[i] + skip_redir_ws(token->redirect[i]));
 				if (pid == -1)
 					exit_clean(shell, errno, "all_heredocs() fork()");
+				sig_heredoc_parent();
 				shell->last_errno = zombie_prevention_protocol(pid);
 				if (shell->last_errno)
 					return (shell->last_errno);
+				sig_parent();
 			}
 			i++;
 		}
