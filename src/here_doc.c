@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 19:15:41 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:55:40 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,27 +57,55 @@ static char	*expand_in_line(t_shell *shell, char *str)
 	}
 	return (str);
 }
+
+static short	early_heredoc_break(
+		const char *line, const char *delimiter, int i)
+{
+	const int		d_len = ft_strlen(delimiter);
+
+	if (!ft_strncmp(line, delimiter, d_len + 1))
+	{
+
+		printf("match\n");
+		return (true);
+	}
+	if (line[0] == EOF)
+	{
+		
+		printf("EOF\n");
+		ft_putstr_fd("minishell: warning: here-document at line ", STDERR_FILENO);
+		ft_putnbr_fd(i, STDERR_FILENO);
+		ft_putstr_fd(" delimited by end-of-file (wanted `", STDERR_FILENO);
+		ft_putstr_fd(delimiter, STDERR_FILENO);
+		ft_putstr_fd("')\n", STDERR_FILENO);
+		return (true);
+	}
+	printf("-\n");
+	return (false);
+}
+
 // warning after EOF (before delimiter)
 static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	char	*line;
-	int		d_len;
+	int		i;
 
 	rl_clear_history();
-	d_len = ft_strlen(delimiter);
+	i = 0;
 	while (1)
 	{
 		line = readline("> ");
+		printf("[%d] %s\n", i, line);
 		if (line == NULL)
 			exit_clean(shell, errno, "run_heredoc() readline()");
-		if (!ft_strncmp(line, delimiter, d_len + 1))
+		if (early_heredoc_break(line, delimiter, ++i) == true)
 			break ;
 		line = expand_in_line(shell, line);
 		if (line == NULL)
 			exit_clean(shell, 0, "run_heredoc() expand_in_line()");
 		ft_putendl_fd(line, token->heredoc_pipe[1]);
-		if (!ft_strncmp(delimiter, "\n", 2))
-			break ;
+		// if (!ft_strncmp(delimiter, "\n", 2))
+		// 	break ;
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);
@@ -85,7 +113,7 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		perror("token->heredoc_pipe[1]");
 	token->heredoc_pipe[1] = -1;
 }
-
+// take out perror to save lines: if close(fd) != -1, fd = -1;
 pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	pid_t	pid;
