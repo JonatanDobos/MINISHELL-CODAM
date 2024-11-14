@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils_string.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:48:31 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:48:32 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/14 16:29:12 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*strdup_index(char *str, size_t	start, size_t end)
 	char	*ret;
 	int		i;
 
-	if (!str || start < 0 || end > ft_strlen(str) || end <= start)
+	if (!str || end > ft_strlen(str) || end <= start)
 		return (NULL);
 	ret = (char *)malloc((end + 1 - start) * sizeof(char));
 	if (!ret)
