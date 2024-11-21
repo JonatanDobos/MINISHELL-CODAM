@@ -1,17 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:44 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 23:27:36 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   minishell.h                                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:48:44 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/11/21 16:02:15 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
+
+// so vscode recognizes signal.h functions
+# define _XOPEN_SOURCE 700
+
 # include "mini_def.h"
 
 // INIT / PARSING

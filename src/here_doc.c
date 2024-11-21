@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   here_doc.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 23:53:35 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   here_doc.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:47:34 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/11/21 13:56:25 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 	}
 	ft_free_null(&line);
 }
+
 // take out perror to save lines: if close(fd) != -1, fd = -1;
 pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
