@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/11/21 13:56:25 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/11/21 16:54:07 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,8 +90,6 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		if (line == NULL)
 			exit_clean(shell, 0, "run_heredoc() expand_in_line()");
 		ft_putendl_fd(line, token->heredoc_pipe[1]);
-		if (!ft_strncmp(delimiter, "\n", 2))
-			break ;
 		ft_free_null(&line);
 	}
 	ft_free_null(&line);

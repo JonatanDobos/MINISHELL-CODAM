@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   syntax_pre.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:08 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 19:43:50 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   syntax_pre.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:48:08 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/11/21 17:09:47 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,9 @@ static bool	check_for_pipe_continue(const char *line, size_t i)
 		while (ft_iswhitespace(line[i]))
 			++i;
 		if (!line[i])
-			return (true);
+			return (printf("%s\'newline\'\n", TOKEN_ERR), false);
 	}
-	return (false);
+	return (true);
 }
 
 static bool	token_check(const char *line)
@@ -80,12 +80,12 @@ static bool	token_check(const char *line)
 			return (printf("%s\'|\'\n", TOKEN_ERR), false);
 		if (line[i] == '>' && line[i + 1] == '<')
 			return (printf("%s\'<\'\n", TOKEN_ERR), false);
-		if (line[i] == '|' && (line[i + 1] == '<' || line[i + 1] == '>'))
+		if (line[i] == '|' && (line[i + 1] == '<' || line[i + 1] == '>' || line[i + 1] == '|'))
 			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i + 1]), false);
 		if (istoken(line[i]))
 		{
-			if (check_for_pipe_continue(line, i))
-				return (true);
+			if (!check_for_pipe_continue(line, i))
+				return (false);
 			if (!check_token_folowup(line + i))
 				return (false);
 			while (istoken(line[i]))

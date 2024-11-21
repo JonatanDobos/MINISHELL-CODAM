@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing_pretokenize.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:47:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 18:55:44 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parsing_pretokenize.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:47:50 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/11/21 16:55:05 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static size_t	pipe_sub_line(t_shell *shell, char *line, size_t i)
 	char	*sub_line;
 
 	if (!line[i + 1])
-		return (new_element(shell, ft_strdup("<<\n")), i + 1);
+		return (i + 1);
 	sub_line = ft_substr(line, i, 1);
 	if (!sub_line)
 		exit_clean(shell, errno, "token_element_node");
