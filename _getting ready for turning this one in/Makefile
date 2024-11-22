@@ -1,6 +1,6 @@
 NAME	=	minishell
 
-CC		=	cc -g
+CC		=	cc #-g
 
 CFLAGS=		-Wall -Wextra -Werror
 
@@ -19,8 +19,7 @@ LIBFT	=	$(LFTDIR)/libft.a
 
 
 SRCDIR	=	./src
-SRC		=	$(SRCDIR)/_TEST.c\
-			$(SRCDIR)/main.c \
+SRC		=	$(SRCDIR)/main.c \
 			$(SRCDIR)/builtin_unset_export.c \
 			$(SRCDIR)/builtin_cd.c \
 			$(SRCDIR)/builtin_pwd_env_echo_exit.c \
