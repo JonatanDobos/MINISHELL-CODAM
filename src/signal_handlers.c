@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   signal_handlers.c                                  :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/11/08 18:48:29 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/11/21 18:27:13 by jdobos        ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   signal_handlers.c                                  :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:48:29 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/22 18:59:18 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,11 @@ void	sighandler_semiint_mini(int sig)
 
 void	sighandler_close_fds(int sig)
 {
+	// close(STDIN_FILENO);
 	g_signal = sig + 128;
-	//
-	signal(sig, SIG_DFL);
-	kill(0, sig);
+	// //
+	// signal(sig, SIG_DFL);
+	// kill(0, sig);
 }
 
 void	sighandler_quit_coredumped(int sig)

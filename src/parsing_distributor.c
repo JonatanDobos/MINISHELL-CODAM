@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:47 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 23:50:26 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/22 19:03:36 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static int	all_heredocs(t_shell *shell)
 	t_token	*token;
 	pid_t	pid;
 	int		i;
+	// int		status;
 
 	token = shell->token_head;
 	while (token)
@@ -30,12 +31,21 @@ static int	all_heredocs(t_shell *shell)
 						token->redirect[i] + skip_redir_ws(token->redirect[i]));
 				if (pid == -1)
 					exit_clean(shell, errno, "all_heredocs() fork()");
-				shell->last_errno = zombie_prevention_protocol(pid);
-				if (shell->last_errno)
+				g_signal = zombie_prevention_protocol(pid);
+				if (g_signal)
 				{
+					close (token->heredoc_pipe[0]);
 					token->heredoc_pipe[0] = -1;
 					return (shell->last_errno);
 				}
+				// waitpid(pid, &status, 0);
+				// if (WIFEXITED(status))
+				// 	return (WEXITSTATUS(status));
+				// if (WIFSIGNALED(status))
+				// {
+				// 	write(STDERR_FILENO, "boiohboi\n", 10);
+				// 	return (WTERMSIG(status));
+				// }
 			}
 			i++;
 		}
@@ -55,7 +65,10 @@ bool	parsing_distributor(t_shell *shell)
 	tokenize(shell);
 	parse_post(shell);
 	// sig_heredoc_parent();
+	g_signal = 0;
 	all_heredocs(shell);
+	if (g_signal)
+		return (false);
 	// sig_parent();
 	return (true);
 }

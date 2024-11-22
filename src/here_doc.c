@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   here_doc.c                                         :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/11/08 18:47:34 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/11/21 16:54:07 by jdobos        ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   here_doc.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/22 19:05:14 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,9 +77,9 @@ static void	run_heredoc(t_shell *shell, t_token *token, char *delimiter)
 	int		i;
 
 	i = 0;
+	rl_clear_history();
 	while (1)
 	{
-		rl_clear_history();
 		line = readline("> ");
 		endoffile_warning(line, delimiter, ++i);
 		if (line == NULL)
@@ -113,7 +113,8 @@ pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		return (pid);
 	if (pid == 0)
 	{
-		sig_heredoc_child();
+		// sig_heredoc_child();
+		sig_child();
 		if (close(token->heredoc_pipe[0]) == -1)
 			perror("token->heredoc_pipe[0]");
 		token->heredoc_pipe[0] = -1;
