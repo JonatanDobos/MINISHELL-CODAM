@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   builtin_pwd_env_echo_exit.c                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:46:08 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:46:10 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   builtin_pwd_env_echo_exit.c                        :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:46:08 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/11/25 18:12:22 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	builtin_echo(char **cmd_array)
 	bool	n_flag;
 
 	i = 1;
-	n_flag = (cmd_array[1] && !ft_strncmp("-n", cmd_array[1], 3));
+	n_flag = echo_n_flag_check(cmd_array[1]);
 	if (n_flag)
 		i = 2;
 	while (cmd_array[i])

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/11/21 16:02:15 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/11/25 18:11:28 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,6 +106,7 @@ int			export_syntax(const char *envar);
 int			unset_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
 int			print_export_list(char **envp);
+bool		echo_n_flag_check(char *str);
 
 // utils_error_print.c
 void		export_error(char *envar);

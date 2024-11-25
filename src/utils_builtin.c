@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils_builtin.c                                    :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:16 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:48:16 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utils_builtin.c                                    :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:48:16 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/11/25 18:18:19 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,4 +83,22 @@ int	print_export_list(char **envp)
 		i++;
 	}
 	return (EXIT_SUCCESS);
+}
+
+bool	echo_n_flag_check(char *str)
+{
+	int	i;
+
+	if (str == NULL)
+		return (false);
+	if (str[0] != '-')
+		return (false);
+	if (str[1] != 'n')
+		return (false);
+	i = 2;
+	while (str[i] == 'n')
+		++i;
+	if (str[i] == '\0')
+		return (true);
+	return (false);
 }
