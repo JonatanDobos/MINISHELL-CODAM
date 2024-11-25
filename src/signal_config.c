@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_config_.c                                   :+:      :+:    :+:   */
+/*   signal_config.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:59 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/22 19:10:36 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:23:53 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void	sig_heredoc_child(void)
 	sa.sa_flags = 0;
 	sa.sa_handler = SIG_DFL;
 	sigaction(SIGINT, &sa, NULL);
-	// default_signal(SIGINT);
 }
 
 void	sig_heredoc_parent(void)

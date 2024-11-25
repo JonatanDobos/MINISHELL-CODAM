@@ -1,37 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_config_OUT.c                                :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:47:59 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/22 20:23:40 by svan-hoo         ###   ########.fr       */
+/*   Created: 2023/10/19 15:02:32 by simon             #+#    #+#             */
+/*   Updated: 2024/11/22 20:47:49 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../minishell.h"
+#include "../libft.h"
 
-void	sig_interactive(void)
+void	ft_putnbr_fd(int n, int fd)
 {
-	struct sigaction	sa;
+	char	c;
 
-	ft_memset(&sa, 0, sizeof(sa));
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = &sighandler_reset_prompt;
-	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	sig_parent(void)
-{
-	signal(SIGINT, SIG_IGN);
-	signal(SIGQUIT, SIG_IGN);
-}
-
-void	sig_child(void)
-{
-	signal(SIGINT, SIG_DFL);
-	signal(SIGQUIT, SIG_DFL);
+	if (n == INT_MIN)
+	{
+		ft_putstr_fd("-2147483648", fd);
+		return ;
+	}
+	if (n < 0)
+	{
+		c = '-';
+		write(fd, &c, 1);
+		n = -n;
+	}
+	if (n > 9)
+	{
+		ft_putnbr_fd((n / 10), fd);
+		n = n % 10;
+	}
+	if (n <= 9)
+	{
+		c = n + 48;
+		write(fd, &c, 1);
+	}
 }

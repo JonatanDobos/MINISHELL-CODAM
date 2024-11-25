@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   syntax_pre.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/11/08 18:48:08 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/11/21 17:09:47 by jdobos        ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   syntax_pre.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:48:08 by svan-hoo          #+#    #+#             */
+/*   Updated: 2024/11/22 21:31:09 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,13 +80,13 @@ static bool	token_check(const char *line)
 			return (printf("%s\'|\'\n", TOKEN_ERR), false);
 		if (line[i] == '>' && line[i + 1] == '<')
 			return (printf("%s\'<\'\n", TOKEN_ERR), false);
-		if (line[i] == '|' && (line[i + 1] == '<' || line[i + 1] == '>' || line[i + 1] == '|'))
+		if (line[i] == '|' && (line[i + 1] == '<'
+				|| line[i + 1] == '>' || line[i + 1] == '|'))
 			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i + 1]), false);
 		if (istoken(line[i]))
 		{
-			if (!check_for_pipe_continue(line, i))
-				return (false);
-			if (!check_token_folowup(line + i))
+			if (!check_for_pipe_continue(line, i)
+				|| !check_token_folowup(line + i))
 				return (false);
 			while (istoken(line[i]))
 				++i;
@@ -98,7 +98,7 @@ static bool	token_check(const char *line)
 	return (true);
 }
 
-bool		syntax_pre(t_shell *shell, const char *line)
+bool	syntax_pre(t_shell *shell, const char *line)
 {
 	if (!quote_check(line))
 	{

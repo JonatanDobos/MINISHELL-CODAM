@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_execution.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:52 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 23:13:48 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/22 20:31:01 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 	else
 	{
 		path = find_path(cmd_array[0], envp);
-		if (path == NULL && errno ==  ENOMEM)
+		if (path == NULL && errno == ENOMEM)
 			return ;
 		execve(path, cmd_array, envp);
 		exit_code = errno;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   here_doc.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/22 19:05:14 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/22 21:19:33 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,16 @@ static void	endoffile_warning(
 {
 	if (line == NULL)
 	{
-		ft_putstr_fd("minishell: warning: here-document at line ", STDERR_FILENO);
-		ft_putnbr_fd(i, STDERR_FILENO);
-		ft_putstr_fd(" delimited by end-of-file (wanted `", STDERR_FILENO);
-		ft_putstr_fd(delimiter, STDERR_FILENO);
-		ft_putstr_fd("')\n", STDERR_FILENO);
+		ft_putstr_fd("minishell: warning: here-document at line ",
+			STDERR_FILENO);
+		ft_putnbr_fd(i,
+			STDERR_FILENO);
+		ft_putstr_fd(" delimited by end-of-file (wanted `",
+			STDERR_FILENO);
+		ft_putstr_fd(delimiter,
+			STDERR_FILENO);
+		ft_putstr_fd("')\n",
+			STDERR_FILENO);
 	}
 }
 
@@ -100,20 +105,15 @@ pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 {
 	pid_t	pid;
 
-	if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) == -1)
-		perror("token->heredoc_pipe[0]");
-	token->heredoc_pipe[0] = -1;
-	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) == -1)
-		perror("token->heredoc_pipe[1]");
-	token->heredoc_pipe[1] = -1;
+	if (token->heredoc_pipe[0] != -1 && close(token->heredoc_pipe[0]) != -1)
+		token->heredoc_pipe[0] = -1;
+	if (token->heredoc_pipe[1] != -1 && close(token->heredoc_pipe[1]) != -1)
+		token->heredoc_pipe[1] = -1;
 	if (pipe(token->heredoc_pipe) == -1)
 		exit_clean(shell, errno, "set_heredoc() pipe()");
 	pid = fork();
-	if (pid == -1)
-		return (pid);
 	if (pid == 0)
 	{
-		// sig_heredoc_child();
 		sig_child();
 		if (close(token->heredoc_pipe[0]) == -1)
 			perror("token->heredoc_pipe[0]");
@@ -124,8 +124,7 @@ pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		token->heredoc_pipe[1] = -1;
 		exit_clean(shell, errno, "set_heredoc() child");
 	}
-	if (close(token->heredoc_pipe[1]) == -1)
-		exit_clean(shell, errno, "set_heredoc() close()");
-	token->heredoc_pipe[1] = -1;
+	if (close(token->heredoc_pipe[1]) != -1)
+		token->heredoc_pipe[1] = -1;
 	return (pid);
 }
