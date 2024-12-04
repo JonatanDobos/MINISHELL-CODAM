@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main_.c                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:47:36 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/22 19:09:53 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   main.c                                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:47:36 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/04 16:42:39 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,12 +54,15 @@ void	line_history_management(t_shell *shell)
 	}
 }
 
-void	read_loop(t_shell *shell)
+static void	read_loop(t_shell *shell, t_term original_termios)
 {
 	while (true)
 	{
+		if (tcsetattr(STDIN_FILENO, TCSANOW, &original_termios) != 0)
+			ft_putstr_fd("tcgetattr() failed\n", STDERR_FILENO);
 		sig_interactive();
 		shell->line = readline(PROMPT);
+		sig_parent();
 		if (shell->line == NULL)
 			exit_clean(shell, errno, NULL);
 		line_history_management(shell);
@@ -68,7 +71,6 @@ void	read_loop(t_shell *shell)
 		if (g_signal)
 			shell->last_errno = g_signal;
 		g_signal = 0;
-		sig_parent();
 		if (parsing_distributor(shell) && !g_signal)
 		{
 			shell->last_errno = execution(shell);
@@ -84,9 +86,13 @@ void	read_loop(t_shell *shell)
 int	main(int argc, char **argv, char **envp)
 {
 	t_shell	shell;
+	t_term	original_termios;
 
 	init_shell(&shell, argc, argv, envp);
-	read_loop(&shell);
+	g_signal = 0;
+	if (tcgetattr(STDIN_FILENO, &original_termios) != 0)
+		ft_putstr_fd("tcgetattr() failed\n", STDERR_FILENO);
+	read_loop(&shell, original_termios);
 	return (shell.last_errno);
 }
 

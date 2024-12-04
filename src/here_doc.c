@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:34 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/02 12:16:12 by joni          ########   odam.nl         */
+/*   Updated: 2024/12/04 16:54:58 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ pid_t	set_heredoc(t_shell *shell, t_token *token, char *delimiter)
 		token->heredoc_pipe[1] = -1;
 	if (pipe(token->heredoc_pipe) == -1)
 		exit_clean(shell, errno, "set_heredoc() pipe()");
+	sig_heredoc_parent();
 	pid = fork();
 	if (pid == 0)
 	{

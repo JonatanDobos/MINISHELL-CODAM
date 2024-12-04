@@ -68,6 +68,7 @@ $(NAME): $(LIBFT) $(OBJDIR) $(OBJ)
 
 clean:
 	rm -f $(OBJ)
+	rm -df $(OBJDIR)
 	make -C $(LFTDIR) clean
 
 fclean: clean

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   mini_def.h                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:41 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/11 18:27:02 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   mini_def.h                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:48:41 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/04 16:35:51 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,7 @@ extern int				g_signal;
 // # define C_RED		"\033[0;31m"
 
 typedef unsigned int	t_uint;
+typedef struct termios	t_term;
 
 enum	e_token_type
 {

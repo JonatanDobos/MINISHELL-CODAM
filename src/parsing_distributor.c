@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing_distributor.c                              :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:47:47 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/22 21:16:03 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parsing_distributor.c                              :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:47:47 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/04 16:56:09 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ static int	process_token_heredoc(t_shell *shell, t_token *token)
 			if (pid == -1)
 				exit_clean(shell, errno, "all_heredocs() fork()");
 			g_signal = zombie_prevention_protocol(pid);
+			sig_parent();
 			if (g_signal)
 			{
 				close (token->heredoc_pipe[0]);
