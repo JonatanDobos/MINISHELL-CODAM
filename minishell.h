@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 09:14:20 by joni          ########   odam.nl         */
+/*   Updated: 2024/12/09 17:23:44 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ size_t		skip_to_end_quote(const char *line, size_t i);
 
 // utils_syntax.c
 void		print_token_err(const char *token, int len);
+bool		pipe_start(const char *line);
 
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);

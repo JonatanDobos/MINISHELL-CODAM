@@ -1,6 +1,6 @@
 NAME	=	minishell
 
-CC		=	cc #-g
+CC		=	cc -g
 
 CFLAGS	=	-Wall -Wextra -Werror
 CFLAGS	+=	-Wunused -Wuninitialized -Wunreachable-code

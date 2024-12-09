@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:08 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 09:10:23 by joni          ########   odam.nl         */
+/*   Updated: 2024/12/09 17:25:51 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ static bool	token_check(const char *line)
 {
 	size_t	i;
 
+	if (pipe_start(line) == true)
+		return (print_token_err("|", 1), false);
 	i = 0;
 	while (line[i])
 	{

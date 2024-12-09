@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parsing_posttokenize.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:47:48 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:47:49 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   parsing_posttokenize.c                             :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:47:48 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/09 16:41:24 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ void	parse_post(t_shell *shell)
 	while (tmp)
 	{
 		i = 0;
-		while (tmp->cmd_array[i])
+		while (tmp->cmd_array && tmp->cmd_array[i])
 		{
 			format_element_str(shell, &tmp->cmd_array[i]);
 			++i;

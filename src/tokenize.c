@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   tokenize.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 19:22:27 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/25 20:28:11 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   tokenize.c                                         :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 19:22:27 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/09 16:38:33 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,10 +72,12 @@ static bool	fill_new_token(
 				return (EXIT_FAILURE);
 		}
 		else
+		{
 			new_token->cmd_array = ft_array_append(
 					new_token->cmd_array, (*current)->content);
-		if (!new_token->cmd_array)
-			return (EXIT_FAILURE);
+			if (!new_token->cmd_array)
+				return (EXIT_FAILURE);
+		}
 		if (new_token->type == T_REDIRECT)
 			new_token->type = *type;
 		last = *current;

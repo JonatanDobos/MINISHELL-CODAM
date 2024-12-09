@@ -6,7 +6,7 @@
 /*   By: joni <joni@student.codam.nl>                 +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/09 08:54:34 by joni          #+#    #+#                 */
-/*   Updated: 2024/12/09 08:54:53 by joni          ########   odam.nl         */
+/*   Updated: 2024/12/09 17:23:36 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,16 @@ void	print_token_err(const char *token, int len)
 	else
 		write(STDERR_FILENO, "newline", 7);
 	write(STDERR_FILENO, "\'\n", 2);
+}
+
+bool	pipe_start(const char *line)
+{
+	size_t	i;
+
+	i = 0;
+	while (ft_iswhitespace(line[i]))
+		++i;
+	if (line[i] == '|')
+		return (true);
+	return (false);
 }

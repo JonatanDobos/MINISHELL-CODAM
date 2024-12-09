@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:52 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/05 17:05:40 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/09 17:05:47 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 	int		exit_code;
 	char	*path;
 
+	if (cmd_array == NULL)
+		return ;
 	if (cmd_array[0][0] == '/'
 		|| cmd_array[0][0] == '.'
 		|| cmd_array[0][0] == '~')
