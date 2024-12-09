@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   signal_handlers.c                                  :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:29 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/04 16:54:02 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/05 16:08:42 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,3 @@ void	sighandler_semiint_mini_heredoc(int sig)
 	g_signal = sig + 128;
 	write(STDOUT_FILENO, "^C\n", 3);
 }
-
-// void	sighandler_close_fds(int sig)
-// {
-// 	g_signal = sig + 128;
-// }

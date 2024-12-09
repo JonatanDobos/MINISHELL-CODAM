@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   exit_clean.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:47:32 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 20:24:31 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:18:09 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,14 @@ void	syntax_error(int num, const char *message)
 	else
 		ft_putstr_fd(strerror(num), STDERR_FILENO);
 	ft_putchar_fd('\n', STDERR_FILENO);
+}
+
+void	clean_lists(t_shell *shell)
+{
+	token_clear(&shell->token_head);
+	ft_free_null(&shell->line);
+	shell->token_head = NULL;
+	shell->line_element_head = NULL;
 }
 
 // attempts to free everything known to shell, then exits
@@ -49,21 +57,3 @@ void	exit_clean(t_shell *shell, int num, const char *message)
 		exit_code = errno;
 	exit(exit_code);
 }
-
-// (EXPERIMENTAL)
-// Exits the program with exit_clean() after freeing variable amount of pointers
-// void	exit_va_free(t_shell *shell, int num, char *message, int amount, ...)
-// {
-// 	va_list	ptrs_to_free;
-// 	int		i;
-
-// 	va_start(ptrs_to_free, amount);
-// 	i = 0;
-// 	while (i < amount)
-// 	{
-// 		free_if(va_arg(ptrs_to_free, void *));
-// 		++i;
-// 	}
-// 	va_end(ptrs_to_free);
-// 	exit_clean(shell, num, message);
-// }

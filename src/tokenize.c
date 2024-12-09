@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenize.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 19:22:27 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 19:22:28 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:28:11 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,6 @@ static bool	fill_new_token(
 	return (EXIT_SUCCESS);
 }
 
-// Check for leaks?
 int	tokenize(t_shell *shell)
 {
 	t_list	*current;

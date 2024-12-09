@@ -6,15 +6,13 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:36 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/04 16:42:39 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/05 16:53:43 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
 int	g_signal;
-
-// void	TEST_printline(t_shell *shell);// TEST
 
 // Initializes struct of all structs: t_shell.
 void	init_shell(t_shell *shell, int argc, char **argv, char **envp)
@@ -44,7 +42,7 @@ void	line_history_management(t_shell *shell)
 	const size_t	len = ft_strlen(shell->line);
 
 	if (len && \
-	(!shell->history || ft_strncmp(shell->line, shell->history, len + 1)))
+		(!shell->history || ft_strncmp(shell->line, shell->history, len + 1)))
 	{
 		add_history(shell->line);
 		free(shell->history);
@@ -59,7 +57,7 @@ static void	read_loop(t_shell *shell, t_term original_termios)
 	while (true)
 	{
 		if (tcsetattr(STDIN_FILENO, TCSANOW, &original_termios) != 0)
-			ft_putstr_fd("tcgetattr() failed\n", STDERR_FILENO);
+			exit_clean(shell, errno, "tcsetattr() failed\n");
 		sig_interactive();
 		shell->line = readline(PROMPT);
 		sig_parent();
@@ -79,8 +77,6 @@ static void	read_loop(t_shell *shell, t_term original_termios)
 		}
 		clean_lists(shell);
 	}
-	free(shell->history);
-	rl_clear_history();
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -91,26 +87,7 @@ int	main(int argc, char **argv, char **envp)
 	init_shell(&shell, argc, argv, envp);
 	g_signal = 0;
 	if (tcgetattr(STDIN_FILENO, &original_termios) != 0)
-		ft_putstr_fd("tcgetattr() failed\n", STDERR_FILENO);
+		exit_clean(&shell, errno, "tcgetattr() failed\n");
 	read_loop(&shell, original_termios);
 	return (shell.last_errno);
 }
-
-// // TEST FUNCTIONS:
-// // INP: "info [gets run with additional info]"
-// void	TEST_printline(t_shell *shell)
-// {
-// 	char	*tmp_line;
-
-// 	if (!ft_strncmp(shell->line, "info ", 5))
-// 	{
-// 		shell->print_info = true;
-// 		tmp_line = ft_strdup(shell->line + 5);
-// 		if (!tmp_line)
-// 			exit_clean(shell, errno, NULL);
-// 		free(shell->line);
-// 		shell->line = tmp_line;
-// 	}
-// 	else
-// 		shell->print_info = false;
-// }

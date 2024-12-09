@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   syntax_pre.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:08 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/22 21:31:09 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   syntax_pre.c                                       :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:48:08 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/09 09:10:23 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,39 +33,50 @@ static bool	quote_check(const char *line)
 	return (true);
 }
 
-static bool	check_token_folowup(const char *line)
+static bool	pipe_exception(const char *line)
 {
-	size_t		i;
-	size_t		j;
-	const char	not_allowed[2] = ";";
+	size_t	i;
+	size_t	token_count;
 
 	i = 0;
 	while (istoken(line[i]))
 		++i;
+	token_count = i;
+	if (token_count > 1)
+		return (print_token_err(&line[1], 1), false);
 	while (ft_iswhitespace(line[i]))
 		++i;
-	if (!line[i])
-		return (printf("%s\'newline\'\n", TOKEN_ERR), false);
-	if (istoken(line[i]))
-		return (printf("%s\'%c\'\n", TOKEN_ERR, line[i]), false);
-	j = 0;
-	while (not_allowed[j])
-	{
-		if (not_allowed[j++] == line[i])
-			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i]), false);
-	}
+	if (!line[i] || istoken(line[i]))
+		return (print_token_err(&line[i], 1), false);
 	return (true);
 }
 
-static bool	check_for_pipe_continue(const char *line, size_t i)
+static bool	check_token_folowup(const char *line)
 {
-	if (line[i++] == '|')
-	{
-		while (ft_iswhitespace(line[i]))
-			++i;
-		if (!line[i])
-			return (printf("%s\'newline\'\n", TOKEN_ERR), false);
-	}
+	size_t	i;
+	size_t	token_count;
+
+	i = 0;
+	while (istoken(line[i]))
+		++i;
+	token_count = i;
+	if (token_count > 2)
+		return (print_token_err(&line[2], 1), false);
+	else if (token_count == 2 && istoken(line[1]) && (line[0] - line[1]))
+		return (print_token_err(&line[1], 1), false);
+	while (ft_iswhitespace(line[i]))
+		++i;
+	if (!line[i] || (istoken(line[i]) && token_count == 2))
+		return (print_token_err(&line[i], 1), false);
+	if (istoken(line[i]) && (line[0] - line[i]))
+		return (print_token_err(&line[i], 1), false);
+	token_count	= i;
+	if (istoken(line[i]))
+		++i;
+	while (ft_iswhitespace(line[i]))
+		++i;
+	if (token_count < i && istoken(line[i]))
+		return (print_token_err(&line[i], 1), false);
 	return (true);
 }
 
@@ -76,17 +87,14 @@ static bool	token_check(const char *line)
 	i = 0;
 	while (line[i])
 	{
-		if (line[i] == '<' && line[i + 1] == '|')
-			return (printf("%s\'|\'\n", TOKEN_ERR), false);
-		if (line[i] == '>' && line[i + 1] == '<')
-			return (printf("%s\'<\'\n", TOKEN_ERR), false);
-		if (line[i] == '|' && (line[i + 1] == '<'
-				|| line[i + 1] == '>' || line[i + 1] == '|'))
-			return (printf("%s\'%c\'\n", TOKEN_ERR, line[i + 1]), false);
 		if (istoken(line[i]))
 		{
-			if (!check_for_pipe_continue(line, i)
-				|| !check_token_folowup(line + i))
+			if (line[i] == '|')
+			{
+				if (pipe_exception(line + i) == false)
+					return (false);
+			}
+			if (check_token_folowup(line + i) == false)
 				return (false);
 			while (istoken(line[i]))
 				++i;

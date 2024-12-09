@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/04 16:50:09 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/09 09:14:20 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,6 @@ void		sig_heredoc_parent(void);
 void		sig_heredoc_child(void);
 
 // signal_handlers.c
-void		sighandler_close_fds(int sig);
 void		sighandler_reset_prompt(int sig);
 void		sighandler_semiint_mini(int sig);
 void		sighandler_semiint_mini_heredoc(int sig);
@@ -99,7 +98,7 @@ int			open_files(t_shell *shell, t_token *token);
 // exit_clean.c
 void		syntax_error(int num, const char *message);
 void		exit_clean(t_shell *shell, int num, const char *message);
-// void	exit_va_free(t_shell *d, int num, char *message, int amount, ...);
+void		clean_lists(t_shell *shell);
 
 // UTILS
 // utils_builtin.c
@@ -108,10 +107,6 @@ int			unset_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
 int			print_export_list(char **envp);
 bool		echo_n_flag_check(char *str);
-
-// utils_error_print.c
-void		export_error(char *envar);
-void		unset_error(char *envar);
 
 // utils_envp_sort.c
 bool		export_sorted_syntax(char *envar);
@@ -126,18 +121,14 @@ char		*ft_onlyspace(char *str);
 char		*str_insert(char *str, char *insert, size_t start, size_t len_del);
 void		str_pre_format(char *str);
 
-// utils_free.c
-void		free_va(int amount, ...);
-void		clean_lists(t_shell *shell);
-
-// utils_mod_gnl.c
-char		*get_next_line_heredoc(int fd);
-
 // utils_parsing.c
 bool		istoken(const int c);
 size_t		skip_redir_ws(const char *line);
 size_t		skip_to_next_quote(const char *line, size_t i);
 size_t		skip_to_end_quote(const char *line, size_t i);
+
+// utils_syntax.c
+void		print_token_err(const char *token, int len);
 
 // utils_token_list.c
 void		token_add_back(t_token **node, t_token *new);
@@ -152,31 +143,5 @@ void		set_output(t_shell *shell, int output_fd);
 void		set_infile(t_shell *shell, const char *infile);
 void		set_outfile_append(t_shell *shell, const char *outfile);
 void		set_outfile_trunc(t_shell *shell, const char *outfile);
-
-// // _TEST.c
-// void		TEST_print_token_lst(
-// 				t_shell *shell,
-// 				char *accent_col,
-// 				bool thick_line,
-// 				char *name);
-// void		TEST_print_elem_list(
-// 				t_shell *shell,
-// 				char *accent_col,
-// 				bool thick_line,
-// 				char *name);
-// void		TEST_print_t_list(
-// 				t_list **head,
-// 				char *precursor,
-// 				char *pre_col,
-// 				bool background,
-// 				char *accent_col,
-// 				char *list_name);
-// void		TEST_print_pointer_arr(
-// 				char **arr,
-// 				char *precursor,
-// 				char *pre_col,
-// 				bool background,
-// 				char *accent_col,
-// 				char *name);
 
 #endif

@@ -3,41 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   builtin_unset_export.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:46:11 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/08 18:46:18 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2024/11/25 20:29:06 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	builtin_unset(char *envar, char **envp)
+// id is 0 for export, non-0 for unset
+static void	export_unset_error(int id, char *envar)
 {
-	char		*key;
-	int			i;
-
-	if (envar == NULL)
-		return (EXIT_SUCCESS);
-	if (unset_syntax(envar) == false)
-		return (unset_error(envar), EXIT_FAILURE);
-	if (ft_strchr(envar, '='))
-		key = ft_strdup_d(envar, '=');
+	if (id == 0)
+		ft_putstr_fd("minishell: unset: `", STDERR_FILENO);
 	else
-		key = ft_strdup(envar);
-	if (key == NULL)
-		return (errno);
-	i = envp_key_index(envp, key);
-	if (envp[i] == NULL)
-		return (free(key), EXIT_SUCCESS);
-	free(envp[i]);
-	while (envp[i + 1] != NULL)
-	{
-		envp[i] = envp[i + 1];
-		i++;
-	}
-	envp[i] = NULL;
-	return (EXIT_SUCCESS);
+		ft_putstr_fd("minishell: export: `", STDERR_FILENO);
+	ft_putstr_fd(envar, STDERR_FILENO);
+	ft_putstr_fd("': not a valid identifier\n", STDERR_FILENO);
 }
 
 static int	export_new_key(const char *envar, char ***envp)
@@ -75,7 +58,7 @@ int	builtin_export(char *envar, char ***envp, char ***sorted)
 
 	exit_code = export_envar_to_sorted_array(envar, sorted);
 	if (exit_code == EXIT_FAILURE)
-		return (export_error(envar), EXIT_FAILURE);
+		return (export_unset_error(0, envar), EXIT_FAILURE);
 	if (exit_code)
 		return (exit_code);
 	if (export_syntax(envar) == false)
@@ -93,4 +76,32 @@ int	builtin_export(char *envar, char ***envp, char ***sorted)
 		exit_code = export_update_key(envar, i, *envp);
 	free(key);
 	return (exit_code);
+}
+
+int	builtin_unset(char *envar, char **envp)
+{
+	char		*key;
+	int			i;
+
+	if (envar == NULL)
+		return (EXIT_SUCCESS);
+	if (unset_syntax(envar) == false)
+		return (export_unset_error(42, envar), EXIT_FAILURE);
+	if (ft_strchr(envar, '='))
+		key = ft_strdup_d(envar, '=');
+	else
+		key = ft_strdup(envar);
+	if (key == NULL)
+		return (errno);
+	i = envp_key_index(envp, key);
+	if (envp[i] == NULL)
+		return (free(key), EXIT_SUCCESS);
+	free(envp[i]);
+	while (envp[i + 1] != NULL)
+	{
+		envp[i] = envp[i + 1];
+		i++;
+	}
+	envp[i] = NULL;
+	return (EXIT_SUCCESS);
 }

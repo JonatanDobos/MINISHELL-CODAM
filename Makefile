@@ -2,32 +2,32 @@ NAME	=	minishell
 
 CC		=	cc #-g
 
-CFLAGS=		-Wall -Wextra -Werror
+CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	+=	-Wunused -Wuninitialized -Wunreachable-code
 
 # Adding platform-specific settings for macOS and Ubuntu
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S), Darwin)
-	INCLUDES=	-I /usr/local/opt/readline/include -I ./include
+	INCLUDES=	-I /usr/local/opt/readline/include
 	LDFLAGS=	-L /usr/local/opt/readline/lib -lreadline
 else ifeq ($(UNAME_S), Linux)
-	INCLUDES=	-I /usr/include/readline -I ./include
+	INCLUDES=	-I /usr/include/readline
 	LDFLAGS=	-lreadline
 endif
 
 LFTDIR	=	./libft
 LIBFT	=	$(LFTDIR)/libft.a
 
-
 SRCDIR	=	./src
 SRC		=	$(SRCDIR)/main.c \
-			$(SRCDIR)/builtin_unset_export.c \
 			$(SRCDIR)/builtin_cd.c \
+			$(SRCDIR)/builtin_export_unset.c \
 			$(SRCDIR)/builtin_pwd_env_echo_exit.c \
-			$(SRCDIR)/envp_init.c \
 			$(SRCDIR)/envp_export_sort.c \
+			$(SRCDIR)/envp_init.c \
+			$(SRCDIR)/exit_clean.c \
 			$(SRCDIR)/here_doc.c \
 			$(SRCDIR)/open_files.c \
-			$(SRCDIR)/exit_clean.c \
 			$(SRCDIR)/parse_expandable.c \
 			$(SRCDIR)/parsing_distributor.c \
 			$(SRCDIR)/parsing_posttokenize.c \
@@ -41,12 +41,10 @@ SRC		=	$(SRCDIR)/main.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_builtin.c \
 			$(SRCDIR)/utils_envp_sort.c \
-			$(SRCDIR)/utils_error_print.c \
 			$(SRCDIR)/utils_fd_manipulate.c \
-			$(SRCDIR)/utils_free.c \
-			$(SRCDIR)/utils_mod_gnl.c \
 			$(SRCDIR)/utils_parsing.c \
 			$(SRCDIR)/utils_string.c \
+			$(SRCDIR)/utils_syntax.c \
 			$(SRCDIR)/utils_token_list.c
 
 OBJDIR	=	./obj

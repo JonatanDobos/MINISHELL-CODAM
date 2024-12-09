@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   signal_config.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:59 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/04 16:50:35 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/05 16:09:19 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 

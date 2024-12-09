@@ -3,10 +3,10 @@
 /*                                                        ::::::::            */
 /*   utils_builtin.c                                    :+:    :+:            */
 /*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:16 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/11/25 18:18:19 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/09 09:14:07 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	unset_syntax(const char *envar)
 	return (true);
 }
 
-// points to the value behind given kye inside envp, not malloc'd
+// points to the value behind given key inside envp, not malloc'd
 char	*get_env(char **envp, const char *key)
 {
 	int		i;
