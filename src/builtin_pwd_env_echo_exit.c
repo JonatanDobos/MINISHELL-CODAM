@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:46:08 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 09:13:23 by joni          ########   odam.nl         */
+/*   Updated: 2024/12/12 22:44:49 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ int	builtin_exit(t_shell *shell, char **cmd_array)
 		printf("exit\n");
 		exit_clean(shell, (unsigned char)ft_atoi(cmd_array[1]), NULL);
 	}
+	printf("exit\n");
 	exit_clean(shell, errno, NULL);
 	return (38);
 }

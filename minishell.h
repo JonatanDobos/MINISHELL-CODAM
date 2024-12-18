@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 17:23:44 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/12 22:58:11 by joni          ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,6 +107,10 @@ int			unset_syntax(const char *envar);
 char		*get_env(char **envp, const char *key);
 int			print_export_list(char **envp);
 bool		echo_n_flag_check(char *str);
+
+// utils_cd.c
+char		*cd_home_append(char *home, const char *operand);
+bool		cd_set_operand(char **cmd_array, char **operand);
 
 // utils_envp_sort.c
 bool		export_sorted_syntax(char *envar);

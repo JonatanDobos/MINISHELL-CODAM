@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   utils_string.c                                     :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/08 18:48:31 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/14 16:29:12 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   utils_string.c                                     :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2024/11/08 18:48:31 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/12 18:41:18 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,19 +60,21 @@ char	*ft_onlyspace(char *str)
 }
 
 // Returns:
-// - copy of *str with str[start] -> str[start + len_del] replaced by *insert
+// - copy of *str with str[start] -> str[start + len_del] replaced by *ins
+// - if *ins == NULL:
+// copy of *str with str[start] -> str[start + len_del] deleted
 // - *str when input is incufficient
 // - NULL on malloc failure
-char	*str_insert(char *str, char *insert, size_t start, size_t len_del)
+char	*str_insert(char *str, char *ins, size_t start, size_t len_del)
 {
 	size_t	i;
 	size_t	j;
 	char	*ret;
 
-	if (!str || !insert || start > ft_strlen(str) || \
+	if (!str || start > ft_strlen_null(str) || \
 	len_del > ft_strlen_null(str) - start)
 		return (str);
-	ret = (char *)malloc((ft_strlen(str) - len_del) + ft_strlen(insert) + 1);
+	ret = (char *)malloc((ft_strlen(str) - len_del) + ft_strlen_null(ins) + 1);
 	if (!ret)
 		return (NULL);
 	i = 0;
@@ -80,8 +82,8 @@ char	*str_insert(char *str, char *insert, size_t start, size_t len_del)
 	while (i < start)
 		ret[i++] = str[j++];
 	j = 0;
-	while (insert[j])
-		ret[i++] = insert[j++];
+	while (ins && ins[j])
+		ret[i++] = ins[j++];
 	j = start + len_del;
 	while (str[j])
 		ret[i++] = str[j++];

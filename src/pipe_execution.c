@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:52 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 17:05:47 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/12 16:36:19 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,5 +116,7 @@ int	execute_builtin(t_shell *shell, char **cmd_array, char ***envp)
 		unset_loop(cmd_array, *envp, shell->envp_sorted);
 	else if (!ft_strncmp(cmd_array[0], "export", 7))
 		export_loop(cmd_array, envp, &shell->envp_sorted);
+	if (errno == ENOMEM)
+		exit_clean(shell, errno, "execute_builtin()");
 	return (errno);
 }

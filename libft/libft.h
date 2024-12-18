@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   libft.h                                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/10/03 16:53:50 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/10/31 16:50:56 by svan-hoo         ###   ########.fr       */
+/*                                                        ::::::::            */
+/*   libft.h                                            :+:    :+:            */
+/*                                                     +:+                    */
+/*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
+/*                                                   +#+                      */
+/*   Created: 2023/10/03 16:53:50 by svan-hoo      #+#    #+#                 */
+/*   Updated: 2024/12/12 18:36:37 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ size_t		ft_strlcat(char *dst, const char *src, size_t l);
 size_t		ft_strlcpy(char *dst, const char *src, size_t l);
 size_t		ft_strlen(const char *c);
 size_t		ft_array_size(char **array);
-int			ft_strlen_null(const char *str);
+size_t		ft_strlen_null(const char *str);
 int			ft_strcat(char *dest, const char *src);
 int			ft_intlen(int n);
 int			ft_cpy(char *dest, const char *src, int n);

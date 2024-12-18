@@ -1,8 +1,9 @@
 NAME	=	minishell
 
-CC		=	cc -g
+CC		=	cc
 
 CFLAGS	=	-Wall -Wextra -Werror
+CFLAGS	+=	-g
 CFLAGS	+=	-Wunused -Wuninitialized -Wunreachable-code
 
 # Adding platform-specific settings for macOS and Ubuntu
@@ -40,6 +41,7 @@ SRC		=	$(SRCDIR)/main.c \
 			$(SRCDIR)/syntax_pre.c \
 			$(SRCDIR)/tokenize.c \
 			$(SRCDIR)/utils_builtin.c \
+			$(SRCDIR)/utils_cd.c \
 			$(SRCDIR)/utils_envp_sort.c \
 			$(SRCDIR)/utils_fd_manipulate.c \
 			$(SRCDIR)/utils_parsing.c \

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:08 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 17:25:51 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/12 15:08:25 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ static bool	check_token_folowup(const char *line)
 		return (print_token_err(&line[i], 1), false);
 	if (istoken(line[i]) && (line[0] - line[i]))
 		return (print_token_err(&line[i], 1), false);
-	token_count	= i;
+	token_count = i;
 	if (istoken(line[i]))
 		++i;
 	while (ft_iswhitespace(line[i]))

@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:47:48 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/09 16:41:24 by jdobos        ########   odam.nl         */
+/*   Updated: 2024/12/12 18:21:29 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ void	format_element_str(t_shell *shell, char **cmd)
 		{
 			line = insert_envp_in_str(shell, line, i);
 			if (!line)
-				exit_clean(shell, errno, "format_element_str(): malloc fail");
+				exit_clean(shell, errno, "format_element_str()");
 		}
 		++i;
 	}
