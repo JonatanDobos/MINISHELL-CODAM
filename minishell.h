@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.codam.nl>         +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:48:44 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/12 22:58:11 by joni          ########   odam.nl         */
+/*   Updated: 2025/01/06 16:52:35 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,8 +89,6 @@ int			builtin_export(char *envar, char ***envp, char ***sorted);
 
 // here_doc.c
 pid_t		set_heredoc(t_shell *shell, t_token *token, char *delimiter);
-// int			all_heredocs(t_shell *shell);
-// int			here_doc(t_shell *shell, char *delim, int fd_out);
 
 // open_files.c
 int			open_files(t_shell *shell, t_token *token);
@@ -111,6 +109,7 @@ bool		echo_n_flag_check(char *str);
 // utils_cd.c
 char		*cd_home_append(char *home, const char *operand);
 bool		cd_set_operand(char **cmd_array, char **operand);
+int			export_pwd(char *path, char *cwd, char ***envp, char ***envps);
 
 // utils_envp_sort.c
 bool		export_sorted_syntax(char *envar);

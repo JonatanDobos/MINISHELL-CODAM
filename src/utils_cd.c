@@ -6,7 +6,7 @@
 /*   By: jdobos <jdobos@student.codam.nl>             +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/12/12 18:58:36 by jdobos        #+#    #+#                 */
-/*   Updated: 2024/12/12 23:30:17 by joni          ########   odam.nl         */
+/*   Updated: 2025/01/06 16:59:25 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,27 @@ bool	cd_set_operand(char **cmd_array, char **operand)
 		return (true);
 	else
 		return (false);
+}
+
+int	export_pwd(char *path, char *cwd, char ***envp, char ***envps)
+{
+	char	*pwd_path;
+	char	*oldpwd_path;
+	int		exit_code;
+
+	pwd_path = ft_strjoin("PWD=", path);
+	if (pwd_path == NULL)
+		return (errno);
+	oldpwd_path = ft_strjoin("OLDPWD=", cwd);
+	if (oldpwd_path == NULL)
+		return (free(pwd_path), errno);
+	exit_code = builtin_export(pwd_path, envp, envps);
+	if (exit_code)
+		return (exit_code);
+	exit_code = builtin_export(oldpwd_path, envp, envps);
+	if (exit_code)
+		return (exit_code);
+	free(pwd_path);
+	free(oldpwd_path);
+	return (SUCCESS);
 }

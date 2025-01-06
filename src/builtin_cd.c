@@ -6,7 +6,7 @@
 /*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2024/11/08 18:46:06 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/12 23:38:29 by joni          ########   odam.nl         */
+/*   Updated: 2025/01/06 17:00:48 by jdobos        ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,19 +59,19 @@ static char	*cd_create_path(char *path, const char *operand, char **envp)
 	char	**direction;
 	int		i;
 
-	if (operand == NULL || *operand == '\0' || !ft_strncmp(operand, "~", 2))
-		return (ft_strdup(get_env(envp, "HOME=")));
-	else if (!ft_strncmp(operand, "-", 2))
-	{
-		printf("%s\n", get_env(envp, "OLDPWD="));
-		return (ft_strdup(get_env(envp, "OLDPWD=")));
-	}
-	if (operand[0] == '~')
-		return (cd_home_append(get_env(envp, "HOME="), operand));
-	if (operand[0] == '/')
-		return (ft_strdup((char *)operand));
-	if (cd_init_direction(&direction, operand) == ERROR)
+	if (path == NULL)
 		return (NULL);
+	if (operand == NULL || *operand == '\0' || !ft_strncmp(operand, "~", 2))
+		return (free(path), ft_strdup(get_env(envp, "HOME=")));
+	else if (!ft_strncmp(operand, "-", 2))
+		return (free(path), printf("%s\n", get_env(envp, "OLDPWD=")), \
+		ft_strdup(get_env(envp, "OLDPWD=")));
+	if (operand[0] == '~')
+		return (free(path), cd_home_append(get_env(envp, "HOME="), operand));
+	if (operand[0] == '/')
+		return (free(path), ft_strdup((char *)operand));
+	if (cd_init_direction(&direction, operand) == ERROR)
+		return (free(path), NULL);
 	i = 0;
 	while (direction[i] != NULL)
 	{
@@ -79,8 +79,7 @@ static char	*cd_create_path(char *path, const char *operand, char **envp)
 		if (path == NULL)
 			return (ft_free_array(direction), NULL);
 	}
-	ft_free_array(direction);
-	return (path);
+	return (ft_free_array(direction), path);
 }
 
 static int	cd_print_error(const char *path, const char *operand)
@@ -128,9 +127,6 @@ int	builtin_cd(char **cmd_array, char ***envp, char ***envp_sorted)
 	if (chdir(path) == ERROR && ft_strncmp(path, cwd, ft_strlen(path) + 1))
 		exit_code = cd_print_error(path, operand);
 	else
-	{
-		builtin_export(ft_strjoin("PWD=", path), envp, envp_sorted);
-		builtin_export(ft_strjoin("OLDPWD=", cwd), envp, envp_sorted);
-	}
+		exit_code = export_pwd(path, (char *)cwd, envp, envp_sorted);
 	return (free((char *)cwd), free(path), exit_code);
 }
