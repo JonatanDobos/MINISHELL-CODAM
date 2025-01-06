@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   builtin_cd.c                                       :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/11/08 18:46:06 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2025/01/06 17:00:48 by jdobos        ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   builtin_cd.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:46:06 by svan-hoo          #+#    #+#             */
+/*   Updated: 2025/01/06 18:32:34 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,8 +64,8 @@ static char	*cd_create_path(char *path, const char *operand, char **envp)
 	if (operand == NULL || *operand == '\0' || !ft_strncmp(operand, "~", 2))
 		return (free(path), ft_strdup(get_env(envp, "HOME=")));
 	else if (!ft_strncmp(operand, "-", 2))
-		return (free(path), printf("%s\n", get_env(envp, "OLDPWD=")), \
-		ft_strdup(get_env(envp, "OLDPWD=")));
+		return (free(path), printf("%s\n", get_env(envp, "OLDPWD=")),
+			ft_strdup(get_env(envp, "OLDPWD=")));
 	if (operand[0] == '~')
 		return (free(path), cd_home_append(get_env(envp, "HOME="), operand));
 	if (operand[0] == '/')
@@ -93,7 +93,7 @@ static int	cd_print_error(const char *path, const char *operand)
 	{
 		if (operand && operand[0] == '~' && operand[1] == '/')
 			ft_putstr_fd(path, STDERR_FILENO);
-		else
+		else if (operand)
 			ft_putstr_fd(operand, STDERR_FILENO);
 		if (access(path, F_OK) == ERROR)
 			ft_putstr_fd(": No such file or directory\n", STDERR_FILENO);

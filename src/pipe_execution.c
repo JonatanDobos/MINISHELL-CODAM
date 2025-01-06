@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
-/*                                                        ::::::::            */
-/*   pipe_execution.c                                   :+:    :+:            */
-/*                                                     +:+                    */
-/*   By: svan-hoo <svan-hoo@student.42.fr>            +#+                     */
-/*                                                   +#+                      */
-/*   Created: 2024/11/08 18:47:52 by svan-hoo      #+#    #+#                 */
-/*   Updated: 2024/12/12 16:36:19 by jdobos        ########   odam.nl         */
+/*                                                        :::      ::::::::   */
+/*   pipe_execution.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/08 18:47:52 by svan-hoo          #+#    #+#             */
+/*   Updated: 2025/01/06 18:43:12 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	execute_sys_cmd(char **cmd_array, char **envp)
 			return ;
 		if (path != NULL)
 			execve(path, cmd_array, envp);
+		free(path);
 		exit_code = errno;
 		if (access(cmd_array[0], X_OK) == -1)
 			exit_code = 127;

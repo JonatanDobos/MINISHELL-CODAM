@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin_unset_export.c                             :+:      :+:    :+:   */
+/*   builtin_export_unset.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: svan-hoo <svan-hoo@student.codam.nl>       +#+  +:+       +#+        */
+/*   By: svan-hoo <svan-hoo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/08 18:46:11 by svan-hoo          #+#    #+#             */
-/*   Updated: 2024/11/25 20:29:06 by svan-hoo         ###   ########.fr       */
+/*   Updated: 2025/01/06 18:41:14 by svan-hoo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	builtin_unset(char *envar, char **envp)
 	if (key == NULL)
 		return (errno);
 	i = envp_key_index(envp, key);
+	free(key);
 	if (envp[i] == NULL)
 		return (free(key), EXIT_SUCCESS);
 	free(envp[i]);
